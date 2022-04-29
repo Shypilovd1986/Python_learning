@@ -44,7 +44,8 @@ text1 = f'My name is {d["name"]}, age is {d["age"]}'
 list_operations = ['add list + list', 'Multiplication list * number', 'len()', 'in', '> or < for the same type',
                    '[index]', '[::0]', 'sorted(list,key, reverse =True or False)', 'a.append(object)', 'a.clear()',
                    'a.copy()', 'a.count(object)', 'a.extend(sequence)', 'a.index(value, start, stop)',
-                   'a.insert(index, object)', 'a.pop(index)', 'a.remove(value)', 'a.reverse()', 'a.sort(key=None, reverse=True)', ]
+                   'a.insert(index, object)', 'a.pop(index)', 'a.remove(value)', 'a.reverse()',
+                   'a.sort(key=None, reverse=True)', ]
 # conditionals
 if 5 > 10:
     print('True')
@@ -53,17 +54,44 @@ elif 7 < 3:
 else:
     pass
 
-#loops
+# loops
 
-#while True:    (a !=0, 3 in list , len(a)> 0)
+# while True:    (a !=0, 3 in list , len(a)> 0)
 #   print(1)
-#else:
+# else:
 #   print(2)
 #  operator break, instructions continue, if elif else statement
 
 # function range, create object of class range, can be use with build-in function iter which returns an iterator
 # also can use with list(), tuple(), set()
-v1 = range(1,10,2)
-v1 = list(range(1,10,2))
-#!!!!!  list, tuple, set are not iterator, can't use functions next(), and __next__
+v1 = range(1, 10, 2)
+v1 = list(range(1, 10, 2))
+# !!!!!  list, tuple, set are not iterator, can't use functions next(), and __next__
+
+# set - unoder collections of unique elements
+s1 = {}
+s2 = set(range(5))
+s3 = list(set([2, 3, 55, 3, 1, 2, 3, 1]))
+s4 = set((3, 2, 4, 1, 2, 3))
+
+methods_of_set = ['a.add(value)', 'a.update(iterable sequence)',  # add elements
+                  'a.discard(value)', 'a.remove(value)', 'a.pop()', 'a.clear()',
+                  # remove raise error if there is not value in set
+                  'len(our set)', 'in or not in', 'a.intersection(b) or a&b, a.intersection_update(b)',
+                  # operattions of set
+                  'a.union(b) or a|b ', 'a - b', 'a ^ b', 'a==b', 'a > b or a < b']
+
+# dict - collections of key : value
+d1 = {'Misha': 34, 'Dmitriy': 35}
+d2 = dict((['Misha', 34], ['Sasha', 63]))
+d3 = dict.fromkeys((1, 2, 3), 100)  # takes iterable sequence and value
+# empty dictionary creates d = {} or d = dict()
+
+methods_of_dict = ['check in or not in', 'for adding key d[new key]=value', 'for key in d: print(d[key])', 'd.clear()',
+                   'd.get(key, value that returns if such key is not in dict, for example \'there is no such key\'',
+                   'd.setdefault(key,default)  creates key with default value if there is no such key in dict',
+                   'd.pop(key) returns and remove key:value', 'd.popitem() returns and removes random key:value',
+                   'd.keys() returns object dict_keys with all keys', 'd.values() returns object dict_values with all values',
+                   'd.items() returns object dict_items with all pairs of key:value',
+                   'for key,value in d.items(): print(key , value)']
 
