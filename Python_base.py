@@ -1,4 +1,6 @@
 # data types in Python
+from dask.sizeof import sizeof
+
 list_of_immutable_types = ['int', 'float', 'str', 'tuple', 'frozen set', 'bool']
 list_of_mutable_types = ['list', 'dict', 'set']
 
@@ -73,6 +75,7 @@ s1 = {}
 s2 = set(range(5))
 s3 = list(set([2, 3, 55, 3, 1, 2, 3, 1]))
 s4 = set((3, 2, 4, 1, 2, 3))
+# !!!!!!!!!! set can consists only of immutable data types
 
 methods_of_set = ['a.add(value)', 'a.update(iterable sequence)',  # add elements
                   'a.discard(value)', 'a.remove(value)', 'a.pop()', 'a.clear()',
@@ -91,7 +94,48 @@ methods_of_dict = ['check in or not in', 'for adding key d[new key]=value', 'for
                    'd.get(key, value that returns if such key is not in dict, for example \'there is no such key\'',
                    'd.setdefault(key,default)  creates key with default value if there is no such key in dict',
                    'd.pop(key) returns and remove key:value', 'd.popitem() returns and removes random key:value',
-                   'd.keys() returns object dict_keys with all keys', 'd.values() returns object dict_values with all values',
+                   'd.keys() returns object dict_keys with all keys',
+                   'd.values() returns object dict_values with all values',
                    'd.items() returns object dict_items with all pairs of key:value',
                    'for key,value in d.items(): print(key , value)']
 
+# tuple
+t1 = (1, 2, 3)
+t2 = tuple([1, 2, 3])
+t3 = ()
+t4 = tuple()
+
+methods_of_tuple = ['len(t)', 'in or not in', 't * 2', 't1 + t2', 'min(t) or max(t) if consists of numbers', 't[index]',
+                    't.index(value)', 't.count(value)']
+
+
+# definition function
+def name(parameters):
+    pass
+# operator 'return' returns some value or returns None
+# also its break the function
+# scope variables: built in, global, nonlocal, local
+# LEGB local enclosing nonlocal built in scope
+# *args argument in function, returns tuple
+# **kwargs  return dict , n(a=2,b=4)
+
+#********       lambda functions        *************************
+
+# lambda args1, args2 : expression
+l = lambda x: x**2
+l1 = lambda x: 'true' if x> 0 else 'false'
+l2 = lambda : 'some text'
+# def n(x): return lambda x:x**2 can use in return
+# ***************************************************************
+
+#************     useful functions        ***********************
+# variable.__sizeof__() show size of memory
+# id(variable)
+# enumerate(sequence, start value if it needs) -- for example,  list(enumerate((20,10)) returns [(0,20),(1,10)]
+# map(func, iterable sequence) return object map , for example a = list(map(abs,(2,-3,2))) ---[2,3,2]
+# map can use built in (list, int, abs), lambda, written ( def ) functions
+
+# ***********     list comprehension  and generators     *********************
+
+lc = [(x, j) for x in range(1,20) for j in range (1,x+1) if x==j]
+lc1 = ((x, j) for x in range(1,20) for j in range (1,x+1) if x==j) #returns object of class generator can use with next(lc1), and lc1.__next__
