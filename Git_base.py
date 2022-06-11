@@ -35,6 +35,7 @@
 # git show            shows current commit
 # git show --pretty=fuller         shows full details of current commit
 # git reset HEAD .idea     (or some file)   removes from Index catalog .idea
+# git reset index.html      remove file index.html  from Index
 
 # *********************      delete and rename files ***********************************
 # git rm -r del_directory_name      delete directory from working directory and Index  !!!! flag -r means directory
@@ -52,7 +53,30 @@
 # git branch -v      shows current branch with information about current commit
 # cat .git/refs/heads/master         shows HEAD commit on branch  master
 # git branch name_branch         create new branch with name name_branch
-# git checkout
+# git branch -f master 54a4    carry branch master to commit 54a4 , we can write git branch -f name1_branch name2_branch
+# git checkout name_branch       change current branch  to branch name_branch
+# git checkout -b name_branch    create new branch and checkout on it.
+# git checkout -B name_branch 54a4      create new branch and checkout on commit 54a4.
+# git checkout -f HEAD      !!!!!!!!  returns to current commit without uncommitted changes , Be careful !!!
+# git checkout -f name_branch      !!!!!!!!  checkout to branch without uncommitted changes , Be careful !!!
+# git checkout 54a4     checkout on commit 54a4 and branch became detached HEAD state !!!!!!!!!!!
+# git checkout 54a4 index.html    востановит состояние файла на момент комита 54а4 но не переключает ветки
+# git stash  сохраняет рабочую директорию в стеш, и возвращает в незакомиченное состояние комит, стеш можно будет приме
+# нить в любой ветке и комите
+# git stash pop     применяет незаконченые изменения из гит стешь к текущему комиту
+# git cherry-pick 54a4     applies changes of commit 54a4 on current branch
+
+# *******************      log,  reflog,    show
+# git log     shows structure of repository from HEAD
+# git log --oneline     -||- abbreviated information
+# git log master --oneline   -||- abbreviated information on branch master
+# git show HEAD     show information about current commit
+# git show HEAD~    show information about  commit before HEAD
+# git show HEAD~~ --quiet    show information about  commit before HEAD , count of symbol ~ is count commits before
+# HEAD commit, flag --quiet shows info about commit without changes
+# git show HEAD~~~  = git show @~3    , 54a4~, master~,  @ means HEAD !!!!!!!!!!! on Windows machine  '@~3'
+# git show 650
+
 
 # **********      author's rights      ***************
 # 100644     100 means its file, 644 file isn't executive, 755 is executive
@@ -69,6 +93,7 @@
 # атомарность - когда каждый коммит добавляет только одно свойство, фичу
 # консистентный коммит - тоесть завершенный
 # cd path     change directory
+# git checkout -- master     -- означает что мастер файл , а не ветка !!!!!!!!!!!!
 
 
 
