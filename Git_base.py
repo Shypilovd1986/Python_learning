@@ -14,6 +14,7 @@
 # git config --global core.editor путь к редактору
 # git config --global core.editor "'C:/Program Files (x86)/sublime text 3/subl.exe' -w"   example to make editor global
 # git config --global alias.c 'config --global'
+# git config --global commit.verbose true , set default state commit -v(will show diff between Index and Repository)
 # git config alias.sayhi '!echo "hello"; echo "next message"'  or  git config alias.sayhi '!git .....; git ......'
 # git config -h                shows keys of config
 # git help config               'git help command' shows  descriptions and settings of command
@@ -32,6 +33,8 @@
 # git commit -m 'Add a welcoming script'      commit and add a header to commit
 # git commit -a  ,commit all tracked files from Working directory to Repository  -a is analog --all, -am is analog -a -m
 # каждый комиит содержит хеш короткий идентификатор, полный идентификатор 40 symbols
+# git commit -v   , open the editor, and in it will be description between Index and Repository of HEAD, for
+# familiarization of code
 
 # *********************      delete and rename files ***********************************
 # git rm -r del_directory_name      delete directory from working directory and Index  !!!! flag -r means directory
@@ -112,6 +115,21 @@
 # git reflog --no-decorate    shows reflog without decorators
 # git checkout '@{-3}'        вернет на предыдущих 3 переключения
 
+# *******************      diff      ***************
+# git diff commit1 commit2    same commit1..commit2, compare two commits  git diff 54as  68e3, git diff master fix
+# git diff commit1...commit2  show what exactly change between two commits
+# git diff HEAD     show difference between current commit and uncommited  information, between working directory
+# and Repository
+# git diff ,show difference between current commit and uncommited  information, between working directory and Index
+# git diff --cached  or --staged ,show difference between current commit and uncommited  information, between Index
+# and Repository
+# git diff .     show difference of all directory
+# git diff index.html      show difference of file index.html between Index and Repository
+# git diff Git_base.py Python_base.py    we can write several files
+# git diff master feature Git_base.py Python_base.py    show difference between branch for files
+# git diff --name-only master feature       show name of files where there are differences between branches or commits
+# git diff master:index.html feature:name.html   compare two files of different branches
+# git diff --no-index path1 path2  сравнивает два файла независимо от гит, где они находяться и с какого проекта
 
 # **************           merge         ***********
 # git merge master fix        merge by fast-forward (перемотка) current branch master with branch fix
