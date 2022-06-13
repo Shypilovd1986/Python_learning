@@ -182,6 +182,10 @@
 # so system doesn't  support executive file always in 644
 # git update-index --chmod=+x index.html    add file index.html executive bit in Index co file will be 755 after commit
 
+# **********      git blame      ***************
+# git blame some_file_name     shows who have written strings in file
+# git blame some_file_name --date=short  -L 5,8  shows who have written strings in file, from 5 till 8 strings with date
+
 # **********      git useful      ***************
 # .gitkeep      file of 0 bytes that putts in empty repository
 # .gitignore    make .ignore in root directory and add files which are don't have to be added to git
