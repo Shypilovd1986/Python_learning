@@ -17,6 +17,7 @@
 # git config --global commit.verbose true , set default state commit -v(will show diff between Index and Repository)
 # git config alias.sayhi '!echo "hello"; echo "next message"'  or  git config alias.sayhi '!git .....; git ......'
 # git config -h                shows keys of config
+# git config --global grep.patternType perl    установит по умолчанию перл совместимый поиск для флага --grep
 # git help config               'git help command' shows  descriptions and settings of command
 # в листалке /что искать      найдет в листалке с этими словами, q выход ,n поиск вперед ;shift n - поиск назад
 
@@ -96,10 +97,47 @@
 
 # *******************      log,  reflog,    show
 # git log     shows structure of repository from HEAD
-# git log --oneline     -||- abbreviated information
+# git log --oneline     -||- abbreviated information , same git log --pretty=oneline --abbrev-commit
 # git log master --oneline   -||- abbreviated information on branch master
 # git log --oneline -g     flag -g shows logs from reflog
-# git show --pretty=fuller         shows full details of current commit
+# git log --pretty     show commits with Header and descriptions, default settings is --pretty=medium
+# git log --pretty=oneline    show commits with full identifier
+# git log --pretty=format:'%C(yellow)%h %C(dim green)%cd %C(reset)| %s [%an]' --date=short  settings for showing
+# logs %h abbrev ident. of commit,%C(colour) приставка дает возможность отображать остаток строки в выбранном цвете
+# %cd committer date, | separate symbol, %s Header of commit, %s%d Header with decorator,[%an]   author name,
+# git help log  shows all list!!, [%cn]  committer name, %ad  author date, %cr relative date, shows month ,
+# flag --date=short  show abbrev date, can be setting like --date=format:'%F %R' , %F  is date, %R is time
+# git log --patch    or -p , add to logs, what we have done in commits
+# git log database master --graph   draw graph tree for branches database and master
+# git log --all --graph         draw graph tree for all branches
+# git log feature ^master     shows commit of branch feature without commits of branch master, = git log feature..master
+# тоесть покажет комиты с момента отхождения от ветки мастер,  git log ..master сравнит текущую ветку с мастер
+# git log feature.. --boundary ,   покажет комиты на ветке feature   и той на которой сейчас HEAD
+# --boundary   флаг покажет пограничный комит, тоесть тот коммит в котором ветки разделились
+# git log feature...master       покажет симетрическую разность комитов, тоесть те которые есть или в одной или в
+# другой ветки, но не общие для двух веток
+# git log index.html     show commits where file index.html was changed
+# git log -p index.html      show commits where file index.html was changed  with differences
+# git log -p --follow index.html      show commits where file index.html was changed  with differences,
+# с учетом изменения названия файла
+# git help revisions         покажет описание команд для отображения комитов и их вариантов
+# git log --grep add     find all commits where word add there is in description on current branch
+# git log  --grep add master     find all commits where word add there is in description on branch master
+# git log --grep add --grep list ,find all commits where word add or list there are in description on current branch
+# git log --grep add --grep list --all-match ,find all commits where word add and  list there are in description
+# on current branch
+# git log --grep 'say(Hi|Bye)'   поиск комита в котором есть say Bye или say Hi
+# git log -F   отключит регулярные выражения
+# git log -Gadd  -p    покажет комиты в которых в изменениях присутствует слово add и флаг -p покажет код с изменениями
+# git log -G'function SayHi \('  -p    покажет комиты в которых в изменениях присутствует обьявление функции  SayHi и
+# флаг -p покажет код с изменениями
+# git log -L 3,6: index.html    покажет комиты в которых вносились изменения с 3 по 6 строку в файле
+# git log -'/<head>/' , '/</\head>/': index.html    покажет комиты в которых вносились изменения в блок head в файле
+# git log --author=Shypilovd     finds commits where author is Shypilovd
+# git log --committer=iliakan   finds commits where committer is iliakan
+# git show --pretty=fuller    shows full details of current commit
+# git log --before '3 month ago'     or  '2017-09-13  08:30:00 +02'  show commits which were created before 3 month ago,
+# we also can use flag --after  , which shows commits which were created before 2017-09-13
 # git show HEAD     show information about current commit
 # git show HEAD~    show information about  commit before HEAD
 # git show HEAD~~ --quiet    show information about  commit before HEAD , count of symbol ~ is count commits before
