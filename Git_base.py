@@ -18,8 +18,11 @@
 # git config alias.sayhi '!echo "hello"; echo "next message"'  or  git config alias.sayhi '!git .....; git ......'
 # git config -h                shows keys of config
 # git config --global grep.patternType perl    установит по умолчанию перл совместимый поиск для флага --grep
+# git config --global merge.conflictStyle diff3     сделает по умолчанию отображение трех маркеров конфликта в редакторе
 # git help config               'git help command' shows  descriptions and settings of command
 # в листалке /что искать      найдет в листалке с этими словами, q выход ,n поиск вперед ;shift n - поиск назад
+# git config merge.ff false   отключает слияние перемоткой, и делает ff(тоесть комит слияния) по умолчанию , чтобы явно
+# потом вызвать перемотку нада будет указать флаг --ff ,  git merge --ff feature
 
 # **********     git commands     *************
 # git init    create git repository in /Users/learn/project/.git/
@@ -80,6 +83,7 @@
 # удаленной ветки, git branch fix 2c11 , комиты передут с режима недостежимых в  доступный
 # git branch fix HEAD@{6}       create branch fix on commit taken from reflog HEAD@{6}  on windows machine 'HEAD@{6}'
 # git branch fix HEAD@{'2022-06-11 12:36:08 +0300'}  create branch fix which was deleted on this date
+# git branch --merged     покажет ветки объединенные с текущей
 # git checkout name_branch       change current branch  to branch name_branch
 # git checkout -b name_branch    create new branch and checkout on it.
 # git checkout -B name_branch 54a4      create new branch and checkout on commit 54a4.
@@ -99,7 +103,9 @@
 # git log     shows structure of repository from HEAD
 # git log --oneline     -||- abbreviated information , same git log --pretty=oneline --abbrev-commit
 # git log master --oneline   -||- abbreviated information on branch master
+# git log master --oneline --first-parent     покажет комиты на ветке master без учетов второго родителя слияния
 # git log --oneline -g     flag -g shows logs from reflog
+# git log --oneline --all --graph  покажет схематично слияние и обоих родителей слияния
 # git log --pretty     show commits with Header and descriptions, default settings is --pretty=medium
 # git log --pretty=oneline    show commits with full identifier
 # git log --pretty=format:'%C(yellow)%h %C(dim green)%cd %C(reset)| %s [%an]' --date=short  settings for showing
@@ -151,6 +157,7 @@
 # git reflog master      shows all history of actions for branch master
 # git reflog --date=iso      shows reflog with dates
 # git reflog --no-decorate    shows reflog without decorators
+# git reflog -4 покажет 4      последних записей
 # git checkout '@{-3}'        вернет на предыдущих 3 переключения
 
 # *******************      diff      ***************
@@ -170,9 +177,60 @@
 # git diff --no-index path1 path2  сравнивает два файла независимо от гит, где они находяться и с какого проекта
 
 # **************           merge         ***********
-# git merge master fix        merge by fast-forward (перемотка) current branch master with branch fix
+# git merge master fix       merge by fast-forward (перемотка) current branch master with branch fix
+# git merge fix    merge current branch with branch fix
 # git branch -f master ORIG_HEAD  вернет ветку мастер на предыдущий комит, сылка ORIG_HEAD запоминает состояние
 # предыдущего комита
+# git merge-base master feature     show common(base) commit for both branches
+# cat .git/MERGE_HEAD     keep identifier of commit which will be merged with current commit
+# - если в двух ветках один и тот же файл, и в одной ветке он менялся, а во второй нет, то возьмется файл с той,
+# в которой менялся
+# -  если один и тот же файл в разных ветках менялся, то нужно смотреть как менялся, если в одном файле добавились
+# одни строки, а во втором другие, то гит просто попытаеться их объеденить, если менялись одни и теже строки то гит
+# выдаст конфликт слияния, нужно открыть в редакторе, там гит сгенерировал маркеры конфликта. Маркер показывает,
+# что сначала показан код, который находиться в этих строках  из одного файла, потом из другого и гит не знает
+# что делать. Команда    git checkout --ours index.html    вытащит из файла код который сответствует ветки слияния, и
+# оставить код из файла текущей ветки, а команда      git checkout --theirs index.html     наоборот проигнорирует
+# код из текущей ветки и возьмет из файла ветки слияния
+# git checkout --merge index.html  опять покажет версию с маркерами конфликта
+# git checkout --conflict=diff3 --merge index.html     покажет дополнительный маркер base  то что было в файле до
+# разделения веток
+# !!!!!!!!!!!   git reset --hard    cancel merge, and we will return on current branch with clean status
+# !!!!!!!!!!!   git reset --merge   cancel merge, and leave uncommitted files in working directory, if some were there
+# before merge, but remove from Index
+# git merge --abort    is the same command  git reset --merge
+# при конфликтке в индексе храниться версия сразу о трех версиях файла, двух веток и то как было до разделения, чтобы
+# посмотреть моно вызвать команды:
+# git show :1:index.html   покажет стадию 1 , тоесть общего предка
+# git show :2:index.html   покажет стадию 2 , тоесть our, текущей ветки
+# git show :3:index.html   покажет стадию 3 , тоесть their, merge branch сливаемая ветка
+# после разрешения конфликта нужно добавить файл в индекс  git add index.html, и потом закомитить
+# его с помощью git commit  или  !!!!!!   git merge --continue  аналог git commit который рабоет только из
+# состояния слияния !!!!
+# у комита слияния два родителя
+# git log --oneline --all --graph  покажет схематично слияние и обоих родителей слияния
+# git show --first-parent     покажет отличия комита слияния от первого родителя
+# git show -m     покажет отличия комита слияния от обоих родителей по отдельности
+# git diff HEAD^1   или просто HEAD^   ,покажет отличия комита слияния от первого родителя
+# git diff HEAD^^      покажет отличия комита слияния от родителя первого родителя
+# git diff HEAD^2      покажет отличия комита слияния от второго родителя
+# git diff HEAD^2^      покажет отличия комита слияния от родителя второго родителя
+# git branch --merged     покажет ветки объединенные с текущей
+# git branch --no-merged     покажет ветки не объединенные с текущей
+# !!!   если на ветки слияния еще сделать новые комиты, а потом опять объеденить с веткой у которой был комит слияния
+# с предыдущего слияния, то при новом слияние уже будут оцениваться новые комиты ветки слияния, старые уже не будут
+# тронуты, так как они уже принимали участие в слияние
+# git merge master feature -m 'Some header'     при слияние веток добавит заголовок по аналогии с комит
+# git merge master feature --log добавит описание всех комитов с ветки feature, можно задать лимит комитов , например
+# не более  5 последних --log=5, по умолчанию не больше 20
+# git log master --oneline --first-parent     покажет комиты на ветке master без учетов второго родителя слияния
+# !!! семантический конфликт при слияние - конфликт по смыслу, а не по строке в коде
+# git merge master feature --no-commit   после слияния, не делает комит, откроется редактор и в нем мы может поправить
+# код, если нам нужно
+# git merge --no-ff --no-edit --no-edit feature     сделает комит слияния  текуей ветки с веткой feature,
+# слияние не перемоткой, а новый комит !!!!!
+# git merge --squash fix   делает не слияние веток, а берет комиты из ветки fix, смотрит что там новое, и добавляет
+# одним комитом к текуей ветки, а ветка слияния  fix находиться в стороне, как правило делаеться с небольшой веткой
 
 # **********      author's rights      ***************
 # 100644     100 means its file, 644 file isn't executive, 755 is executive
