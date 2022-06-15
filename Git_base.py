@@ -97,7 +97,6 @@
 # git stash  сохраняет рабочую директорию в стеш, и возвращает в незакомиченное состояние комит, стеш можно будет приме
 # нить в любой ветке и комите
 # git stash pop     применяет незаконченые изменения из гит стешь к текущему комиту
-# git cherry-pick 54a4     applies changes of commit 54a4 on current branch
 
 # *******************      log,  reflog,    show
 # git log     shows structure of repository from HEAD
@@ -176,6 +175,21 @@
 # git diff master:index.html feature:name.html   compare two files of different branches
 # git diff --no-index path1 path2  сравнивает два файла независимо от гит, где они находяться и с какого проекта
 
+# **************           cherry-pick          ***********
+# git cherry-pick 54a4     applies changes of commit 54a4 (diff between 54a4 and its parent HEAD~)on current branch,
+# and create new commit on current branch
+# git cherry-pick -x    flag -x shows where this commit was copied
+# git cherry-pick 44a3 34nf    можем перечислить какие комиты мы скопируем на текущую ветку !!!!! на текущей ветке
+# скопируеться одним комитом
+# git cherry-pick master..feature задает  диапазон комитов, те комиты которые есть в feature но нет в master
+# git cherry-pick --abort       cancel cherry-pick and return back
+# git cherry-pick --continue       after solving of conflict continue cherry-picking
+# git cherry-pick --quiet       останавливает cherry-picking, те комиты которые были успешно скопированы остаются,
+# те которые вызвали конфликт сбрасываются
+# git cherry-pick -n   or --no-commit    launch editor before commit, code in working directory and we can edit code,
+# after that will commit cherry-picking commit
+
+
 # **************           merge         ***********
 # git merge master fix       merge by fast-forward (перемотка) current branch master with branch fix
 # git merge fix    merge current branch with branch fix
@@ -232,6 +246,32 @@
 # git merge --squash fix   делает не слияние веток, а берет комиты из ветки fix, смотрит что там новое, и добавляет
 # одним комитом к текуей ветки, а ветка слияния  fix находиться в стороне, как правило делаеться с небольшой веткой
 
+# **********      rebase       ***************
+# git rebase master      remove branch  master with all its commits on HEAD of current branch  !!!!!!!!
+# git rebase --abort     cancel all rebasing
+# git rebase --quit      stop rebasing , if some commits have been already rebased, they are staying and HEAD stay
+# on last rebased commit !!!!! not cancel rebasing!!!!
+# git rebase --skip      skip conflict  commit in chain of commits  and continue rebasing
+# commit which doesn't put any changes during rebase is called empty commit, and command rebase skips it during rebase
+# git rebase --continue      ,continue rebasing after solving conflicts
+# if we want to return our rebasing branch to old place we can use git reflog, find identifier of commit which placing
+# on its HEAD and use command  git reset --hard 54ac(identifier of old HEAD) or in simple situation
+# use git reset --hard ORIG_HEAD
+# !!!!! операция слияния безопасная, она создает комит слияния но не нарушает старые, а команада перебазирования при
+# переносе и устранение конфликтов может создать битые коммиты которые могут в процесе сразу не заметны но при
+# разработки могут вылиться в большую проблему!!!!!! А старые комиты ветки перебазирования будут помечены как
+# недостежимые и в течение  30 дней удаляться
+# git rebase -x 'command' master         after each rebasing commit launch  command that testing commit, if testing
+# successful than rebasing commit is good
+# git rebase --onto master 54ac      rebase  current branch on master from commit on current branch with id 54ac
+# в некоторых ситуациях нужно использовать чери пик вместо рибейз , если нужно скопировать пару комитоа а не перенести
+# ветку целиком
+# !!!! возможно при перебазирование ветки, которая раньше была объеденина с другой веткой, гит начнет сравнивать все
+# комиты этих веток обеих родителей с комитами ветки на которую мы перебазируем , и пропустит комиты слияния !!!! тоесть
+# разработка будет линейной  и не будут разрешены конфликты которые были при слияние веток , в таких случаях лучше
+# использовать команду
+# git rebase --rebase-merges master      rebase branch with merges commits
+
 # **********      author's rights      ***************
 # 100644     100 means its file, 644 file isn't executive, 755 is executive
 # chmod +x index.html        makes index.html executive in Unix system
@@ -253,7 +293,7 @@
 # cd path     change directory
 # git checkout -- master     -- означает что мастер файл , а не ветка !!!!!!!!!!!!
 # git help reflog       shows describe about  command reflog or another command
-
+# rerere    возможно для разрешения конфликтов при повторном слияние
 
 
 
