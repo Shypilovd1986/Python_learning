@@ -23,6 +23,7 @@
 # в листалке /что искать      найдет в листалке с этими словами, q выход ,n поиск вперед ;shift n - поиск назад
 # git config merge.ff false   отключает слияние перемоткой, и делает ff(тоесть комит слияния) по умолчанию , чтобы явно
 # потом вызвать перемотку нада будет указать флаг --ff ,  git merge --ff feature
+# git config rerere.enabled true    включит механизм rerere , устранение повторных щконфликтов при повторном слияние
 
 # **********     git commands     *************
 # git init    create git repository in /Users/learn/project/.git/
@@ -160,7 +161,7 @@
 # git checkout '@{-3}'        вернет на предыдущих 3 переключения
 
 # *******************      diff      ***************
-# git diff commit1 commit2    same commit1..commit2, compare two commits  git diff 54as  68e3, git diff master fix
+# git diff commit1 commit2    == commit1..commit2, compare two commits  git diff 54as  68e3, git diff master fix
 # git diff commit1...commit2  show what exactly change between two commits
 # git diff HEAD     show difference between current commit and uncommited  information, between working directory
 # and Repository
@@ -214,7 +215,7 @@
 # before merge, but remove from Index
 # git merge --abort    is the same command  git reset --merge
 # при конфликтке в индексе храниться версия сразу о трех версиях файла, двух веток и то как было до разделения, чтобы
-# посмотреть моно вызвать команды:
+# посмотреть мо;но вызвать команды:
 # git show :1:index.html   покажет стадию 1 , тоесть общего предка
 # git show :2:index.html   покажет стадию 2 , тоесть our, текущей ветки
 # git show :3:index.html   покажет стадию 3 , тоесть their, merge branch сливаемая ветка
@@ -241,13 +242,17 @@
 # !!! семантический конфликт при слияние - конфликт по смыслу, а не по строке в коде
 # git merge master feature --no-commit   после слияния, не делает комит, откроется редактор и в нем мы может поправить
 # код, если нам нужно
-# git merge --no-ff --no-edit --no-edit feature     сделает комит слияния  текуей ветки с веткой feature,
+# git merge --no-ff --no-edit feature     сделает комит слияния  текуей ветки с веткой feature,
 # слияние не перемоткой, а новый комит !!!!!
 # git merge --squash fix   делает не слияние веток, а берет комиты из ветки fix, смотрит что там новое, и добавляет
 # одним комитом к текуей ветки, а ветка слияния  fix находиться в стороне, как правило делаеться с небольшой веткой
 
 # **********      rebase       ***************
-# git rebase master      remove branch  master with all its commits on HEAD of current branch  !!!!!!!!
+# git rebase master      remove current branch with all its commits on HEAD of master  !!!!!!!!
+# git rebase master feature      remove branch  feature with all its commits on HEAD of master  !!!!!!!!
+# git rebase 54а4 --no-ff    !!!! перебазирует текущую ветку на комит 54а4(в даном случае комит основание!!!!! из
+# которого ветка растет), тоесть по сути просто продублирует ветку на том же месте, а старое состояние просто современем
+# удалиться как недостежимая
 # git rebase --abort     cancel all rebasing
 # git rebase --quit      stop rebasing , if some commits have been already rebased, they are staying and HEAD stay
 # on last rebased commit !!!!! not cancel rebasing!!!!
@@ -275,6 +280,17 @@
 # git commit -a --fixup=54c1  поверх текущей ветки создаст закладку комита 54с1(который мы поправили) в заголовке
 # которого будет слово fixup!  и потом при перебазирование вместо комита 54с1 поставит закладку этого комита
 # потом когда будем делать
+# git rebase --onto master 54a4 feature   ,rebase branch feature with all its commits started with commit 54a4 on master
+
+# **********      revert      ***************
+# git revert 443d        create new commit and cancel all changes, what have been done in commit with id 443d
+# git revert 443d..63dv     создаст комиты на ветке которые обратные диапазону комитов от А до В в которых уберет код
+# который был написан в этих комитах
+# git revert 38e8 -m 1     сделает обратный комит для комита слияния 38е8 и уберет из него код из первого родителя,
+# тоесть основного
+# часто комит реверт называют комит отмены
+# если вызвать реверт на комит отмены то он обратно добавит код который убрали из комита отмены
+
 
 # **********      author's rights      ***************
 # 100644     100 means its file, 644 file isn't executive, 755 is executive
@@ -298,6 +314,7 @@
 # git checkout -- master     -- означает что мастер файл , а не ветка !!!!!!!!!!!!
 # git help reflog       shows describe about  command reflog or another command
 # rerere    возможно для разрешения конфликтов при повторном слияние
+# cat index.html   show content of file index.html
 
 
 
