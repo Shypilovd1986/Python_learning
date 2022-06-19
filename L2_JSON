@@ -1,7 +1,0 @@
-# import os
-# # os.mkdir('C:\\m1')
-# print(os.path.exists(
-# 'C:\\m1'
-# ))
-import turtle
-turtle.left(50)
