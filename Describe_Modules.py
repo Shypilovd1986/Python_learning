@@ -18,8 +18,8 @@
 # серверами (программные HTTP-сопряжения).
 # !!!!!!!  use only double quotes not single
 # str_json = строка из джейсона
-# data = json.loads(str_json)   - переведет в словарь
-# new_json = json.dumps(data, indent=2) переведет словарь в строку
+# data = json.loads(str_json)   - переведет из строки джейсон в словарь
+# new_json = json.dumps(data, indent=2) переведет словарь в строку джейсон
 
 
 # with open('my.json', 'w') as file:
