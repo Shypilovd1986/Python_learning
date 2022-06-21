@@ -1,4 +1,3 @@
-
 # list_of_immutable_types = ['int', 'float', 'str', 'tuple', 'frozen set', 'bool']
 # list_of_mutable_types = ['list', 'dict', 'set']
 
@@ -148,3 +147,84 @@
 # lc = [(x, j) for x in range(1,20) for j in range (1,x+1) if x==j]
 # lc1 = ((x, j) for x in range(1,20) for j in range (1,x+1) if x==j) #returns object of class generator can use with
 # next(lc1), and lc1.__next__
+
+
+# ************************************************************
+# *                                                          *
+# *                        OOP                               *
+# *                                                          *
+# ************************************************************
+
+# Объекты состоят из данных(атрибуты) и поведение(метод)
+# клас - шаблон для создания класов
+
+# class Car:               #create class
+#     name = 'Audi'
+
+#     def move():
+#           print('move')
+
+# !!!!!!для класса функция, для обьекта метод
+# a100= Car()             #create object of class Car
+# Car.__dict__   # show all attribute of class  a100.__dict__ show all attribute of object
+
+# *********      getattr(), setattr(), delattr(), hasattr()      ************
+
+# getattr(a100, 'name', 100)     функция возвращает значение атрибута name, если такого атрибута нет то вернет 100
+# Car.age = 100        поменяет атрибут или создаст новый если такого нет, !!!!!!   если поменять в объекте то
+# поменяется только в нем, если в класе то поменяеться и в обьектах
+# hasattr(a100, 'age')       вернет True если такое атрибут есть или False если нет
+# setattr(Car, 'name', 100)     метод создает или меняет значение атрибута в классе
+# delattr(Car, 'name')     or    del Car.name     удалит атрибут
+
+# Метод - функция объявлена внутри класса , привязана к конкретному обьекту self
+# self  - объект  к которому был вызван метод
+
+# dry - is principe of writing code  - don't repeat your self
+
+# *************       exception    ************
+
+# if not isinstance(a100, Car):
+#       raise ValueError('it's not correct class )     возбудит ошибку и выдаст сообщение
+
+# **********         @staticmethod, @classmethod         **********
+#
+# class Orc:
+#     profession = 'warrior'
+#
+#     @staticmethod         # декоратор который  говорит что функция не принимает аргумент селф, и вызывать можно как
+#     def show_prof():      # обычный атрибут , тоесть через точку можно обратиться как и к обычному атрибуту и
+#         print(f'my profession is {Orc.profession}')    # с класса и с объекта
+#
+# a1 = Orc()
+# a1.show_prof()
+# Orc.show_prof()
+
+# **************    патерн моносостояние  ****************
+
+# class Elf():
+#     __shared_attr = {'colour_skin': 'beige', 'race' : 'exists'}
+#
+#     def __init__(self):
+#         self.__dict__ = Elf.__shared_attr
+
+# !!!   теперь если меняем какойто атрибут или удаляем меняется во всех экземплярах и в самом классе
+# !!!   создаст атрибуты в классе только после того как сработает хотябы один конструктор при создание объекта
+
+# *************      уровни доступа к атрибутам и методам    ***************
+#
+# self._name = name       protected attribute, add one underscore before name, allows to use it with object.attribute
+# self.__name = name      private attribute, add double underscore before name, cen be used only by methods
+# class Bank:             # if we will check in attribute by obj.attribute it will raise error 'object has no attribute'
+#
+#     def __init__(self, name):
+#         self.__name = name
+#
+#     def show_name(self):
+#         print(f'Bank name is {self.__name}')
+#
+# b1 = Bank('Aval')
+# b1.show_name()
+
+# protected attribute says that it shouldn't use out of class   !!!!!!!!!!!!!!!
+# private attribute can be used by obj._class__attribute     !!!!!!!!!!!!!!
