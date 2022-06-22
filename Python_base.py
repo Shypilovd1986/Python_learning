@@ -120,6 +120,52 @@
 # l2 = lambda : 'some text'
 # def n(x): return lambda x:x**2 can use in return
 
+# ***************       closure and decorator        ***************
+
+# def counter():
+#     count = 0
+#     def inner():
+#         nonlocal count       делаем scope nonlocal, тоесть оперируем переменной не вложенной фунции, а выше на уровень
+#         count += 1
+#         print(f'count is {count}')
+#     return inner     #  возвраать без вызова !!!!!!
+# a = counter()
+# a()    при каждом вызове будет увеличиваться счетчик , если заново вызвать строчку присвоения a = counter() ,обнулится
+
+# Декоратор - это функция, котороая принимает на вход тоже функцию, и возвращает функцию. Нужен для расширения
+# функционала функции которую мы передааем как аргумент
+# def header(func):  # объявили функицю которая на входи принимает функцию func
+#     def inner(*args, **kwargs):  # на вход  инер функции лучше всегда принимать args и kwargs
+#         print('<h1>')
+#         func(*args, **kwargs)  # args и kwargs передаем в внутреннюю функцию
+#         print('</h1>')
+#
+#     return inner  # возвраать функцию без вызова () !!!!!!!!!!!!
+#
+#
+# def table(func):
+#     def inner(*args, **kwargs):
+#         print('<table>')
+#         func(*args, **kwargs)
+#         print('</table>')
+#
+#     return inner
+#
+#
+# @table       # навесили декораторы
+# @header
+# def today_news():
+#     print('What a wonderful day today')
+#
+#
+# # today_news = header(today_news)   #можно было  бы так задекорировать, а не навешивать декоратор, ну уже так не делают
+# today_news()
+# если в задекорированной функции есть строки документации они потеряються, потому что при обраение с помощью метода
+# func.__doc__  будут вызываться строки документации inner функции, чтобы такого не было можно перед вызовом return
+# inner inner.__name__ = func.__name__ , inner.__doc__ = func.__doc__, не в функции а перед return !!!!!!!!!
+
+
+
 # ***************       range      ****************
 
 # function range, create object of class range, can be use with build-in function iter which returns an iterator
@@ -252,7 +298,7 @@
 # ******************      __class__      *****************
 # b1.__class__    return __main__.Bank    , where b1 is obj of class Bank
 
-#*******************      __repr__, __str__       ************************
+# *******************      __repr__, __str__       ************************
 # отвечают за текстовое оформление в системе
 # __repr__  отвечает за то, как отображен наш объект в системе, то как его видит разработчик
 # __str__   как видят объект пользователи
