@@ -196,9 +196,13 @@
 #     def show_prof():      # обычный атрибут , тоесть через точку можно обратиться как и к обычному атрибуту и
 #         print(f'my profession is {Orc.profession}')    # с класса и с объекта
 #
+#     @classmethod          # аргумент как правило cls , как правило делаем обработку над целым классом, делает
+#     def move(cls):        № возможность вызвать и через класс и объект
+#         print('orc move')
 # a1 = Orc()
 # a1.show_prof()
 # Orc.show_prof()
+# Orc.move()
 
 # **************    патерн моносостояние  ****************
 
@@ -211,7 +215,21 @@
 # !!!   теперь если меняем какойто атрибут или удаляем меняется во всех экземплярах и в самом классе
 # !!!   создаст атрибуты в классе только после того как сработает хотябы один конструктор при создание объекта
 
-# *************      уровни доступа к атрибутам и методам    ***************
+# **************       Class body scope in Python       ********************
+# в методах не работает принцип, что если переменной нет в методе он иет выше, ее нужно указывать явно через self.attr
+# or class.attr
+#
+# class Ex1():
+#     age = 33
+#
+#     def show_age(self):
+#         print(f'your age is {Exc1.age}')  явно указали через self.age r class.age если просто age то не найдет
+#
+# e1 = Exc1()
+# e1.show_age()
+
+
+# *************      уровни доступа к атрибутам и методам , private, protected   ***************
 #
 # self._name = name       protected attribute, add one underscore before name, allows to use it with object.attribute
 # self.__name = name      private attribute, add double underscore before name, cen be used only by methods
@@ -228,3 +246,26 @@
 
 # protected attribute says that it shouldn't use out of class   !!!!!!!!!!!!!!!
 # private attribute can be used by obj._class__attribute     !!!!!!!!!!!!!!
+
+#               DUNDER METHODS
+
+# ******************      __class__      *****************
+# b1.__class__    return __main__.Bank    , where b1 is obj of class Bank
+
+#*******************      __repr__, __str__       ************************
+# отвечают за текстовое оформление в системе
+# __repr__  отвечает за то, как отображен наш объект в системе, то как его видит разработчик
+# __str__   как видят объект пользователи
+# class Ex2:
+#     def __repr__(self):
+#         return f'Object of class {self.__class__}'
+# # если переопределен только __repr__ то он будет подхвачен во всех отображениях
+#     def __str__(self):
+#         return f'this object was created'
+# #     если переопределен только __str__ то он будет отображен через принт и стр, а при обраению в консоли будет видно
+# #     содержимое непереопределенного репр, тоесть объект какого класса и где находиться
+# e2 = Ex2()
+# print(e2)
+# если переопределены оба метода то при обраению к объекту e2 , будет отображено строка с repr, если через print(e2),
+# str(e2), в toolbar справа будет видна строка  str   !!!!!
+#
