@@ -35,3 +35,22 @@
 # true -> True
 # false -> False
 # null -> None
+
+# ***************       module  string         ******************
+
+# check if password has number in it , careful digits is string '0123456789', if you are going to check in int ,
+# we should transform to  str
+# from string import digits
+# class Account:
+#     def __init__(self, password):
+#         self.password = password
+#
+#     @staticmethod
+#     def check_is_include_password(password):
+#         for digit in digits:
+#             print(digit)
+#             if digit in str(password):
+#                 return True
+#         return False
+# a1 = Account(323)
+# print(a1.check_is_include_password(a1.password))
