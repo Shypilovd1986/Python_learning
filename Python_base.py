@@ -17,6 +17,8 @@
 # str_operations = ['concatinations', 'Multiplication', 'len()', 'in', '> or <', '[index]', '[::0]']
 # ord('b') - 98 ,
 
+# ******************     string      *********************
+
 # methods_of_strings = ['a.upper()', 'a.lower()', 'a.count(sub,start,end)', 'a.find(sub, start)', 'a.rfind(sub, start)',
 #                       'a.index(sub, start)', 'a.rindex(sub, start)', 'a.replace(old,new,count)', 'a.isalpha()',
 #                       'a.isdigit()',
@@ -38,11 +40,16 @@
 # d = {'name':'Dmitriy', 'age': 35}
 # text1 = f'My name is {d["name"]}, age is {d["age"]}'
 
+# ******************     list       *********************
+
 # list_operations = ['add list + list', 'Multiplication list * number', 'len()', 'in', '> or < for the same type',
 #                    '[index]', '[::0]', 'sorted(list,key, reverse =True or False)', 'a.append(object)', 'a.clear()',
 #                    'a.copy()', 'a.count(object)', 'a.extend(sequence)', 'a.index(value, start, stop)',
 #                    'a.insert(index, object)', 'a.pop(index)', 'a.remove(value)', 'a.reverse()',
 #                    'a.sort(key=None, reverse=True)', ]
+# a = a.sort()  returns None   !!!!! Has two args key = function, reverse (True. False)
+
+
 # ******************     conditionals        *********************
 # if 5 < 10 :
 #     print('good')
@@ -101,6 +108,14 @@
 # methods_of_tuple = ['len(t)', 'in or not in', 't * 2', 't1 + t2', 'min(t) or max(t) if consists of numbers',
 # 't[index]', 't.index(value)', 't.count(value)']
 
+# ********************       экранирование символов   ***************
+# \n перенос на новую строку
+# \\ сам символ \
+# \'   символ '
+# \"   кавычка
+# \t   табуляция
+# \r   каретка
+# r"С:\project.py"    уберет все служебные символы внутри !!!!!
 
 # *********************   definition function   **************************
 # def name(par):
@@ -186,6 +201,13 @@
 # - zip , takes two iter sequences , returns obj zip , which consists of tuples() , pairs of elements from both
 # sequences , list(zip((1,4,5),'today'))  -> [(1,'t'),(2,'o'),(3,'d')].  !!! can takes many arguments, zip(a,b,c,d),
 # defines of smallest sequence, can be unpacked  a,b = zip((1,10), 'ad') - > a = (1,'a'), b = (10,'d')
+# - sorted(iter sequence, key  )build-in function , return iterable sequence, doesn't  change our sequence
+# print(sorted([3, -4, 2, -1], key=abs))  #-> [-1,2,3,-4]
+# сортировать можно по ключу:
+#       - встроенные функции,
+#       - написаные функции (def last_number(x): return x%10)
+#       - анонимные функции
+#       - встроенные методы sorted(a, key = str.lower)
 
 # ***********     list comprehension  and generators     *********************
 #
