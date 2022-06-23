@@ -165,7 +165,6 @@
 # inner inner.__name__ = func.__name__ , inner.__doc__ = func.__doc__, не в функции а перед return !!!!!!!!!
 
 
-
 # ***************       range      ****************
 
 # function range, create object of class range, can be use with build-in function iter which returns an iterator
@@ -293,7 +292,63 @@
 # protected attribute says that it shouldn't use out of class   !!!!!!!!!!!!!!!
 # private attribute can be used by obj._class__attribute     !!!!!!!!!!!!!!
 
-#               DUNDER METHODS
+# ***************      property, getter, setter, deleter      ****************
+class Bank_account:
+    def __init__(self, name, password):
+        self.__password = password
+        self.name = name
+
+    # def get_password(self):
+    #     return f'your password is {self.__password}'
+    #
+    # def set_password(self, new_password):
+    #     self.__password = new_password
+    #
+    # def del_password(self):
+    #     del self.__password
+
+    # еще один вариант как сделать
+    # password = property()
+
+    # password = property(get_password)  # при объявление обьекта класа проперти может  сразу принимать метод гетер .
+
+    # password = password.getter(get_password)
+    # password = password.setter(set_password)
+    # password = password.deleter(del_password)
+
+    # print(password)
+
+    # inside class create functions which get, set and delete private attribute. We can get access to private attr only
+    # by using class method
+    # создаем объект класа property,как правило имя дают такое-же как и приватный атрибут и аргументам присваиваем наши
+    # функции, теперь при обращению к экземпляру.имя_атрибута  вернет его значение,
+    # а при экземпляру.имя_атрибута = значение, при del экземпляр.имя_атрибута, удалит его
+
+    # password = property(fget=get_password, fset=set_password, fdel=del_password) # второй вариант
+    @property  # навешиваем декоратор, метод который получал значение стал свойством, и вызывать нада без скобок
+    def my_password(self):  # как атрибут, вернет значение атрибута
+        return f'your password is {self.__password}'
+
+    # так как метод уже не метод, а объект класса проперти, у него уже есть сеттер и делитер
+    # называем все методы одинаковым именем , навешиваем декораторы сетера и делитера
+
+#     @my_password.setter
+#     def my_password(self, new_password):
+#         self.__password = new_password
+#
+#     @my_password.deleter
+#     def my_password(self):
+#         del self.__password
+#
+#
+# ba1 = Bank_account('Dmitriy', 34234)
+# print(ba1.my_password)
+# ba1.my_password = 2345
+# print(ba1.my_password)
+# del ba1.my_password  # если удалить атрибут его можно потом проинициализировать
+# ba1.my_password = 43
+
+#  XXXXXXXXXXXXXXX        DUNDER METHODS         XXXXXXXXXXXXXXXXXXXXXX
 
 # ******************      __class__      *****************
 # b1.__class__    return __main__.Bank    , where b1 is obj of class Bank
