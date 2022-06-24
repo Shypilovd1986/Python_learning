@@ -173,7 +173,7 @@
 #     print('What a wonderful day today')
 #
 #
-# # today_news = header(today_news)   #можно было  бы так задекорировать, а не навешивать декоратор, ну уже так не делают
+# today_news = header(today_news)  #можно было  бы так задекорировать, а не навешивать декоратор, ну уже так не делают
 # today_news()
 # если в задекорированной функции есть строки документации они потеряються, потому что при обраение с помощью метода
 # func.__doc__  будут вызываться строки документации inner функции, чтобы такого не было можно перед вызовом return
@@ -208,12 +208,35 @@
 #       - написаные функции (def last_number(x): return x%10)
 #       - анонимные функции
 #       - встроенные методы sorted(a, key = str.lower)
+# - all(a)  , takes collection, and check, if one of member it's collection is False, returns False, else returns True
+# - any(a)  , takes collection, and check, if one of member it's collection is True, returns True, else returns False,
+# in bool(x), empty list, dict, tuple, '' is False
 
 # ***********     list comprehension  and generators     *********************
 #
 # lc = [(x, j) for x in range(1,20) for j in range (1,x+1) if x==j]
 # lc1 = ((x, j) for x in range(1,20) for j in range (1,x+1) if x==j) #returns object of class generator can use with
 # next(lc1), and lc1.__next__
+
+# *******************      install third-party modules     *************************
+
+# cmd       invokes command prompt or will show version of it, if it's already invoked
+# pip is package manager of Python
+# pip freeze     - show all packages which already installed
+# pip install <module name> for ex.    pip install django   ,  can also specify version, pip install <module name> ==
+# <version>, pip install django == 4.0.5
+# interpreter can't include two defferent version of the same module!!!!
+#
+# package installation (пакетная установка), allows us to install few packages for one command.
+# -Create file requirements.txt. If we open it by  pip freeze requirements.txt,  we will see all our installed packages.
+# -Delete all from file (because they are already installed) and write down all packages which we want to install ,
+# can write with version using == version (Django == 4.0.3)
+# - pip install -r requirements.txt       install new packages
+
+# we can install using menu-> file -> settings -> project -> interpreter   shows all packages already installed,
+# press '+' and choose what package we need.
+
+# all Python's packages we can find on the website pypi.org
 
 
 # ************************************************************
@@ -315,22 +338,22 @@
 # private attribute can be used by obj._class__attribute     !!!!!!!!!!!!!!
 
 # ***************      property, getter, setter, deleter      ****************
-class Bank_account:
-    def __init__(self, name, password):
-        self.__password = password
-        self.name = name
-
-    # def get_password(self):
-    #     return f'your password is {self.__password}'
-    #
-    # def set_password(self, new_password):
-    #     self.__password = new_password
-    #
-    # def del_password(self):
-    #     del self.__password
-
-    # еще один вариант как сделать
-    # password = property()
+# class Bank_account:
+#     def __init__(self, name, password):
+#         self.__password = password
+#         self.name = name
+#
+#     def get_password(self):
+#         return f'your password is {self.__password}'
+#
+#     def set_password(self, new_password):
+#         self.__password = new_password
+#
+#     def del_password(self):
+#         del self.__password
+#
+#     еще один вариант как сделать
+#     password = property()
 
     # password = property(get_password)  # при объявление обьекта класа проперти может  сразу принимать метод гетер .
 
@@ -347,9 +370,9 @@ class Bank_account:
     # а при экземпляру.имя_атрибута = значение, при del экземпляр.имя_атрибута, удалит его
 
     # password = property(fget=get_password, fset=set_password, fdel=del_password) # второй вариант
-    @property  # навешиваем декоратор, метод который получал значение стал свойством, и вызывать нада без скобок
-    def my_password(self):  # как атрибут, вернет значение атрибута
-        return f'your password is {self.__password}'
+    # @property  # навешиваем декоратор, метод который получал значение стал свойством, и вызывать нада без скобок
+    # def my_password(self):  # как атрибут, вернет значение атрибута
+    #     return f'your password is {self.__password}'
 
     # так как метод уже не метод, а объект класса проперти, у него уже есть сеттер и делитер
     # называем все методы одинаковым именем , навешиваем декораторы сетера и делитера
