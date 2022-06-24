@@ -6,8 +6,10 @@
 #
 # ************   os     *************
 # import os
-# os.mkdir('C:\\m1')    -   create file m1
-# print(os.path.exists('C:\\m1'))   return True if file exists or False if not
+# - os.mkdir('C:\\m1')    -   create file m1
+# - print(os.path.exists('C:\\m1'))   return True if file exists or False if not
+# - print(os.getcwd())   switch to the terminal
+
 
 # *************      json       *****************
 # import json
@@ -54,3 +56,12 @@
 #         return False
 # a1 = Account(323)
 # print(a1.check_is_include_password(a1.password))
+
+# ****************     platform   ************
+# import platform
+# print('This is python version {}'.format(platform.python_version()))   # print Python version
+
+
+# ***************        testing module    ************
+# if __name__ == '__main__': main()   run function main, if it's main module
+#!/usr/bin/env python 3       - Shebang line, show path to interpreter, can be point as absolute path
