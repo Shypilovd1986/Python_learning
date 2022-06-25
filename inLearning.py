@@ -82,3 +82,46 @@
 # not in    Value not in set
 # is      some object identity
 # is not    ,not some object identity
+
+# if __name__ == '__main__': main()
+# main means main file
+
+# *args  is a variable argument list, returns tuple
+# a = [2,1,4]
+# def n(*args):
+#     for s in args:
+#         print(a)
+# n(a) -> [2,1,4]
+# n(*a) -> 2 , 1 ,4     !!!!!!! unpack list
+
+# *kwargs  is a keyword arguments
+# def main():
+#     kitten(Buffy = 'meow', Zilla = 'grr', Angel = 'rawr') # we can unpack kitten(**d)  where d is dict
+#
+# def kitten(**kwargs):
+#     if len(kwargs):
+#         for k in kwargs:
+#             print('Kitten {} says {}'.format(k, kwargs[k]))
+#     else: print('Meow.')
+# if __name__ == '__main__': main()
+
+# i = start
+# while i <= stop:
+#     yield i
+#     i += step
+# yield like return, but will not stop loop
+
+# def generator(start,stop):
+#     while (start<=stop):
+#         yield start
+#         print(f'start={start}')
+#         start+=1
+# for counter in generator(3,4):
+#     print(f'counter={counter}')
+#
+# result:
+# counter=3
+# start=3
+# counter=4
+# start=4
+
