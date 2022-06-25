@@ -35,7 +35,50 @@
 # x = 'some text {:>010}'.format('here')    # {:>10} indents 10 whitespace, count symbols in format's argument and add 0
 # # till quantity symbols will not be 10
 # print((x))
+# y = 0x0a
+# print(f'{y:05}')    # напечатает ф строку, 05 - означает что если значение у больше меньше чем 5 символов то до  5
+# символов будет дополнено нолями
 
 # 7%3 and 7//3 returns int   7/3 returns float
 # x = .1 + .1 +.1 -.3
 # print(x)
+
+# from decimal import Decimal
+# x = Decimal('0.1') + Decimal('0.1') + Decimal('0.1') - Decimal('0.3')
+# print(x)   # in this case returns 0.0
+
+# x = 7 - 5  -> True
+# bool(None)   -> evaluate as False
+
+# < less than , > greater than , <= less than or equal , == double equal, >= greater than or equal
+# x is y , x is not y, x in y,  x not in y
+# hungry = True
+# x = 'Feed the bear now!' if hungry else 'Do not feed the bear.'   !!!!!
+# print(x)
+# print('Feed the bear now!' if hungry else 'Do not feed the bear.')
+
+# + Addition
+# - Subtraction
+# * Multiplication
+# / Division
+# // Integer division
+# % Remainder (Modulo)
+# ** Exponent
+# - Unary negative
+# + Unary
+
+# bitwise operators
+# & and
+# | or
+# ^ Xor
+# << shift left
+# >> shift right
+
+# Boolean operators
+# and   ,And
+# or    ,Or
+# not   ,Not
+# in    Value in set
+# not in    Value not in set
+# is      some object identity
+# is not    ,not some object identity
