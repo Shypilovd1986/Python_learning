@@ -160,7 +160,8 @@
 # sep	a separator between the values (the default is a space character)
 # end	printed after all values (it defaults into a new line)
 # file	the object where the values are printed (default value is sys.stdout (screen))
-# flush	(Optional) A Boolean expression, which specifies if the output is flushed (True) or buffered (False — by default). Default: False.
+# flush	(Optional) A Boolean expression, which specifies if the output is flushed (True) or buffered (False — by
+# default). Default: False.
 
 # Python also provides methods for formatting output information (for example, str.format()). When displaying
 # information, curly braces {} are used as placeholders. Using %, we can also format strings just like printf() is
@@ -199,3 +200,235 @@
 # print(result)  #-> False
 
 # using break also known as jumping out of the loop.
+
+#       life cycle of software - the stages it passes from the beginning of its creation to the end of development
+# and implementation:
+# *     requirement definition - Mathematical or informational formulation of a problem.
+# *     analysis - The choice of numerical or other methods for solving the problem.
+# *     design - The construction of an algorithm for solving the problem.
+# *     coding - The choice of a programming language in order to write the constructed algorithm according to its
+# rules, i.e. writing the text of the program.
+# *     assurance - Debugging the program as the process of detecting, localizing, and eliminating possible errors.
+# *     deployment - Program execution, i.e. obtaining the required result.
+# *     maintenance - Adding new functions to the program, fixing errors detected by users.
+
+# SDLC (software development life cycle) ;жизненный цикл програмного обеспечения !!!
+# Today, we can divide the SDLC models into two large groups: "traditional" SDLC and Agile
+#                           "Traditional" SLC Models:
+#                                Waterfall Model
+#   The Waterfall Model (or cascade) is one of the old traditional software development models which implies
+# a sequential flow of stages, each of which must be fully completed before the next one starts.
+# - requirements -> analysis -> design -> coding/implementation -> testing -> operation/deployment
+
+#                                   V-Model
+#    The V-Model is based on the idea of validation and verification. It inherited the structure of the Waterfall Model,
+# but in addition, a detailed check and testing of the product was organized at the first stages of development.
+# Already at the time when developers write the code, testers write unit tests, that is, they start testing in
+# parallel with development.
+
+#                               Incremental Model
+#   The development process based on the Incremental Model combines the sequential functions of the Waterfall Model and
+# consists of several development cycles (the assembly of modules). The complete system requirements are also divided
+# into different iterations. New software modules are added at each iteration without any changes or minor changes to
+# previously added modules. The process continues until a complete system is created. The development process can go
+# either sequentially or in parallel.
+
+#                                   Iterative Model
+#   With the Iterative Model, the creation begins with the definition and implementation of a part of the functionality
+# which becomes the basis for defining further requirements. This process is repeated. The version may not be ideal,
+# the main thing is that it works. Since each iteration is built on the previous one, the design often remains the same.
+
+#                                       RAD Model
+#   RAD (Rapid Application Development) Model is an incremental development model. In RAD model, highly qualified teams
+#   in parallel, like several mini-projects, are developing components and functions. The time frame for one cycle is
+#   strictly limited. The generated modules are then assembled into one working prototype in a short time period.
+#   RAD model allows to quickly show a client something working, get feedback, and introduce changes.
+#
+#    Rapid application development model includes the following steps:
+# Business modeling:     we form a list of information flows between different departments.
+# Data modeling:    based on the previously collected information, we determine the objects and other entities necessary
+# for the exchange of information.
+# Process modeling:     we establish links between simulated data to achieve development goals.
+# Building the application: it uses auto assembly tools to convert models of computer-aided design (CAD) system to code.
+# Testing:  new components and interfaces are tested.
+
+#                                       Spiral Model
+# The Spiral Model is similar to the Incremental Model but with a focus on risk assessment: the next stage builds on
+# the previous one, and at the end of each round, the team or the customer decides whether to continue the project.
+# This model looks like a spiral, and with each new turn, the process becomes more complicated. Each cycle usually
+# includes four stages:
+# The determination of requirements and constraints.
+# Risk analysis and assessment of alternatives.
+# Project implementation.
+# Evaluation of the result and, if the quality is satisfactory, the transition to a new stage.
+# Work on a project continues until the iterative process is completed in the model.
+
+#                                       Agile Model
+#   Today, more and more organizations are adopting one or another Agile approach in their IT projects. The Agile Model
+# is an agility-based software development methodology that was first introduced in 1990. Agile is based on:
+# *iterative development: each iteration usually takes several weeks and provides a full working version of the software
+# *continuous communication and collaboration between the teams involved in the development process, including a client
+# or stakeholders
+# *early customer feedback
+# Extreme Programming (XP) is one of the best-known uses of the Agile Model in practice.
+
+#                                    XP (Extreme Programming) Model
+#   Extreme Programming Model is an informal and progressive approach to software development based on the method of
+# agile software development, where each developer is usually a professional in their field. The core ideas of the
+# model are represented by a set of values, principles, and practices for the fastest possible development of
+# high-quality software that provides maximum value for a client during the development process. The main thing in
+# extreme programming is not to lose control of what is happening.
+
+# Today, the most common Agile subtypes are Scrum and Kanban which are called frameworks. A framework is a more
+# mature methodology with strict rules.
+
+# In order to create a good algorithm, you need to carefully analyze the condition of a problem. Analysis is the study
+# of objects or phenomena by studying their constituent elements.
+#   The analysis of a problem allows you to:
+#   establish what the input and output of the future algorithm are, while the input data should be explicitly described
+# (the input data is determined by the imposition of constraints)
+#   highlight key decisions (dependencies) between input and output data
+#   highlight the modules necessary to solve the problem and determine the methods for its solution
+
+#                               Properties of an algorithm
+#   Efficiency (finiteness): an algorithm solves a problem in a finite number of steps and the prescribed solution
+# is guaranteed to give a correct answer.
+#   Discreteness: new data values are calculated according to certain rules from other variables with already known
+#  values.
+#   Certainty (determinism): each rule from the set is unambiguous, and the data themselves are unambiguously related
+#  to each other.
+#   Sequence of execution: the sequence of actions of an algorithm is strictly and precisely defined.
+#   Massiveness: an algorithm is developed so that it can be applied to a whole class of problems, for example, an
+#  algorithm for calculating certain integrals according to given accuracy.
+
+#                   Ways to Describe Algorithms
+#   There are several ways to describe algorithms. The most common ways are verbal, or pseudocode, and graphical
+# description of an algorithm, or a flowchart.
+#   Verbal Description of an Algorithm
+#    Pseudocode specifies the steps of an algorithm using essentially natural language and through the use of the
+#    following control constructs:
+#
+# The step (stage) of processing (calculating) data values - "=".
+# The step of checking a logical condition: if (condition) is true, then perform action 1; otherwise - action 2.
+# The transition (transfer of control) to a certain step (stage) .
+
+#               Graphic Representation of an Algorithm
+# The graphic representation of an algorithm (or a program flowchart) is its representation in the form of a diagram
+# consisting of a sequence of blocks (geometric shapes), each of which displays the content of the next step of the
+# algorithm. The action performed in this block is briefly recorded inside the figures.
+# Let us consider the basic symbols for the representation of different parts of a flowchart.
+
+#               Flowcharting guidelines:
+# A flowchart should flow from top to bottom.
+# If a chart becomes complex, utilize connecting blocks.
+# Avoid intersecting flow lines.
+# Use meaningful description in the symbol. Single keywords or short phrases will make a flowchart clearer and more
+# concise.
+# You can create flowcharts of programs manually, or you can use numerous special creation tools.
+# When we implement loops using flowcharts, the arrow after the statements in the part "Yes" can go into the conditional
+# block, or possibly into the branch leading to it.
+
+#                                  Functions
+
+# All parameters (arguments) in the Python language are passed by reference. It means if you change what a parameter
+# refers to within a function, the change also reflects back in a function call.
+
+# Consecutive strings are concatenated.
+# Until we close the parenthesis, the expression will not end. So, we can write this:
+# str = ("first line \n"
+#        "second line")
+
+#       When writing a recursive function, we are creating an infinite loop, i.e. the function calls itself ... and can
+# never stop. Therefore, in recursive functions, you must use the following rules:
+# At each call to a function, transfer the changed data.
+# After the completion of the next call to a recursive function, some result must be returned to the calling function
+# for further use.
+# At some step, the further call of a recursive function must be terminated. A recursive process should step by step
+# simplify the problem so that a non-recursive solution appears for it. Therefore, there are always two cases in a
+# recursive function: recursive and base cases.
+
+# single_dimension array and multi dimension array
+
+# Arrays in Python
+# Python does not have a concept of Arrays. However, Python provides another data structure called a list, which is an
+# ordered collection of items that enables an easy use of a set of data that provides similar functionality as arrays
+# in any other language. Also, to work with arrays in Python, you can use special libraries, like the NumPy library for
+# a high-performance array implementation that aims to provide an array object that is up to 50x faster than traditional
+# Python lists. The lists are covered in the topic "7.3 Lists. Stack. Queue. Binary tree".
+
+# Structures comprise different types of data. However, Java and Python do not exactly operate with the same thing as
+# a structure in C. The struct module in Python is used to convert native Python data types, such as strings and
+# numbers, into a string of bytes, and vice versa.
+
+# A structure allocates memory for every variable of it separately, while a union allocates a single shared storage
+# space for all of its variables which will be the size of its biggest data member.
+
+# Note that the lists in Java and Python and the lists as data structures are completely different lists.
+
+#         Non-Primitive or User-Defined Data Structure Classification
+
+#         Non-primitive:
+# Build-in data type structure in Python
+# -tuple, list, set, dictionary
+# User-defined data structure in Python
+# -Linear: stacks , queues
+# Non-linear: graphs , trees
+
+# A stack is an ordered set of elements in which the placement of new ones and the removal of existing ones occur
+# at one end, called a top. A stack implements the LIFO semantics which stands for Last In First Out. When adding and
+# removing from a stack, the last added item will be the first one to be removed. Stacks have a wide range of uses in
+# algorithms. For example, they are used in language parsing as well as runtime memory management which relies on
+# a call stack.
+# There are several ways to implement a stack:
+# using a one-dimensional array
+# using a linked list
+# using an object-oriented programming class.
+# A stack needs only three operations:
+# push() that adds an element to a stack
+# pop() that removes an element from a stack
+# top() that gives the most recent element on a stack without removing it (peek() in Java).
+
+# A queue implements FIFO (First In First Out) semantics. !!!!!
+# There are several ways to implement a queue:
+# using a one-dimensional array
+# using a linked list
+# using an object-oriented programming class
+# A queue needs a few operations:
+# push_Back () that adds an item to the end of a queue
+# pop_Front() that removes an item from the front of a queue
+
+# type of queue :
+# Double Ended Queue or Deque
+# Priority Queue
+
+# Binary Tree
+# A tree is a data structure, that is, a tree-like structure in the form of a set of related nodes. It works in
+# a similar way as graphs in mathematics.
+
+# A real tree has a root, branches, and the ends of the branches have leaves. The tree data structure is similar to the
+# structure of a regular tree and starts at the root node. Each node can branch out into child nodes. If a node has no
+# children, then it is called a leaf node. Unlike real trees, they grow from top to bottom: the root node is usually
+# drawn at the top and the leaves – at the bottom (in the picture above, compare the trees in life and in programming).
+# There are the following types of trees depending on how many children (branches) each node can have:
+
+#   A binary tree is a finite set of elements that is either empty or contains an element (root) associated with two
+# different binary trees, called the left and right subtrees. Many trees have at most two child nodes.
+
+#   A quadtree is a tree with four child nodes. In a quadtree that can be used to cover a grid, child nodes are usually
+# named according to the direction they cover: NorthWest or NW, NorthEast or NE, SouthWest or SW, and SouthEast or SE.
+
+# There are three ways to traverse the tree:
+# Traversing the tree from top to bottom (in the direct order): A, B, C - prefix form.
+# Traversing the tree in the symmetric order (from left to right): B, A, C - infix form.
+# Traversing the tree in the reverse order (bottom to top): B, C, A - postfix form.
+
+#   A binary tree works according to the rule that child nodes which are smaller than a root node keep on the left side,
+# and child nodes which are greater than a root node keep on the right side. The same rule is applied for child nodes
+# that are sub-trees themselves. Let us consider an example:
+
+# grades = input("Enter the grades for the test: ").split()
+#
+# for grade in sorted(set(grades)):
+#     print("Number of ratings {} = {}".format(grade, grades.count(grade)))
+
+#b
