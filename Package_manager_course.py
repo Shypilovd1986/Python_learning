@@ -1,3 +1,5 @@
+# xxxxxxxxxxxxxxxxxxxxxxxxxxxxx      Manage Packages with RPM and YUM      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+#
 # . The software that we use is generally more complex than a few lines of text, so it's delivered in two primary ways:
 # as source code files, or as pre-compiled binary files.
 
@@ -224,8 +226,8 @@
 # sudo yum update nano    install package nano
 # yum update -x packagename       exclude package from upgrade
 # sudo yum install yum-plugin-versionlock       install versionlock plugin
-# sudo yum versionlock packagename     other way to ensure packages aren't updated is to install the versionlock plugin for
-# yum and use that to mark packages as locked, so updates from their repositories won't update them.
+# sudo yum versionlock packagename     other way to ensure packages aren't updated is to install the versionlock plugin
+# for yum and use that to mark packages as locked, so updates from their repositories won't update them.
 # sudo yum versionlock    to see what are in versionlock
 # sudo yum versionlock delete 0:nano*      delete nano from versionlock
 # sudo yum versionlock clear       delete all from versionlock
@@ -296,3 +298,279 @@
 # If you need to add a new active repository, you'll need to create a .repo file here and add the appropriate
 # information. Then when you run YUM update or search for a package, your system will use that repository as well.
 
+
+# xxxxxxxxxxxxxxxxxxxxxxxxxxxxx      Manage Packages dpkg and APT      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+#
+
+# The packages manager for Debian and distros derived from Debian, like Ubuntu, is called dpkg or Debian package. As a
+# user, we can interact with it directly, or we can use another higher level program that gives us a few more features.
+# Dpkg by itself manages packages and can install from downloaded package files. Other tools like the apt suite of tools
+# and aptitude can search online repositories for packages and download package files and then hand them off to dpkg to
+# install or manage. The apt software acts as a front end to the apt-get and apt-cache tools, which can search,
+# download, and modify the list of packages installed on the system and can search predefined or user defined
+# repositories to find additional software. And there's aptitude, which offers a text mode interface. Using apt-get
+# directly is very common and it's how I tend to work with packages on Ubuntu. But I encourage you to check out aptitude
+# as well to see how you like it. Be sure to explore the man pages for
+#       five manual
+# man dpkg
+# man apt-get
+# man apt-cache
+# man apt
+# man aptitude
+# to find out more.
+
+#   dpkg : works directly with package files
+#   apt : advanced package tool : suite of tools for managing packages and dependencies apt-get, apt-cache, etc
+#   aptitude : offers a text interface as well as CLI
+
+#  Two primary ways of installing  in order to enable different functionality or to add features we need are downloading
+#  a package from a project or maintainer's site, and using the search capacity of the package manager to go look in
+#  software repositories.
+
+# ****************     searching for a package       **************************
+
+# apt search <name package>          search  a package or some text that I want to search for if I don't know the
+# particular package name.  Apt search searches the whole package description, so if the string nano appears anywhere
+# in the text that describes a package,
+
+# apt-cache search  <name package>  to search the repository information cache, I get a bit more of a compact listing
+# of the same information, the package name and a brief summary of what it does. But if we scroll up and take a look at
+# the output from apt search up here, here's nano, and I can see that it's installed. But if I look at the output from
+# apt cache, that nano application doesn't show up, so that's one of the reasons that I prefer using apt search. It
+# shows me all of the matches, not just things that aren't installed.
+
+# ****************     downloading from the web       **************************
+
+#  Often, software isn't available in the repository will be offered for download on our website, but you can also
+#  browse the repositories for your distro on the web. I'm going to visit packages.ubuntu.com. If you're using debian,
+#  you can visit packages.debian.org.
+
+#  search for a little utility called uuid, that we'll install manually later in the chapter, and I'll make sure to
+#  choose mydistro, there it is, and I can see that it depends on two different libraries. Libc, which is already
+#  included in my installation, and libossp/uuid16, which we'll need to download also if we want to be able to
+#  successfully install uuid later on. I'll open that up in a new tab, and we'll download that in a moment. For uuid,
+#  I'll click the link for my architecture, which is amd64, and I'll copy the link from one of these repository mirrors.
+#  Then I'll go back to my terminal, and I'll download that with wget.
+
+#  apt-get download nano       download package nano but will not install it, can be useful when we want to install
+#  on offline machine
+
+# *************************       finding package information      ***********************
+
+# apt show nano           show information about package , package name, the version that's currently available and the
+# section of the repository that it's in. In this case, editors. I can also see some information about where the package
+# is from and it's maintainers and where to find information about bugs for this package. I can see the installed size
+# is 700 kilobytes and then I can see what this package provides.
+
+# dpkg --info uuid_1.6.2-1.5build2_amd64.deb      If we have a local package like we downloaded earlier, we can take a
+# look at the information
+
+# dpkg -c uuid_1.6.2-1.5build2_amd64.deb      listing of all of the files this package would install, where they go and
+# the ownership and permission information.
+
+# dpkg -S /usr/bin/nmcli     If there's a file already installed in the system and you want to see which package is
+# responsible for it .
+
+# *************************       installing package       ***********************
+
+# apt install packagename       Using apt or apt-get the software will go out and find any dependencies that a package
+# requires and download them
+# and apt-get install packagename
+
+# dpkg -i package       to install a local package file. In addition to the package that's requested. Then it will
+# follow the installation scripts in the packages and put everything in place.
+
+# sudo apt update        If you're working on a clean install, or you haven't done anything with packages in a while,
+# it's a good idea to run an apt update before installing software to make sure that you have an up to date copy of the
+# software lists from their repositories.
+
+# sudo apt install nmap       install package nmap
+
+# dpkg --info uuid_1.6.2-1.5build2_amd64.deb         If you recall, we know that this uuid package has a dependency.
+# Show dependent package of uuid
+
+# if there is some problem dependency use
+# sudo dpkg -i uuid_1.6.2-1.5build2_amd64.deb  <dependency problem library name>     And now it installs both packages.
+
+# *************************       checking what software is installed      ***********************
+
+# apt list --installed       shows all packages already installed.
+# And here's the list, I can see the package name and then after the slash, the repositories where the package is from,
+# the installed version
+
+# dpkg -L nano       And if you're curious exactly what a package installed on your system. For example nano
+
+# dpkg -s nano       or       apt list nano     If you're curious about whether a particular package is installed, you
+# can find that out too using either apt list and the package name. And then seeing whether it's listed as installed or
+# upgradeable, or you can use dpkg -s and the package name, let's use that to find out about the nano editor.
+
+# *************************        exploring aptitude       ***********************
+
+# The Aptitude software, while it's newer than APT and is becoming recommended for use across various distributions, is
+# not installed by default on Ubuntu. Let's install it and have a look around.
+
+# sudo apt install aptitude         install aptitude
+
+#  Aptitude includes many of the commands that we've already seen for working with packages, including search, install,
+#  and as we'll see in a little bit, remove. So it can replace APT for most purposes if you choose to use it instead.
+
+#  One major difference from APT and T package is that Aptitude offers a different type of interface. It's still text,
+#  but you can navigate it with arrow keys and keyboard shortcuts.
+
+#  sudo aptitude      invoke the aptitude
+#  Here at the very top we can see some menu items. The next line has reminders about some keyboard shortcuts. C-T up
+#  here stands for control T, and that invokes the menu. We'll look through that in a moment. The question mark key
+#  brings up a help listing. And "q" quits out of whatever you're doing. If you're at the main screen here, it'll offer
+#  to quit out of Aptitude back to the command line. "u" updates information from the repository. And "g" takes you to
+#  the preview window where you can see changes that would take place on the next upgrade, and decide whether to apply
+#  or skip them. I'll press "q" to go back to the main screen. I'll hit control-T to toggle the menus here, and that
+#  puts us in the Actions menu. This menu has reminders of keyboard commands too, which is helpful. We could go to that,
+#  install and remove packages screen, or we could update the packages from here too. And there's a couple other options
+#  here. Along with an option to play Minesweeper, which is helpful if you're in the middle of working on a server and
+#  decide you need just a little more stress in your day. There's an option near the bottom here labeled "Become root",
+#  which if you haven't started on Aptitude with sudo, is required to do much other than search for packages and browse
+#  around. And then there's "Quit" at the bottom. Pressing the right arrow takes me to undo, which is control-U. And the
+#  Package menu here lists some options for when you're navigating the list of packages. Perhaps more importantly here,
+#  "+" to install a package and "-" to remove a package. This "Purge" option here has a shortcut key of underscore or
+#  shift minus on the US keyboard. The Resolver, the next menu, provides shortcut keys for conflict resolution and
+#  dependency reconciliation. If Aptitude detects a conflict in packages you've selected, it'll try to give you some
+#  options to resolve that conflict. The Search menu gives us the ability to search within lists when once displayed,
+#  and shows us that the shortcut for "Find" is slash. And to search backwards it's backslash. There are some other
+#  options as well. To find again with "n" and so on. Options and Views have some areas worth exploring as well. And
+#  here's "Help".  I'll press escape to exit these menus.
+
+#   /nmap      Let's search for nmap here and see what it shows.
+
+#  Here's the nmap package, and I see there's some letters in the column to the left. There's actually three columns
+#  for letters here, and in the first one for nmap and some of the others, I see a lowercase "i". That means the package
+#  on that line is installed. A "p" here would mean that the package is not installed, and a "c" means that it has been
+#  installed but was deleted and some configuration files remain on the system. A "v" means that the package is virtual.
+#  The second column, which is blank right now, as you can see here, shows what action is going to be taken on the
+#  package on this line. If I were to press "minus" here to delete the package, I can see a "d" for delete. I'll undo
+#  that with control-U. If I were installing a package with "+", the second column would show the letter "i". And if you
+#  see the letter "p" it means the package and its configuration will be removed or purged. I can toggle purge with
+#  underscore. If I were to press "+" to try to add this package back, I'd get a capital "B" here in the second column.
+#  That indicates that this package is broken, and I see a new interface here at the bottom of the screen. As well as an
+#  indication that there's one broken package up here near the top. This interface at the bottom is the resolver, and
+#  it's going to suggest some steps for me to un-break this package. I can see here that it suggests one removal, and I
+#  can press the "e" key to examine the suggestion it's giving me.
+
+#   Notice here on the third line, I have two tabs. You can move between these tabs with F6 to move left and F7 to go
+#   right. You can also click the tabs with a mouse. In fact you can click on any item on the screen, but you still have
+#   to press escape to get out of menus. Back here on the resolver, this recommends that I remove the nmap package, as
+#   I was doing before. And leaves the recommendation unresolved. That's fine, so I can press the exclamation mark, as
+#   it shows down here at the bottom, to apply this recommendation. If there were more than one option to resolve this
+#   dependency, I could move between them by pressing period or comma. Now that I've accepted that recommendation, I'm
+#   taken back to the packages screen. Moving up and down with the arrow keys, I can see the description of the selected
+#   package shows down here at the bottom. To navigate this tray of packages, I can use the carrot or circumflex. The
+#   point to character which is shift-6 on the US keyboard, to move to the parent item. Here it's main, and I can
+#   collapse or expand it with enter. Okay, I've marked the nmap package for removal, and I can see up here that it'll
+#   free up about 20 megabytes of space. So to make this happen I'll press "g". That takes me to the preview window
+#   where I can see what's going to be done. Nmap is going to be deleted due to unsatisfied dependencies, which I caused
+#   to happen by my actions in the dependency resolver. And Aptitude has determined that these other packages aren't
+#   needed anymore, so it'll delete them as well. I'll press "g" again to take these actions, and when it's done I'll
+#   press return to go back to Aptitude. Take a moment to look around these various sections, and then when you're done
+#   press "q" to quit. And you can select yes with the arrow key or you can press "y".
+
+# *************************        removing a package        ***********************
+
+# we have a few options to remove a package. Overall, there's removing a package, and purging a package.
+# Removing a package deletes the software, and purge removes any configuration files related to the software
+# If you reinstall the package, chances are it'll work as you configured it. But if you purge the package, custom
+# configuration goes away.
+
+# sudo apt remove uuid      or      sudo dpkg -r uuid          ,remove uuid package
+# sudo apr autoremove      ,to clean up after ourselves here. This will remove those packages that are no longer needed.
+#
+# *************************        Upgrading a package        ***********************
+
+# sudo apt update          before you upgrade or install anything if you haven't done so in a while to allow the package
+# manager to get the latest information from the repositories. And then, if I write sudo apt upgrade, I can see that
+# amongst all of these many, many things that it wants to update, right in the middle here is nano, but I don't want to
+# upgrade all of these things right now. I just want Nano to be brought up to date.
+
+# sudo apt install nano       can be use to update to new version just one package
+
+#  Let's take a look at doing a bulk update of all the installed software. What this does is compare the cache of
+#  packages available from the repository for your distro with what's installed and figures out what's needed to bring
+#  your system up to date. Typically, this updates anything that's available, unless you indicate that you want to keep
+#  a particular package from being updated. This is called keeping it back and you can mark a package as kept back with
+#  the apt mark tool
+
+# sudo dpkg -r nano       show old version of nano
+# sudo dpkg -i nano       show current version of nano
+
+# sudo apt-mark hold nano       to hold it back. I'll use the apt mark tool to indicate that this older version of Nano
+# is to be kept back or skipped when everything else updates.
+
+# sudo apt upgrade         Now, if I run sudo apt upgrade, I'll see everything that would be updated, but Nano is no
+# longer on the list. As I can see up here at the top, it's been kept back. The process of updating can take a while
+# with this many packages.
+
+# sudo apt-mark unhold nano     if we decided we wanted to upgrade Nano after all, we could un-mark it with apt mark.
+# and now if I run sudo apt upgrade again, now Nano is fair game to be updated. And there we go.
+
+# *************************            Installing from source            ********************
+
+# sudo apt install build-essential        The tools that are required for this to work here on ubuntu come in a meta
+# package called build-essential. You can find out more about that with appshow build-essential, and you can install it.
+
+#  Now I'll go over to a website that has some code that we'll downland. The website is for nmap, and even though nmap
+#  is available through the repository, let's build it from source. Here's the link as bzipped tarball, so I'll copy
+#  that location, move back to my terminal and download that with wget and then I'll use the tar command -xf and the
+#  name of the package to unpack it, and then I'll move into the folder that created.
+
+# head configure      to explore configure (shows its consist)
+# ./configure    to run execute file configure
+
+#  if I list the files in the directory again I can see that I have a make file here. That contains the instructions
+#  that the make command will follow to build and compile the software. To use it I'll just type make. And again this
+#  will take a few minutes. Here at the beginning I can already see what kind of work this is saving me. This software
+#  is calling g++ with all of these arguments and files. That would be quite a bit of work to write myself. Now if I
+#  take a look at the files in my folder here again. I have nmap and some of the other tools that were compiled. And if
+#  I try to run nmap with ./nmap, it runs.
+
+#  pwd     The next step is to actually install the software or copy it somewhere on the file system where we can access
+#  it easily. Right now the software is inside this folder in my home folder, which isn't a great place to store a
+#  program that I plan to use often. There's a command called install for the make software that copies files into place
+
+# sudo make -n install           if you're a careful kind of person that wants to see what steps installing the software
+# would take.The -n option just lists out the install script. So you can take a look at it and see if anything looks
+# fishy.  We need sudo to install because it's going to install the software into a privileged location on the desk,
+# inside the usr folder. So, now let's run this command for real, with sudo make install, and the software's installed.
+
+# sudo make install
+# ls /usr/local/bin/               Now I can see that my software's on the path.
+# nmap
+#
+# *************************            Managing APT repositories            ********************
+
+# cd /etc/apt
+# ls -l
+# Most of the time we can get along just fine using the repositories provided by the distro but we can modify the list
+# of repositories too, if we need to make changes to the versions we're using or if we need to add third-party sources
+# for software that isn't part of the main repos. Apt keeps it's list of repositories in two places
+
+# ls sources.list.d
+# Apt keeps it's list of repositories in two places In the sources.list file inside /etc/apt/ and in other files inside
+# the sources.list.d directory. Sources.list is usually reserved for the distro repositories and other software, or
+# users, can put entries in sources.list.d. But you can work in sources.list too, if you like. It all depends on how
+# modular you want your configuration to be.
+#
+# nano /etc/apt/sources.list            Let's take a look at sources.list. Here we see a few entries, starting with deb
+# and deb-src. Deb refers to Debian packages and deb-src denotes a source code repository. After that comes the address
+# where the repository can be found.
+
+#  We can add other repositories here setting the type, the address, and whatever other information is needed. You can
+#  comment out an entry if you don't need it all the time. Once the list of repositories has been edited we'll need to
+#  run apt update so the system goes out and gets information from the new repos.
+
+# sudo apt update
+
+#  apt-key list
+#  Some repositories are signed with cryptographic keys in order to allow a system to verify the authenticity of the
+#  packages. You can manage these keys with apt-key to keep them up to date. And you can view them with apt-key list.
+#  While most people won't need to edit the repository settings they are customizable and on distributions using apt
+#  and D package the settings are centrally managed.
+
+# After updating a list of repositories, you should run apt update
