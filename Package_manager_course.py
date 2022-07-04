@@ -1,3 +1,16 @@
+# ****************************         some   terminology          *******************************
+
+# Package     bundle of software in a file
+# Patch       set of changes to modify files
+# Pattern     Group of packages or template for a role
+# Product     Group of packages that makes up a product
+#  Most of what you'll use in day to day operation are packages. Bundles of software that represent a library or tool
+#  or something like that. A patch is a set of changes that fixes or patches software. A pattern is a group of packages,
+#  kind of like a template that lets you work with multiple packages that are related in some way, like to install a
+#  role, like a web server or file server, or capability, like a desktop environment, or a suite of technical writing
+#  tools. And a product is the highest level of package organization, referring to the group of packages that make up
+#  a given product, like a distro. So, let's get started learning about Zypper.
+
 # xxxxxxxxxxxxxxxxxxxxxxxxxxxxx      Manage Packages with RPM and YUM      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #
 # . The software that we use is generally more complex than a few lines of text, so it's delivered in two primary ways:
@@ -574,3 +587,203 @@
 #  and D package the settings are centrally managed.
 
 # After updating a list of repositories, you should run apt update
+
+
+# xxxxxxxxxxxxxxxxxxx    the Zypper Package Manager    xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+# -  used at the command line oon SUSE systems
+# -  Zypper is a front end for ZYpp
+# -  Zypper manages packages and repositories
+# -  Zypper uses RPM packages
+# -  Uses long or short commands (install or in)
+
+# On systems running SUSE and openSUSE, the package management software we'll use at the command line is called Zypper.
+# Zypper gives us an easy way to work with and search software repositories, resolve dependencies, and install, update,
+# and remove software. Generally speaking, there are two ways to install and manage packages on a system. We can install
+# software manually from package files we download, or we can use the package management software to search repositories
+# of packages and download them and install them that way. The packages that Zypper works with are RPM files, so I won't
+# spend time here going over those again. The basic operation of Zypper is pretty similar to the other package managers
+# we've seen. Commands that Zypper offers come in two types, long and short. For the most part here,
+
+# You can see both sets of commands by typing zypper by itself with the command line. Doing that shows a quick reference
+# to commands you can use, and what they do. For example, here's the long version removelock and the short version rl of
+# this command which removes a package lock.
+
+# man zypper      More detailed information is provided in the Zypper man page. At man zypper. We'll focus on working
+# at the command line and then finish up with a look at managing software with a YaST graphical configuration tool.
+# As we work with Zypper, we'll come across terms like package, patch, pattern, and product. And these are different
+# levels of working with software. Most of what you'll use in day to day operation are packages.
+
+# ***************        Searching for a package          ***********************
+#
+# To begin working with packages we need to know what we're looking for. Sometimes we know the package name, or we know
+# something about what we plan to install.
+
+# sudo zypper refresh   So the software will be requesting the latest version, instead of an older one.
+
+# zypper search <package name or some key from information about package >      to search package,     to search the
+# repositories for information that matches. But before we do this, it's important to make sure we have an updated copy,
+# of what's available on the repositories. Brand new packages show up occasionally. So it's useful to make sure we have
+# information, about the latest versions that are available.
+
+#   First column here on the left is the status. Which will show whether something is installed, i means install
+#   seconds column shows the name of the item.
+#   The patch, package, product or pattern. Most of what we'll see when we're working with zypper, is a package, as we
+# see here in the right most column. But you may see the others, here and there, as you  work.
+#   The third column from the left here, shows a brief description of each item. All of these results match our search
+# term
+#
+# zypper info <name package>     info about package,  Here we can see more detailed information about this item. It
+# shows which repository this package comes from, the version, architectures, venture, and other helpful information,
+# like the installed size, whether it's installed, and more.
+
+# nslookup example.com     But sometimes we need to use a command or tool, that's part of a larger package. And it can
+# be unclear where to find the right package. As an example of this, I like to use the nslookup command. It's really
+# useful for showing name servers for domain names.
+
+# cnf <package name >      imagine you're working as an administrator, and you discover you need to use the nslookup
+# command. But it's not available on the system you're using. It's easy to say, okay I'll go install that. We can look
+# for the nslookup package in the repositories. But that package isn't found. So how do we get it? On SuSE and openSUSE
+# there an handler called cnf. Short for, command not found. And it can tell us what package a missing command, might be
+# available as part of. I'll write cnf nslookup, and aha, I can see that the nslookup tool, is part of the bind-utils
+# package. Now if I go look for bind-utils, there's something I can install. So if you know you need to use a command,
+# and it's not available as a package itself, keep cnf in mind to give you a hint,
+
+# zypper search -t pattern.          Here's a list of patterns that are available for the repositories. As I mentioned,
+# these are things like roles, such as a gateway server or mail server, and desktop environments are included here too,
+# making them a lot easier to install. Just like with packages, we can explore these with zypper info, to find out what
+# packages are included.
+
+# zypper install -t pattern mate         where mate is name of the pattern. That's a lot of packages,
+
+# ***********************       Installing a package        ************************************
+
+# sudo zypper install <name package>            to install package,
+#       I can see the status column has changed for packages I've installed. The GCC package which I as the user
+# requested to be installed is listed with i+, which means that it was installed by user request.
+#       Other packages here just have the i, which means they were installed by the resolver as dependencies to a user
+# installed packaged.
+#       And sometimes you may see V which indicates that a different version than it's listed in the repository metadata
+# is installed.
+
+# sudo zypper install --download-only <package name>                  to download file but nt install
+#  Once the download finishes, the packages aren't installed, but they're stored over in the /var/cache/zypp packages
+#  directory inside subdirectories named by the repository and the architecture respectively. Let's take a look inside
+#  those folders.
+#  ls -Rlh /var/cache/zypp  Scrolling down here, I can see that the packages that were downloaded by the package manager
+#  are spread across a few folders. Some came from the update repository, some came from the OSS repository, and some
+#  have no architecture associated with them, so they're in a different folder. These are stored in the cache right now,
+#  so if you install from these files, Zypper will delete the dependency RPMs. So don't install from your original copy
+#  of the files, copy them to a system and then install from that copy, or install them from a read only file system.
+
+# curl dash 0 https://nmap.org/dist/namp-7.80-1.x86_64.rpm               We can also download RPM packages directly
+# through curl or some other method after finding the package somewhere on the internet.
+# after downloading we can install by the       sudo zypper install namp-7.80-1.x86_64.rpm     Once we have an RPM file,
+# we can install it with Zypper install and the name of the file. For packages to download from a webpage, you may run
+# into signing issues. I'm going to ignore the issue here, but if you want to be more cautious, you can import the
+# signing key manually. And now we have that package installed without using the repository. Depending on your
+# environment, you can choose which method to use to install packages.
+#
+# ******************           Finding out what's installed             *******************
+
+# zypper search --installed-only               It can be helpful to find out what's installed on the system.
+# zypper se -i          it's shortened notation
+
+# zypper search -t product -i       to search what products were installed
+# zypper search -t pattern -i       to search what patterns were installed
+# zypper search -t package -i       to search what packages were installed
+# zypper search -t patch -i       to search what patches were installed
+
+# **********************           Package versions and updates           *****************************
+
+#  In addition to installing software, we can use Zypper to upgrade it or downgrade it as well. Upgrades or updates,
+#  come along when there's new features or bug fixes, either for user-facing software or for system software.  And
+#  sometimes we need to rollback software to a previous version, if there's a bug or compatibility issues with newer
+#  versions.
+
+#  zypper search -s nmap     Let's take a look at all the versions of Nmap that are available in the repository
+
+#  sudo zypper install -f 'nmap=7.70 -lp151.2.5'      to install old version , -f means fource
+
+#  When we're working with specific versions of things, it's useful to tell the system, "No, don't update this, if
+#  there's a newer version. "I want this one." That's called adding a lock, and we can lock and unlock packages here
+#  from the command line. A lock doesn't prevent people from using the software or anything like that, it just prevents
+#  the package manager from doing anything with that package until the lock is removed. Let's lock Nmap and then check
+#  for updates.
+
+# sudo zypper al <name package>        add lock to tge package
+# sudo zypper ll      to show list of locked
+# sudo zypper update     to update all what we have installed except locked
+# sudo reboot     ,to reboot system
+# sudo zypper remove lock <name package>        or rl     remove lock from the package
+# sudo zypper dist-upgrade      Another option we have, is to upgrade to a new distro when it's available.
+
+# !!!!!!    sudo zypper ll^C        using ^C  code will not execute
+
+#  Managing versions of packages and installing updates, especially security updates, is a critical part of system
+#  administration.
+
+# *********************             Removing a package              ***********************
+
+# sudo zypper remove <name package>        or rm      This removes the package, but can leave other packages that were
+# dependencies of the package still installed. To avoid this, we can use the -u option, which removes those packages
+# that won't be needed after removing a given package.
+
+# sudo zypper remove -u <name package>    to remove package with its dependencies
+
+#  sudo zypper packages --unneeded      to show unneeded packages
+
+# *********************          Managing Zypper repositories        *****************************
+
+# zypper repos     or    zypper rl            We can take a look at the repositories that Zypper knows about .
+#  This gives us a table showing numbered rows, one for each repo. We can see the alias and the name of the repo,
+#  whether it's enabled, whether it uses cryptographic verification, and whether it's included in the list of
+#  repositories to refresh when the zypper refresh command is used to update the local copy of repository information.
+#  Notice that some of the repositories are disabled. This was a selection that was made during installation. There's a
+#  fixed set of repositories the system knows about, but for most people these four are enabled and the others aren't.
+#  So if we need them we can enable them, or even add new ones.
+
+#  sudo zypper modifyrepo -e <number from the table of name repo >      To enable a repository
+#  sudo zypper modifyrepo -d <number from the table of name repo >      To disable a repository
+
+# lets us export the list of repositories, and import a list as well. This can be useful as a backup before a
+# possibly breaking action, or as a quick way to share a list of repositories with another system.
+
+#  zypper repos --export Zypper    <file name>         To export the list, a filename.
+#  sudo zypper addrepo <file name>      to import Although  We can also add external repositories using the same addrepo
+#  command. There's a list of third-party repositories on the distro site, so let's find one there and add it.
+
+#  sudo zypper addrepo help               let's take a look at what addrepo options mean. . And here, I can see that
+#  the -c option checks to see if the URI exists, the -f option adds to the refresh list, and the -p option sets the
+#  priority.
+
+# sudo zypper ar -cfp 90 http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSuse_Leap_15.1/ packman      I can see that
+# the repository was added, using the nickname packman.
+# sud zypper refresh        to download the information from this repository. Because it's new, I have a new key, and I
+# can choose whether or not to accept it.
+
+#  Then I can search for a package that I know appears in that repository, but not in the others. I'll write zypper
+#  search sweep. Here are packages from that repository, and we can check that by typing zypper info sweep and seeing
+#  that it comes from the packman repository. If we're done using a third-party repo, we can remove it fairly easily.
+
+#  Once again, let's take a look at our repositories. The one I just added is number two, so let's remove that one.
+#  I'll write zypper removerepo and the number two. Then taking a look at the list again, I can see it's been removed.
+
+# ****************           Managing packages with YaST          *********************
+# But I'd like to take a moment to show you how to work with packages in the GUI as well. Using the YaST configuration
+# software that SUSE and openSUSE use. I'll click on my menu here, and go to applications and settings. Here's YaST.
+# Here in the software section, I see an option for Software Repositories, I'll click that. Here, we can take a look at
+# the repositories and edit them as needed. I'll cancel out of here. Here in the Online Update section, we can see if
+# there are any patches that need to be installed. And we can browse the other pages of the interface like the patterns
+# View, which shows patterns that are installed and what their components are. Over on the search tab, we can search
+# for packages both on the system and in their repositories. We can search and look through a list of matches, exploring
+# the information for each package. I'll install this one, it sounds fun. I'll click the little box next to the package.
+# Clicking it once changes the icon to a plus, which means that it's marked to install. Once the package is installed
+# we'll have other options. And we'll see those in a moment. So that's marked to install. I'll accept these changes by
+# clicking the accept button. And then I can watch the progress as the software is installed. Okay, that's installed.
+# Let's open it up. That's pretty neat. I'll close the software for now. The Software Management area gives me another
+# view into these tabs that I can use to manage the software. I'll search again, and here's the package I just
+# installed. Notice how when I click the box here, other icons appear. This one with an upward pointing arrow means
+# update. And this one with a horizontal line means remove. Let's remove the software that was just installed. To do
+# that I'll click accept, and there we go.
