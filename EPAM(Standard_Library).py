@@ -117,10 +117,9 @@
 # Variance stands for the average of the square differences from the mean.
 # print(statistics.stdev(agesData))    # is square root of the variance
 
-
 # *****************       itertools      ***************
 
-import itertools
+# import itertools
 
 #
 # for x in itertools.count(50, 5):  # method count allows us to count from 50 in our case to infinity,  5 is step
@@ -235,26 +234,27 @@ import itertools
 # **********************           module zipfile     **********************
 
 # import zipfile
-# zip = zipfile.ZipFile('MPP.zip','r')
-# print(zip.namelist())
+# zip = zipfile.ZipFile('MPP.zip','r')  #add our archive to variable
+# print(zip.namelist()) #method namelist() shows content of archive
 
 # for meta in zip.infolist(): # We have the metadata for f1 and we have the metadata for f2. And so you see that they're
 #     # text files, you see the compression type, you see what has access to different modes.
 #     print(meta)
-# info = zip.getinfo('f1.txt')
+# info = zip.getinfo('f1.txt')     # method getinfo show information about metadate of file
 # print(info)
-# print(zip.read('f2.txt'))
+# print(zip.read('f2.txt'))        # show content of file
 #
-# with zip.open('f1.txt') as file:
+# with zip.open('f1.txt') as file:   # open file
 #     print(file.read())
 #
-# zip.extract('f2.txt')
-# zip.extractall()
+# zip.extract('f2.txt')     #extract one file
+# zip.extractall()          # extract all files
 #
 # zip.close()
 
 # **********************           module datetime     **********************
-# from datetime import datetime
+# import calendar
+# from datetime import datetime, timedelta
 # now = datetime.now()
 # print(now.date())
 # print(now.month)
@@ -267,3 +267,142 @@ import itertools
 # combining several attributes whereas these are single numbers because they're just showing the number. This can be
 # super useful if you need to display the current time or date or year in your application.
 
+#  We'll use something called shift time with the shift time method. It takes one string and what's in the string
+#  determines how the contents of the now variable are displayed. First, we'll control how the day of a given week or
+#  month is displayed. With %a, we can have an abbreviated day of the week with just Mon, Tues, Wed displayed. With %A,
+#  we can show the full name of the day of the week. So Monday, Tuesday, et cetera. And we can also display the day as
+#  the day of the month with %d. So if it was going to be the 10th day of the month, %d would translate to 10. Trying
+#  this out, we'll go now.strftime %a, %A, and then %d. So this will display the abbreviated day of the week, the full
+#  day of the week, and then the numbered day of the week.
+
+# print(now.strftime('%a %A %d'))
+
+#  We can also format the month. We'll write %b if we want the abbreviated name of the month, we'll write %B if we want
+#  the full name, and %m if we want the number of the month.
+
+# print(now.strftime('%b %B %m'))
+
+#  we can also format time. We will have %H to display the hours, %M to show the minutes, %S to show the seconds,
+#  and % for AM or PM.
+
+# print(now.strftime('%H : %M : %S : %p'))
+
+# If we only want two numbers for the year to be displayed, we'll use %y. If we want four numbers, we'll use %Y.
+
+# print(now.strftime('%y %Y'))
+
+#  Now we can use the timedelta class to get information about future and past times. To get access to it, we're going
+#  to go ,timedelta, and that's because the timedelta class lives inside of the datetime module.
+
+# tasteFuture = now + timedelta(days = 2) # now testDate holds information about the day two days from now.
+# print(tasteFuture)           #!!! tasteFuture is an instance of datetime so we can use all methods of its
+# tastePast = now - timedelta(weeks= 3)
+# print(tastePast.time())      #!!! tastePast is an instance of datetime so we can use all methods of its
+#
+# if tasteFuture > tastePast:
+#     print('Comparison work ')
+
+# **********************           module calender     **********************
+
+# cal = calendar.month(2022, 10)
+# print(cal)
+#
+# cal2 = calendar.weekday(2022, 10, 12)   #show number of weekday in 2022 , 10 month , 12 day
+# print(cal2)  # counting is going start from 0
+#
+# print(calendar.isleap(2024))
+
+# # **********************           module time     **********************
+
+# import time
+# run = input('Starts ? >')
+# seconds = 0
+#
+# if run in ('Yes','yes'):
+#     while seconds <= 20:
+#         time.sleep(1)
+#         print(seconds, 'seconds')
+#         seconds+=1
+
+# # **********************           html.parser     **********************
+
+#  in order to parse HTML code, we have to import the HTML parser module, and so to do this, we'll go from html.parser,
+#  and from this parser we'll import the HTMLParser class.
+
+# from html.parser import HTMLParser
+#  # <h1>Hi there</h1>
+#  # <--some coments-->
+#  # <p>  opening paragraph tag
+#  # </p> closing paragraph tag
+# class HTMLParser(HTMLParser):
+#     def handle_starttag(self, tag, attrs):
+#         print("Start tag: ", tag)
+#         for attr in attrs:
+#             print("attr:", attr)
+#     def handle_endtag(self, tag):
+#         print("End tag: ", tag)
+#     def handle_comment(self, data):
+#         print("Comment: ", data)
+#     def handle_data(self, data):  #  And then we'll have the data, and then we'll just print out the data that we have
+#         print("Data: ", data)
+#
+# parser = HTMLParser()
+# parser.feed("<html><head><title>Coder</title></head><body><h1><!--hi-->I am a coder</h1></body></html>")
+# print()
+
+# **********************           textwrap module     **********************
+
+# import textwrap
+#
+# websiteText = """   Learning can happen anywhere with our apps on your computer,
+# mobile device, and TV, featuring enhanced navigation and faster streaming
+# for anytime learning. Limitless learning, limitless possibilities."""
+#
+# print("No Dedent:")
+# print(textwrap.fill(websiteText))  # this method keeps beginning space, don't keep Enters
+#
+# print("Dedent")
+# dedent_text = textwrap.dedent(websiteText).strip() # we'll see that it takes away this beginning space, but it keeps
+# # the Enters or the words we entered on inside the body of the text.
+# print(dedent_text)
+#
+#
+# print("Fill")
+# print()
+# print(textwrap.fill(dedent_text, width=50))
+# print(textwrap.fill(dedent_text, width=100))
+#
+# print("Controlling Indent")
+# print(textwrap.fill(dedent_text, initial_indent="   ", subsequent_indent="          "))
+#
+# print("Shortening Text")
+# short = textwrap.shorten("LinkedIn.com is great!", width=15, placeholder="...") # We'll make the width, which is how
+# # many columns or how many characters that we're going to go until we replaced the rest with the placeholder, and that
+# # is going to be 15 here, and then we're going to go ahead and make the placeholder, which is going to be what comes
+# # after our 15 columns or our 15 characters, and we'll make that just ....
+# print(short)
+
+# **********************           urllib.request      **********************
+#  We are going to use the urllib module to get content from the internet.
+# HTTP Package
+
+# https://www.googleapis.com/books/v1/volumes?q=isbn:1101904224
+
+# import urllib.request  # its just a class which we are going to use
+# import json
+# import textwrap
+#
+# #  in this video, we are going to use the Google Books API. And so what's going to happen is we are going to give Google
+# #  Books an ISBN number and then it's going to take that ISBN number and get some data on that specific book.
+#
+# with urllib.request.urlopen("https://www.googleapis.com/books/v1/volumes?q=isbn:1101904224") as f:
+#     text = f.read()
+#     decodedtext = text.decode('utf-8')
+#     print(textwrap.fill(decodedtext, width=50))
+#
+# print()
+#
+# obj = json.loads(decodedtext)
+# print(obj['kind'])
+#
+# print(obj['items'][0]['searchInfo']['textSnippet'])
