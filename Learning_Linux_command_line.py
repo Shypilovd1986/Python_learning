@@ -781,3 +781,19 @@
 # tree     to launch package tree
 
 # man tree     to see manual information about package tree
+
+#  On a Linux system, there's only one file system root. Even if we plug in other storage devices, those become part of
+#  the overall file system and aren't represented as separate file systems, like we might be used to seeing on a Windows
+#  system with a C and D and other drives. You can think of the file system root kind of like the my computer level on
+#  a Windows system rather than the C drive. Using a desktop based file browser, we'll see other disks listed as we
+#  might expect on other operating systems. Even though they're mounted or made available within the root file system,
+#  usually under the mnt directory or inside of a directory called media. From the root, we move deeper into the file
+#  system, and at the first level, there are a variety of directories each with a specific purpose. Some of the
+#  important directories defined by the FHS include the home directory where each user's personal files are stored, and
+#  bin, sbin, and usr where programs have different types are kept. Again, there's also mnt or media, which are used for
+#  mounting or attaching other file systems, like you'd find on network shares and other disks. And how those are used
+#  will vary based on which distribution you're using. The etc directory is where system wide configuration files are
+#  stored. And var is where changeable or variable system information is kept. This is where we'll find system logs and
+#  logs for other software. Some directories defined by the Filesystem Hierarchy Standard aren't real directories at
+#  all. The dev, proc, and sys directories are created by the kernel to represent hardware available on the system,
+#  including all the systems hardware, processes that run programs, settings in the kernel, and so on.
