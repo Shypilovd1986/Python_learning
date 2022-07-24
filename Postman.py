@@ -232,4 +232,16 @@
 # and click on the Authorization tab. Just as we changed the Authorization type in the collection, we want to change
 # this to No Auth.
 
+#                       Using variables in requests
+# We can reference variables in virtually every aspect of our requests. Be it in the URL, parameters, header or body.
+# All we need to do is wrap the variable name in curly brace pairs. Let's compose a new request using our environment
+# variables.
+#       This is still the case, but rather than typing the URL directly we want to use the base URL instead. I'll begin
+#  by entering the curly braces. Notice how as soon as I started typing, Postman displayed the list of a variable
+#  variables. The first items, guid, randomint and timestamp all belong to a special category of variables called
+#  dynamic global variables. These are essentially functions which inject non-deterministic values into your request
+#  wherever they're referenced. I find the guid and timestamp variables particularly useful for requests which create or
+#  modify objects. Continuing down the list, the remaining items are displayed with a green E icon indicating that
+#  they're our environment variables. Hovering over any of the items in the list will show you the scope, global or
+#  environment as well as the initial and current values for that item.
 #

@@ -230,3 +230,53 @@
 # mysql -u user -p database < db_backup.sql      directing input from file
 # command | command   piping output to input
 # cat people.txt | sort |uniq
+
+# curl -I https://api.github.com  This should display the content of the URL on the terminal. The URL syntax is protocol
+# dependent and multiple URLs can be written as sets like:
+
+# Options:
+# -o: saves the downloaded file on the local machine with the name provided in the parameters.
+# Syntax:
+#
+# curl -o [file_name] [URL...]
+
+# Example:
+# curl -o hello.zip ftp://speedtest.tele2.net/1MB.zip
+# The above example downloads the file from the FTP server and saves it with the name hello.zip.
+# -O: This option downloads the file and saves it with the same name as in the URL.
+# Syntax:
+#
+# curl -O [URL...]
+# Example:
+# curl -O ftp://speedtest.tele2.net/1MB.zip
+# -C -: This option resumes download which has been stopped due to some reason. This is useful when downloading large
+# iles and was interrupted.
+# Syntax:
+#
+# curl -C - [URL...]
+# Example:
+# curl -C - -O ftp://speedtest.tele2.net/1MB.zip
+
+# curl https://www.geeksforgeeks.org > log.html --libcurl code.c
+# Output:
+#
+#
+# The above example downloads the HTML and saves it into log.html and the code in code.c file. The next command shows
+# the first 30 lines of the code.
+# -x, –proxy: curl also lets us use a proxy to access the URL.
+# Syntax:
+#
+# curl -x [proxy_name]:[port] [URL...]
+# If the proxy requires authentication, it can be used with the command:
+# curl -u [user]:[password] -x [proxy_name]:[port] [URL...]
+# Sending mail: As curl can transfer data over different protocols, including SMTP, we can use curl to send mails.
+# Syntax:
+#
+# curl –url [SMTP URL] –mail-from [sender_mail] –mail-rcpt [receiver_mail] -n –ssl-reqd -u {email}:{password} -T
+# [Mail text file]
+#
+# DICT protocol: The Libcurl defines the DICT protocol which can be used to easily get the definition or meaning of any
+# word directly from the command line.
+# Syntax:
+#
+# curl [protocol:[dictionary_URL]:[word]
