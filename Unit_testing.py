@@ -8,7 +8,7 @@
 #       Unit testing specifics
 # tests individual functions
 # a test should be written for each test case for a function (all positive and negative test cases).
-# Groups f tests can be combined into test suites for better organization.
+# Groups of tests can be combined into test suites for better organization.
 # Executes in the development environment rather than the production environment
 # Execution of the tests should be automated
 

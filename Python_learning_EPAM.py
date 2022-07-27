@@ -232,3 +232,17 @@
 #     print(doc.nodeName)  # print node name of the document
 #     print(doc.firstChild.tagName)   #  print tag name
 
+#             syntax of all
+# all(
+#     condition(item)
+#     for item in iterable
+# )
+# import string
+# list_of_punctuation = string.punctuation
+# print(list_of_punctuation)
+#
+# def contains_punctuation(input_str):
+#     return any(char in list_of_punctuation
+#         for char in input_str
+#     )
+
