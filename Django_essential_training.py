@@ -221,10 +221,10 @@
 # more to it, such as personal information, permissions, et cetera.
 
 #                       User authentication in two simple steps
-
+# from django.contrib.auth.decorators import login_required
 # @login_required()
 # def authorized(request):
-#     return render(request, 'home/suthorized.html', {})
+#     return render(request, 'home/authorized.html', {})
 
 #  In here, let's import from Django dot contrib dot auth dot decorators. Let's import login required. So now I can add
 #  this function as a decorator to our authorized function. That's it. That's all we need to do to block the access of
@@ -335,7 +335,7 @@
 #  configuration on this admin model.
 
 #  Now what we need to do is import from this folder. Let's import models, and on the bottom of the file, we're going to
-#  register that that model is attached to this admin model. So let's write admin.site.register, then models.Notes, and
+#  register that  model is attached to this admin model. So let's write admin.site.register, then models.Notes, and
 #  NotesAdmin. Okay, that's it. Let's go back to the admin and refresh it.
 
 #  Now we can see that the notes model is available on the admin interface. Let's use the add button here to create a
@@ -414,4 +414,770 @@
 # imagine, we can go on and on here with thousands of examples on how to query data. Django's ORM has a very neat
 # interface that is very intuitive and yet highly powerful.
 
+#                       Creating a dynamic template
+#                       views.py in folder notes
+# #from django.shortcuts import render
+# from . models import Notes
+#
+# def list(request):
+#     all_notes = Notes.objects.all()
+#     return render(request, 'notes/notes_list.html', {'notes': all_notes})
+
+#          urls.py in folder notes
+# from django.urls import path
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.list),
+# ]
+#               urls.py in main folder
+#
+#                from notes/templates/notes/notes_list.html
+# urlpatterns = [
+#     path('project_admin/', admin.site.urls),
+#     path('', include('home.urls')),
+#     path('smart/', include('notes.urls')),
+# ]
+
+# <html>
+#     <h1>These are the notes</h1>
+#     <ul>
+#         {% for note in notes %}
+#             <li>{{note.title}}</li>
+#         {% endfor %}
+#     </ul>
+# </html>
+
+# Everything that is between curly brackets is the Django template language logic. Here we're opening a list tag ul, and
+# then saying that for each note we receive in the template, DTL should create a list item, the li. Notice that commands
+# such as the loop happen between curly brackets and percentages, while things that should be rendered by the template
+# are between double brackets.
+
+#
+#                                       Display content of a single note
+#
+# Let's go back to the notes app, views.py and let's create a new function here. Now, this function should receive a
+# second parameter called pk for private key.
+
+# Okay, so there's one thing still missing, which is the URL. This needs to be a slightly different URL because we need
+# to be able to pass down the second parameter to that function. So let's do this by adding a new path here. So we're
+# going to have notes, then slash, the minor and greater sign, and pk. Great, and now the views.detail. Okay, so what
+# we're telling here is that URL will receive a new value named pk that will be an integer number.
+
+#                   urls.py in notes folder
+# from django.urls import path
+#
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.list),
+#     path('notes/<int:pk>', views.detail),
+# ]
+# Django has an amazing traceback for us to understand where exactly the error happened. You can see right here that the
+# problem started in line 11 on the notes, views.py file, which is exactly where we define the query. We only have this
+# page explaining the error again because we continue to have the debug equals true in the settings file. In a
+# production environment, the user would see a 500 error, which means an internal error. When an object is not found,
+# the correct response is a 404 status code saying that that object does not exist. So let's change our code to make
+# sure that we get the correct status code. Let's go back to the views file. And in here, let's import from django.http.
+# Let's import Http404. Okay, and now we can wrap this query in a try and except block. So try and except if the Notes.
+# DoesNotExist equals true, we're going to raise an Http404 with the message Note doesn't exist.
+
+#                   views.py  from notes folder
+# def detail(request, pk):
+#     try:
+#         note = Notes.objects.get(pk=pk)
+#     except Notes.DoesNotExist:
+#         raise Http404("Note doesn't exist")
+#     return render(request, 'notes/notes_detail.html', {'note': note})
+
+
+#                   Introduction to Django class-based views
+# However, Django has a couple more features that we can leverage to get things even simpler. Welcome to class-based
+# views.
+# The first view we made was in the home app, so let's go back and change it. The only thing we need to do here is
+# display a template, so we can do that by using the class-based view TemplateView class. So let's in here import from
+# django.views.generic import TemplateView. Okay, so now we can create a new class called HomeView that inherits from
+# TemplateView, and the only thing we need to pass here is the template name.
+
+# We still need one more thing because our template requires some extra information
+
+#  The last thing missing is that we need to change the way the URLs are defined, so let's go to the URLs, and in here,
+#  instead of passing the home function, we're going to pass the HomeView class and we need to call a method called as
+#  _view.
+
+#  How do we handle authentication on class-based views? Well, to do that, we're going to need a mixin class. Mixins are
+#  helper classes that can be used along with other classes to provide additional features. For this case, we'll use the
+#  LoginRequiredMixin.
+
+#  The only thing we need to do here now is make sure that this class, which is a mixin, is added before the
+#  TemplateView, okay? The last thing missing is the login_url. So we can actually go here, add the login_url. Let's
+#  still pass the admin, and that's it
+
+#               from views.py in home folder
+# from django.shortcuts import render
+# from django.http import HttpResponse
+# from datetime import datetime
+# from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.views.generic import TemplateView
+#
+# class HomeView(TemplateView):
+#     template_name = 'home/welcome.html'
+#     extra_context = {'today': datetime.today()}
+#
+# class AuthorisedView(LoginRequiredMixin,TemplateView):
+#     template_name = 'home/authorized.html'
+#     login_url = '/admin'
+
+#                   from urls.py in home folder
+# from django.urls import path
+# from . import views
+#
+# urlpatterns = [
+#     path('home', views.HomeView.as_view()),
+#     path('authorized', views.AuthorisedView.as_view())
+# ]
+
+
+#   xxxxxxxxxxxxxxx             A bit more on class-based views        xxxxxxxxxxxxxx
+#  Okay, now I can start our class-based view. Let's go to create a class. So let's call it NotesListView, that inherits
+#  from ListView. And we need to add here, which model we're listing objects from. So let's add here a model equals to
+#  notes, okay. And because our template is expecting to receive a list called notes, we should also add here that the
+#  context object name is different from the default. The default is objects, but we call it notes. That's it, that's
+#  our whole end point. The only thing we need to do now is change the end point URL. So let's go back here, then change
+#  lists to NotesListView.as_view and that's it. We can go back here and also delete our old endpoint.
+
+# You may be thinking what's happening here? Where is the query? The list view is already making the query for us. We
+# also don't need to define the template name because we created a template name that follows the standard of that class
+# based view. But if we enter a different name, it might not work. So instead we can pass here an attribute called
+# template name, you guessed correctly. So we can say here, notes/notes_list.html.
+
+#                   urls.py from notes directory
+# from django.urls import path
+#
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.NotesListView.as_view()),
+#     path('notes/<int:pk>', views.NotesDetailView.as_view()),
+# ]
+
+#                   views.py from  folder home
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http import Http404
+# from django.views.generic import ListView, DetailView
+#
+# class NotesListView(ListView):
+#     model = Notes
+#     context_object_name = 'notes'
+#     template_name = 'notes/notes_list.html'
+#
+# class NotesDetailView(DetailView):
+#     model = Notes
+#     context_object_name = 'note'
+
+# xxxxxxxxxxxxxx            Static files in Django       xxxxxxxxxxxxxxxxxxx
+
+# The first thing we need to do is create a folder where we're going to store all the static files, such as the CSS and
+# JavaScript files, images, videos, et cetera. So let's go here and create new folder, static. Now we need to tell
+# Django that this is the folder it needs to look into when searching for static files. To do that, let's go to the
+# smartnotes, then settings. Then in here, we can scroll down a little bit, and we're going to see here that there is a
+# STATIC_URL already. Now we're also going to add STATICFILES_DIRS. This should be a list. And in here, we're going to
+# say BASE_DIR / 'static' which will lead Django to the folder we just created. Okay, now we can go back to the static
+# and create a new folder just for the CSS files and one CSS file. Let's call it style.css.
+
+#               from settings.py in main-name directory
+# STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR/'static',
+# ]
+
+# . What we need to do now is make sure that our template and Django per se recognizes this file. So let's go to the
+# notes and let's try the notes_list file. Okay, in here, the first thing we need to do is actually tell Django that
+# this HTML is going to use the static files.
+
+# So let's go to the notes and let's try the notes_list file. Okay, in here, the first thing we need to do is actually
+# tell Django that this HTML is going to use the static files. So let's go curly brackets, percentages, and load static.
+# Okay, now what we need here is to add a CSS file as we would in any HTML file, so let's create a head then a link, so
+# the rel is going to be stylesheet, the type is going to be text/css, and on the href, we're going to use the Django
+# template language to add our URL. So let's call static, then css/style.css. That's it. That's all we need to do to
+# have the CSS being rendered on this file.
+
+#               from style.css in folder static/css which we created
+# .note-li{
+#     color: red;
+# }
+
+#                           from notes_list.html (we add some style, in this case red colour)
+# {%load static%}
+# <head>
+#     <link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}"/>
+# </head>
+# <html>
+#     <h1>These are the notes</h1>
+#     <ul>
+#         {% for note in notes %}
+#             <li class = "note-li">{{note.title}}</li>
+#         {% endfor %}
+#     </ul>
+# </html>
+
+#
+# xxxxxxxxxxxxxxxx      How to set up a base HTML for every Django template       xxxxxxxxxxxxxxxxxxxxxxx
+
+# What we need now is a base template. Let's create a templates folder in the static folder, and a base.html template in
+# it. Okay, so in here, we can create a normal HTML file.
+
+#  Okay, so I called this content, but you can call it whatever you like. The important thing here is to know that this
+#  is a block area where we can inject things. Let's try it out.
+
+# Let's go back to the notes, and open the notes_list template. So in here, what we can do is extends base.html. Now,
+# what we can do is get rid of all this basic HTML stuff here and use this block content here. So block content, and in
+# here, we can endblock. Okay, so what we're doing here, we're taking only the important part of our template, and
+# wrapping it on the block content command so this can be injected on the base template.
+
+# So what we need to do is tell Django what to look for. So let's go back. Then in here, let's go to settings file, and
+# down below, we're going to find out that there is a templates, and there is a list of directories that we can add here
+# So similar to what we did on the static files, we're going to add that particular folder in here. So let's do BASE_DIR
+# and then slash, and then static/templates.
+
+#                   from settings.py in main-name folder
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [
+#             BASE_DIR / 'static/templates'
+#         ],
+
+#      from base.html in folder static/templates
+# {% load static %}
+#
+# <html>
+#   <head>
+#     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+#   </head>
+#   <body>
+#     {% block content %}
+#     {% endblock %}
+#
+#   </body>
+# </html>
+
+#       from notes_list.html    in folder notes/templates
+# {% extends "base.html" %}
+#
+# {% block content %}
+#     <h1>These are the notes</h1>
+#     <ul>
+#         {% for note in notes %}
+#             <li class = "note-li">{{note.title}}</li>
+#         {% endfor %}
+#     </ul>
+# {% endblock %}
+
+#  What's happening here is that with this syntax, we can define the basics of our HTML in our base.html template, and
+#  then we create each web page as a separate template that extends the base. So we will build each template separately
+#  and just the small parts but we'll then inject it to the base template where we can have all our default
+#  configurations, such as the CSS files and the JavaScript. This will allow us to keep each web page template as simple
+#  as we can while keeping all the configuration in a single place. That's another power of the Django template language
+
+#   xxxxxxxxxxxxxxxxx       Let's add some style               xxxxxxxxxxxxxxxx
+
+# . We're going to use Bootstrap for now, so what we need to do is on the static, base.html, I'm going to change this
+# CSS we just created with the link to the Bootstrap framework version five. So we can go back, delete this line, and
+# that's it. I know it's a pretty big link, so you can find it on the notes of this class.
+
+# So let's add a button on the home page that will lead us to the list of notes. So let's go to home. Welcome. Perfect.
+# Here we can add, so it's going to be an a href. Let's leave it empty for now. Then in here, we're going to use two
+# classes. Btn for button and btn-primary for the style.
+
+# So how do we deal with links here? We could hard code the link to our localhost but imagine that when we deploy our
+# website, we need to remember to come back and change everything. Not so good. Thankfully, the Django template language
+# has a function for that. What we need to do is the following. Let's open curly brackets and percentage, and then use
+# url, and then in here we're going to say notes.list. Okay, you might be wondering, okay, how Django knows which
+# endpoint to link? It doesn't, and we need to tell it. So let's go back to notes, urls, and in here, what we're going
+# to do is add a name. So we can give a name notes.list. That's all we need for Django dynamically define each endpoint
+# we are pointing to, no matter if you're on localhost or production.
+
+# This would look a little bit better if we could display some of the text of a note but not all of it. We can use the
+# truncatechars function to do this.
+
+# Okay, so it's still missing a couple of things, so we can't really access all the details of that particular note. So
+# we're almost there. First, let's give a name to the detail URLs as well. So let's go back. Urls.py
+
+#           urls.py from notes folder
+#from django.urls import path
+#
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.NotesListView.as_view(), name = "notes.list"),
+#     path('notes/<int:pk>', views.NotesDetailView.as_view(), name = "notes.detail"),
+# ]
+#
+#                   notes_detail.html
+# {% extends "base.html" %}
+#
+# {% block content %}
+# <div class = "border round">
+#   <h1 class = "my-5">{{note.title}}</h1>
+#   <p>{{note.notes}}</p>
+# </div>
+# {% endblock %}
+
+#           notes_list.html
+# {% extends "base.html" %}
+#
+# {% block content %}
+#     <h1 class="my-5">These are the notes</h1>
+#
+#     <div class ="row row-cols3 g-2">
+#         {% for note in notes %}
+#         <div class="col">
+#             <div class = "b-3 border">
+#                 <a href="{% url 'notes.detail' pk=note.id  %}" class ="text-dark text-decoration-non" >
+#                     <h3>{{note.title}}</h3>
+#                 </a>
+#                 {{note.notes|truncatechars:15}}
+#             </div>
+#         </div>
+#         {% endfor %}
+#     </div>
+#
+# {% endblock %}
+
+#               base.html
+# {% extends "base.html" %}
+#
+# {% block content %}
+#
+#     <body><h1>Welcome to SmartNotes!</h1></body>
+#     <h3>Today is {{today}} </h3>
+#     <a href="{% url 'notes.list' %}" class="btn btn-primary">Check out these smart notes</a>
+#
+# {% endblock %}
+
+#   xxxxxxxxx     Create a webpage     xxxxxxxxxxxx
+# Let's go back to notes, views.py and in here, let's import, well, I hope you guessed it, CreateView. Once we have this
+# we can actually start our new class. So class NotesCreateView that inherits from CreateView
+
+# . Let's understand what's going on here. First the model. So the endpoint understands what it's regarding to. Then the
+# fields would be the attributes from the model that we allow a user to fill. Since we don't need to pass a created add
+# field, we just define it as title and notes. Finally, we want to redirect the user to the list of existing notes so
+# they can see the note they just created. This is the success_url attribute here.
+
+# Now we can add the endpoint to the urls.py file, the same way we did to every other endpoint so far. So in here, let's
+# add path. Then notes/new. And then we can call view.NotesCreateView.as_view. And let's not forget to pass a name to it
+# So notes.new.
+
+# Okay, so the last thing that's missing is the template. So let's create it. Let's call it notes_form.html.
+
+# To send information back to the server, we'll need a form tag from the HTML. So let's add this here. Okay, so in the
+# form, we can do action is equal to, we're going to use the method url, and then notes.new, which is the endpoint we
+# just created. And also, the method here needs to be POST because we're sending information back to the server. Okay,
+# so now what we need is to allow a user to pass back the information we define on our endpoint: title and notes.
+
+#  So in here, we can open the inspector element, and you can see here that in the body, we have a form. And the form is
+#  actually passed down to the HTML as two label tags and one input tag, and one text area. This is because Django
+#  already knows which type of data each attribute expects. Thus it creates an appropriate HTML tag to receive it. Well,
+#  we're still missing the Submit button, so let's add that. So in here, let's add button of type submit. The class is
+#  going to be btn btn-primary. Let's add some vertical alignment. Submit.
+
+# xxxxxxxxxx     Understanding how Django handles security in POSTs     xxxxxx
+#
+#  We did everything we needed to do to implement the create endpoint, but if you try to create a new note, you'll
+# notice that it will actually return a 403 error, meaning that we are forbidden to do this action. Well, we're actually
+# missing one less thing to our form. So if we go here, we can add curly brackets, percentage, and then a csrf_token.
+
+#  This is a CSRF token, that stands for cross-site request forgery. What happens here is that every time a browser
+#  requests a webpage that has a form, Django will send a unique token to that browser. This token will be securely kept
+# and no other website can access it. When the user sends back a form, it will also send back the token, allowing Django
+# to know that this request is coming from a legit user. Django will then process the request and return the appropriate
+# response. However, if for some reason, a third-party have access to the user credentials, when they try to make the
+# request from another browser, they won't have the token, so Django understand that this request is coming from an
+# unreliable source and will not process the request, thus, preventing this type of attack. As you can see, this is an
+# additional layer of security that Django is adding to your website with just a small line of code. Beyond the numerous
+# features that allow you to speed up the process of creating a website, this security features are a big part of why
+# developers choose Django to work with.
+
+#                   notes_form.html in notes/templates/notes directory
+# {% extends 'base.html' %}
+#
+# {% block content %}
+#
+# <form action="{% url 'notes.new' %}" method="POST"> {% csrf_token %}
+#     {{ form }}
+#     <button type="submit" class="btn btn-primary my-5">Submit</button>
+# </form>
+# {% endblock %}
+
+#               urls.py in notes directory
+# from django.urls import path
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.NotesListView.as_view(), name="notes.list"),
+#     path('notes/<int:pk>', views.NotesDetailView.as_view(), name="notes.detail"),
+#     path('notes/new', views.NotesCreateView.as_view(), name="notes.new"),
+
+#               views.py in notes directory
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http import Http404
+# from django.views.generic import ListView, CreateView, DetailView
+#
+# class NotesCreateView(CreateView):
+#     model = Notes
+#     fields = ['title', 'notes']
+#     success_url = '/smart/notes'
+#
+#
+# class NotesListView(ListView):
+#     model = Notes
+#     context_object_name = 'notes'
+#     template_name = 'notes/notes_list.html'
+#
+# class NotesDetailView(DetailView):
+#     model = Notes
+#     context_object_name = 'note'
+
+# xxxxxxxxx    Django forms: Powerful validation with minimal work        xxxxxxxxx
+
+#  Model forms are the best way of doing this in Django. Let's check it out. First, we're going to create a file called
+#  forms, and inside our notes app.
+
+#  Okay, with this, we can come back to the views.py file, and in here, instead of passing the fields, we're going to
+#  pass a form_class that's going to be our NotesForm. We also need to import it.
+
+# Okay, so far what we did will result in exactly the same behavior as we have so far but the form will give us power to
+# do much more. For instance, let's say that we want to add a specific behavior that just allow us to add notes that
+# contains the word Django in the title.
+
+#  Let's go back to the forms. All we need to do here is add a new method called def clean, and the field, we want to
+#  add a validation. In this case, title. So in here, we can get the title from the cleaned_data, which is a dictionary.
+#  The cleaned_data is returned by the form, and is particularly useful for fields with strong validation. Like for
+#  instance, emails. In this scenario, it will be exactly the same value as the user passed. With this, we can actually
+# start our validation. So if Django not in title, we're going to raise a ValidationError with a message. We only accept
+# notes about Django. If everything goes well, we just return title.
+
+# We can go back and on our style.css, we can add here that the ul.errorlist is not going to be displayed. So we're
+# going to control this.
+
+#                   notes_form.html from templates/notes directory
+# {% extends 'base.html' %}
+# {% block content %}
+#
+# <form action="{% url 'notes.new' %}" method="POST"> {% csrf_token %}
+#     {{ form }}
+#     <button type="submit" class="btn btn-primary my-5">Submit</button>
+# </form>
+# {% if form.errors %}
+# <div class="alert alert-danger my-5 ">
+#     {{form.errors.title.as_text}}
+# </div>
+# {% endif %}
+#
+# {% endblock %}
+
+#       style.css from static/css directory
+#.note-li {
+#     color: #ff0000;
+# }
+#
+# ul.errorlist {
+#     display:none
+# }
+
+#     from forms.py in notes directory
+# from django import forms
+# from django.core.exceptions import ValidationError
+# from .models import Notes
+#
+# class NotesForm(forms.ModelForm):
+#     class Meta:
+#         model = Notes
+#         fields = ("title", "notes")
+#
+#     def clean_title(self):
+#         title = self.cleaned_data['title']
+#         if 'Django' not in title:
+#             raise ValidationError('We only accept notes about Django')
+#         else:
+#             return title
+
+# xxxxxxx     Django forms are useful for layout as well!      xxxxxxxxxx
+
+# . First, let's say that we want to change the labels of our form. Title and notes are the words we use in the backend,
+# but that doesn't mean that it looks so good for our users. What we can do is, on the class meta, add a field called
+# labels, and in here, let's add text, it's going to be, write your thoughts here.
+
+# We can also add an attribute widget to inject CSS classes directly to the form. Let's go back and add a new field code
+# widgets, and then, in here, let's add title, and this is going to be a forms text input, and then we're going to pass
+# attributes.
+
+#  You can see now that controlling the frontend in an easy and accessible way is also a main advantage of using model
+#  forms. All this without ever changing the original template. Nice and easy.
+
+#    from  forms.py
+# from django import forms
+# from django.core.exceptions import ValidationError
+# from .models import Notes
+#
+# class NotesForm(forms.ModelForm):
+#     class Meta:
+#         model = Notes
+#         fields = ("title", "notes")
+#         widgets = {
+#             'title': forms.TextInput(attrs={'class': 'form-control my-5'}),
+#             'notes' : forms.Textarea(attrs={'class' : 'form-control my-5'})
+#         }
+#         labels ={
+#             'text': 'Write your thoughts here'
+
+#      views.py in notes directory
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http import Http404
+# from django.views.generic import ListView, CreateView, DetailView, UpdateView
+# from .forms import NotesForm
+#
+# class NotesUpdateView(UpdateView):
+#     model = Notes
+#     form_class = NotesForm
+#     success_url = '/smart/notes'
+
+#
+# xxxxxxxxxxxxxxx     The U in the CRUD: Updating data          xxxxxxxxxxxxxxxxx
+#
+# ] Okay, so now we have the create end point, it's time to create the view update endpoint. Let's go back to the views
+# file on notes. And on here, we're going to also add UpdateView. Now we can add a new class, NotesUpdateView that
+# inherits from UpdateView. And we actually just need to copy these from the CreateView and paste it here. That's it,
+# that's all we need to do. The only thing still missing are the URLs. So what we can do is go back here, we can copy
+# and paste the details view, and then add here a /edit on the end point, change the class where is this originating to,
+# and the name.
+
+#  If you go to our template, if you notice here, we're actually hard coding which URL the form should be sent to. We
+#  don't actually need this. The form is smart enough to know where to send this to. So let's get rid of this. Let's go
+#  back, edit, and then submit it. If we see now, our note was edited. That's it. So editing basically comes for free
+#  after you implemented the create end point.
+
+# We can style this page a little bit, so let's go to the template. We can add a cancel button that will return from
+# this page if the user changed their mind. So it can go to a href is going to be the function that have URL, and then
+# let's go back to notes.list. We still need some class here, so let's type btn and then btn-secondary, and then Cancel.
+# We can also go back to the details. In here we can create a new button that will take us to the edit page, so a href,
+# then curly brackets, percentage url, notes.update, and then pk is equal to note.id. Let's add some class here as well,
+# so btn and btn-secondary, Edit.
+
+#      from notes_form.html
+# {% extends 'base.html' %}
+#
+# {% block content %}
+#
+# <form  method="POST"> {% csrf_token %}
+#     {{ form }}
+#     <button type="submit" class="btn btn-primary my-5">Submit</button>
+# </form>
+# {% if form.errors %}
+# <div class="alert alert-danger my-5 ">
+#     {{form.errors.title.as_text}}
+# </div>
+# {% endif %}
+# <a href="{% url 'notes.list' %}" class=" btn btn-secondary">Cancel</a>
+#
+# {% endblock %}
+
+#           notes_detail.html
+#
+# {% block content %}
+# <div class = "border round">
+#   <h1 class = "my-5">{{note.title}}</h1>
+#   <p>{{note.notes}}</p>
+# </div>
+#
+# <a href="{% url 'notes.list' %}" class="btn btn-secondary my-5">Back</a>
+# <a href="{% url 'notes.update' pk=note.id %}" class=" btn btn-secondary my-5">Edit</a>
+# {% endblock %}
+
+#         url.py from notes directory
+# from django.urls import path
+#
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.NotesListView.as_view(), name="notes.list"),
+#     path('notes/<int:pk>', views.NotesDetailView.as_view(), name="notes.detail"),
+#     path('notes/<int:pk>/edit', views.NotesUpdateView.as_view(), name="notes.update"),
+#     path('notes/new', views.NotesCreateView.as_view(), name="notes.new"),
+# ]
+
+#                   views.py from notes directory
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http import Http404
+# from django.views.generic import ListView, CreateView, DetailView, UpdateView
+# from .forms import NotesForm
+#
+# class NotesUpdateView(UpdateView):
+#     model = Notes
+#     form_class = NotesForm
+#     success_url = '/smart/notes'
+
+#     xxxxxxxxxx      The D in the CRUD: Deleting data           xxxxxxxxxxxxx
+
+# Let's start as usual. Let's go back to the views and from here, we're going to add actually from Django views generic
+# edit, let's important delete view. The delete endpoint is even simpler than all the endpoints we created until now. We
+# can add a new class notes delete view that inherits from delete view, and we actually just need the model and a
+# success URL. Once more, the end point URL needs to be added to the URL's file.
+
+#
+
+# Once more, the end point URL needs to be added to the URL's file
+#                   urls.py from notes directory
+# from django.urls import path
+#
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.NotesListView.as_view(), name="notes.list"),
+#     path('notes/<int:pk>', views.NotesDetailView.as_view(), name="notes.detail"),
+#     path('notes/<int:pk>/edit', views.NotesUpdateView.as_view(), name="notes.update"),
+#     path('notes/<int:pk>/delete', views.NotesDeleteView.as_view(), name="notes.delete"),
+#     path('notes/new', views.NotesCreateView.as_view(), name="notes.new"),
+# ]
+
+# No, we need to create a template to confirm if the user wants to delete a particular note.
+# So let's add form and the methods going to be post. Since this is a form we can forget about the CSRF underlying token
+# and then in here, we're going to add a message.
+
+#  So it can be a nice red and value it's going to be confirm. Since we already have our template, we can go back to the
+#  details and add yet one more button here called that will lead us to the delete. Let's make it red as well.
+
+#  Okay, it's time to try it out. Let's go back to one particular note. Now we have the delete button and if we click
+#  here, oh-oh, okay. We're getting again a template does not exist. We can see here that while it was loading the
+#  template, it was looking for a template with the name notes, notes, confirm delete. So we have two alternatives here.
+#  One is to change the name of our template to match the template that Django is expecting. I prefer to usually add the
+#  template name to avoid having to remember which template is related to which endpoint. So we can come back here to
+#  the views and add a template name. This name is also very similar to the other template names that we have. So, in my
+#  opinion, this is a little bit better, but you can choose whatever you prefer.
+
+#                        views.py    from notes directory
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http import Http404
+# from django.views.generic import ListView, CreateView, DetailView, UpdateView
+# from .forms import NotesForm
+# from django.views.generic.edit import DeleteView
+#
+# class NotesDeleteView(DeleteView):
+#     model = Notes
+#     success_url = '/smart/notes'
+#     template_name = 'notes/notes_delete.html'
+#
+# class NotesUpdateView(UpdateView):
+#     model = Notes
+#     form_class = NotesForm
+#     success_url = '/smart/notes'
+#
+# class NotesCreateView(CreateView):
+#     model = Notes
+#     form_class = NotesForm
+#     success_url = '/smart/notes'
+#
+#
+# class NotesListView(ListView):
+#     model = Notes
+#     context_object_name = 'notes'
+#     template_name = 'notes/notes_list.html'
+#
+# class NotesDetailView(DetailView):
+#     model = Notes
+#     context_object_name = 'note'
+
+#     notes_delete.html from temlates/notes directory
+#
+
+#                   urls.py  from notes directory
+# from django.urls import path
+#
+# from . import views
+#
+# urlpatterns = [
+#     path('notes', views.NotesListView.as_view(), name="notes.list"),
+#     path('notes/<int:pk>', views.NotesDetailView.as_view(), name="notes.detail"),
+#     path('notes/<int:pk>/edit', views.NotesUpdateView.as_view(), name="notes.update"),
+#     path('notes/<int:pk>/delete', views.NotesDeleteView.as_view(), name="notes.delete"),
+#     path('notes/new', views.NotesCreateView.as_view(), name="notes.new"),
+# ]
+
+#                   notes_detail.py
+# {% extends "base.html" %}
+#
+# {% block content %}
+# <div class = "border round">
+#   <h1 class = "my-5">{{note.title}}</h1>
+#   <p>{{note.notes}}</p>
+# </div>
+#
+# <a href="{% url 'notes.list' %}" class="btn btn-secondary my-5">Back</a>
+# <a href="{% url 'notes.update' pk=note.id %}" class=" btn btn-secondary my-5">Edit</a>
+# <a href="{% url 'notes.delete' pk=note.id %}" class=" btn btn-danger my-5">Delete</a>
+# {% endblock %}
+
+#  !!!!!!!!!!!!!!!!!    ForeignKey: How models relate to each other       !!!!!!!!!!!!!
+#
+# Right now, no matter if a user is logged into an account, they can create notes on the system. However, we want the
+# system to be aware of who's logged in and only display the notes written by their original author. How can we do that?
+# So far, we have two tables in our database, the notes table and the user table. We need to save in the notes which
+# user was the author, and we can do that by creating a link between the user table and the notes table. This is what we
+# called a foreign key.
+
+# Let's go back to our model and import the user model that comes with Django by default. So from django.contrib.auth.
+# models import User. Now we go to the Notes model and we add a foreign key. Now we go here and we add models.ForeignKey
+# This here needs a couple of things. The first item is the model we want to create a link with. In this case, this is
+# the User model we just imported. Then, the second item is going to be the on_delete. This means that we are want
+# define what happens to this note if the user associated with it is deleted. In this case, we're going to use models.
+# CASCADE, which means that if a user gets deleted, we also want to delete all the notes associated with them. Finally,
+# we can say how we will identify this relationship on the user side. Related_name is going to be notes.
+
+# Okay, now that we changed the model, we need to create a migration. Let's go and type python managed.py makemigrations
+# and we're getting an error. The problem here is that we defined that every node needs to be associated with a user,
+# but our database is already fully populated by notes without users, so we need to define what to do now. Since we have
+# a user admin and it's ID is 1 we can pass this as the default user on this migration. If we pass any ID of a user that
+# doesn't exist, this migration will fail, so we should pass an ID of a user that exists. Let's add one. We're going to
+# provide a one-off default, and the ID is going to be 1. Okay, so now we can actually apply the changes to the database
+# with python manage.py migrate.
+
+#  python manage.py makemigrations
+#  python manage.py migrate
+
+#  Let's test our implementation and see if it works by opening the shell, so python manage.py shell. And let's import
+#  the user, from django.contribute.auth.models import User, and let's get the first user. So user is going to be User
+#  objects get pk is equal to 1. So this is the admin user that we've been using so far. What we can do now is actually
+#  see the notes that this user has, so we can count them. And we can see that all of the five notes that we have in our
+#  system is associated to that user. We can even get all the notes from here. So if we say user.notes.all, we're going
+#  to have all the object notes being displayed here. That's it. Now we can start making changes to make the system user
+#  aware.
+
+# python manage.py shell
+# >>> from django.contrib.auth.models import User
+# >>> user = User.objects.get(pk=1)
+# >>> user
+# <User: admin>
+# >>> user.notes.count()
+# 3
+# >>> user.notes.all()
+# <QuerySet [<Notes: Notes object (1)>, <Notes: Notes object (2)>, <Notes: Notes object (3)>]>
+
+
+#               models.py  from notes
+# from django.db import models
+# from django.contrib.auth.models import User
+#
+# class Notes(models.Model):
+#     title = models.CharField(max_length=200)
+#     notes = models.TextField()
+#     created = models.DateTimeField(auto_now_add=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
+
+#
 #
