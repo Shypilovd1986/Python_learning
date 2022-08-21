@@ -706,7 +706,7 @@
 # we're almost there. First, let's give a name to the detail URLs as well. So let's go back. Urls.py
 
 #           urls.py from notes folder
-#from django.urls import path
+# from django.urls import path
 #
 # from . import views
 #
@@ -880,7 +880,7 @@
 # {% endblock %}
 
 #       style.css from static/css directory
-#.note-li {
+# note-li {
 #     color: #ff0000;
 # }
 #
@@ -1180,4 +1180,264 @@
 #     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
 
 #
+#  xxxxxxxxxx         Displaying only the logged user data      xxxxxxxxxxxxx
+
+# We also didn't add any authentication, so in order to keep privacy, we need to fix that. So let's go back here on the
+# Notes views.py, and import from django.contribute.auth.mixins let's import LoginRequiredMixin. Then on the ListView,
+# we need to add the LoginRequiredMixin,
+
+#  and let's not forget to add the login_url. So for now, this is going to be the admin. This login_url means that if a
+# user tried to access the list view and it's not logged in, they will be redirected to the /admin instead of seeing
+# a 404.
+
+# so now what we need is to change the query, so we can only display the queries of the logged in user, but where is the
+# query? As we discussed earlier, class-based views are highly powerful and yet highly changeable. We can use the
+# documentation website to check for all of the methods that we have available and find out which ones we need to change
+# to get the behavior we want.
+
+# This is the website that I look for when I want to change a class-based view. It calls ccbv because it's called classy
+# class-based views. You can see here that we can change the Django version we're using.
+
+#  So let's go to the generic list and go to ListView. In here, you can see all the classes, the methods, the attributes
+#  everything we can configure in this ListView class-based view.
+
+#  Whenever a user go to the list end point, the first method that it will call will be the get method because we're
+#  making an HTTP get request.
+
+# However, we can quickly see that there is a method here that gets the object list by calling a method called
+# get_queryset.
+
+# This is the method that we need to alter in order to list only a user notes. If we go back to the code now, we can
+# actually override the get_queryset method, and instead of returning whatever it is returning by default, we're going
+# to return self.request.user.notes.all.
+
+#                from views.py  notes folder
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http import Http404
+# from django.views.generic import ListView, CreateView, DetailView, UpdateView
+# from .forms import NotesForm
+# from django.views.generic.edit import DeleteView
+# from django.contrib.auth.mixins import LoginRequiredMixin
+
+# class NotesListView(LoginRequiredMixin, ListView):
+#     model = Notes
+#     context_object_name = 'notes'
+#     template_name = 'notes/notes_list.html'
+#     login_url = '/admin'
 #
+#     def get_queryset(self):
+#         return self.request.user.notes.all()
+
+# xxxxxxxxxxxxxxxxx             Adding a new note after ForeignKey              xxxxxxxxxxxxxxxxxx
+
+#  The problem is that we don't say in the form to consider the logged in user as the author of that note. So we need to
+#  change this.
+
+#  So in here on the creative view, we're going to override the method--Def form valid-- that receives a self and form.
+#  The first thing it is that we need to get the object, which is going to be formed at safe, and then commit is equal
+# to false. Now we're going to fill the object. So self.object.user is going to receive the request user. And then we're
+# going to self.object.save. And finally, we need to return an HTTP response, redirect. And then this is going to get,
+# self.get success URL.
+
+#  Let's see, the HTP response redirect is already being imported from Django HTTP response.
+
+# . Let's understand what's going on here. So the data is sent by the user, passed inside the form, which asks a simple
+# question: is this data valid. To see if the data is valid, the form would call a couple of methods that have the title
+# started with clean. So clean title, clean text, like the one we changed before. If something is wrong, the method is
+# valid returns false, and the class-based view will raise an exception. On the other hand, if all checks clear, the
+# data is stored in a variable called clean data. And when you call form.save, that will save the object directly in the
+# database. And that's it. It all's happened very smoothly.
+
+#  So what happens here is that when we pass title and text to the form, the method is valid returns through. Then the
+#  form valid method will call the save and we will try to save to the database, but although the form is returning is
+#  valid, is equal through the database is forbidding us to try to save a note without a user. That's where we get our
+#  error.
+
+# . What we did here was to get in the middle of it so we can inject the logged user as part of the object. We do this
+# by passing the attribute commit equals false, that creates the object, but doesn't save it to the database. Then we
+# have the object when we insert the user, and then we call save, successfully saving the note with that user to the
+# database. As you can see, classmate's views can be changed as you please.
+
+#               from views.py notes directory
+# from django.shortcuts import render
+# from . models import Notes
+# from django.http.response import HttpResponseRedirect
+# from django.http import Http404
+# from django.views.generic import ListView, CreateView, DetailView, UpdateView
+# from .forms import NotesForm
+# from django.views.generic.edit import DeleteView
+# from django.contrib.auth.mixins import LoginRequiredMixin
+# class NotesCreateView(CreateView):
+#     model = Notes
+#     form_class = NotesForm
+#     success_url = '/smart/notes'
+#
+#     def form_valid(self, form):
+#         self.object = form.save(commit=False)
+#         self.object.user = self.request.user
+#         self.object.save()
+#         return HttpResponseRedirect(self.get_success_url())
+
+# xxxxxxxxxxxxxxx        Adding login and logout pages          xxxxxxxxxxxxxxxxxxxxxx
+
+# Although the admin login is nice, it can only be accessed by staff members of the system. So we need to create the
+# authentication interface as well. Let's do this. So first, let's go to home, then views, and then let's import here
+# from django.contrib.auth.views import LoginView. And then let's create a class called LoginInterfaceView that inherits
+# from LoginView
+
+#  And then let's create a class called LoginInterfaceView that inherits from LoginView. And in here, we only need to
+#  define really one thing, the template_name. So let's go call it home/login.html. Okay, so we can forget about the
+#  URLs, so let's do this now, so in here, let's add a login page that inherits from views.LoginInterfaceView.as_view.
+
+#         views.py home directory
+# from django.contrib.auth.views import LoginView
+#
+# class LoginInterfaceView(LoginView):
+#     template_name = 'home/login.html'
+
+#         urls.py   home directory
+# from django.urls import path
+# from . import views
+#
+# urlpatterns = [
+#     path('home', views.HomeView.as_view()),
+#     path('authorized', views.AuthorisedView.as_view()),
+#     path('admin', views.LoginInterfaceView.as_view())
+# ]
+
+# , so now we can create a template. So in here, let's add the new login.html. And in here, really all we need to do is
+# extends base.html to get all our configuration, and then block content. And finally, endblock. Okay, so in here what
+# we need is simply a form. This form should have method equals to post. Because this is a form with method post, we
+# can't forget what our dear friend csrf_token. And then we're going to use form.as_p because it's going to be rendered
+# as p tags in the HTML. That's the only difference. And finally, we're going to have an input. The type's going to be
+# submit. Let's add some class here.
+
+# The problem is that Django has a default system-defined configuration for the redirect, which leads to a page we don't
+# have, which is this account profile page. Because this is a global definition, we should change this not in the
+# class-based views but we should change it on the settings.
+
+# Then let's go to smartnotes, settings, and then we can add it way below here. And we can add LOGIN_REDIRECT_URL is
+# going to be /smart/notes. So this is where we're going to redirect the user after it is logged in.
+
+#               from settings.py in main directory
+# LOGIN_REDIRECT_URL = '/smart/notes'
+
+#  so similarly, we also want a logout view, right? We don't want want to have to go to the admin to do this. So let's
+#  add this real quick. So on the views again, from here, we're going to also import LogoutView. And similarly, we're
+#  going to create a LogoutInterfaceView that inherits from LogoutView. And the only thing we need is the template_name
+
+# from django.contrib.auth.views import LoginView, LogoutView
+# class LogoutInterfaceView(LogoutView):
+#     template_name = 'home/logout.html'
+
+
+# . Okay, oh, yes, and we're missing the URLs, so let's do this. We're copying logout. And logout. And for the sake of
+# organization, let's add names to these URLs, shall we? So this is going to be our home page. We can actually get rid
+# of this. Our system doesn't really need this. Then we have login. And finally, logout.
+#               urls.py home directory
+# from django.urls import path
+# from . import views
+#
+# urlpatterns = [
+#     path('', views.HomeView.as_view(), name='home'),
+#     path('authorized', views.AuthorisedView.as_view()),
+#     path('login', views.LoginInterfaceView.as_view(),name='login'),
+#     path('logout', views.LogoutInterfaceView.as_view(),name='logout'),
+# ]
+
+#  let's add names to these URLs, shall we? So this is going to be our home page.
+
+# !!!!!!  we can set logout redirect page in settings.py
+#  # LOGOUT_REDIRECT_URL = '/login'
+
+#
+# xxxxxxxxxxxxxx        Adding a signup page         xxxxxxxxxxxxxxx
+#
+# Now that we have login and logout endpoints, it is time to create a signup page. So first, let's go to
+# the home, views.py. And then in here, let's important from here, from django.views.generic.edit import CreateView. And
+# let's create here a class called SignupView that inherits from CreateView.
+
+# And let's create here a class called SignupView that inherits from CreateView. And so form_class is going to be
+# UserCreationForm. So template_name can be home/register.html. And finally, the success_url that's going to be the
+# notes list. Oh, the creation form is actually a Django function. So django.countrib.auth.forms. We can import
+# UserCreationForm, amazing!
+
+#                   views.py    home directory
+# from django.views.generic.edit import CreateView
+# from django.contrib.auth.forms import UserCreationForm
+#
+# class SignupView(CreateView):
+#     form_class = UserCreationForm
+#     template_name = 'home/register.html'
+#     success_url = 'smart/notes'
+
+# . Let's create the template. Let's go to home, then New File, register.html.
+
+#               register.html
+# {% extends 'base.html' %}
+#
+# {% block content %}
+#
+#   <form method="post" style='text-align: left; margin:0 auto; width: 600px;'>{% csrf_token %}
+#     {{form.as_p}}
+#     <input class="btn btn-secondary" type="submit" name="Submit">
+#   </form>
+# {% endblock  %}
+
+#
+#  Well, the problem here is that we are allowing a logged in user, which was the admin user I was using here to go to
+#  the signup page and create a new user. What we can do is make sure that only people that are not logged deemed can
+#  access the signup page. We can do this quite simply by overriding the get method. And redirecting the user if they
+#  are already logged in.
+
+# from django.shortcuts import render
+# from django.shortcuts import redirect
+# from django.http import HttpResponse
+# from datetime import datetime
+# from django.contrib.auth.views import LoginView, LogoutView
+# from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.contrib.auth.forms import UserCreationForm
+# from django.views.generic import TemplateView
+# from django.views.generic.edit import CreateView
+#
+# class SignupView(CreateView):
+#     form_class = UserCreationForm
+#     template_name = 'home/register.html'
+#     success_url = 'smart/notes'
+#
+#     def get(self, request, *args, **kwargs):
+#         if self.request.user.is_authenticated:
+#             return redirect('notes.list')
+#         return super().get(request, *args, **kwargs)
+
+#
+# xxxxxxxxxxxxxx        Finishing touches          xxxxxxxxxxxxxx
+
+# base.html
+
+# {% load static %}
+#
+# <html>
+#   <head>
+#     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+#   </head>
+#   <body>
+#     <nav class="navbar navbar-dark bg-dark">
+#       <div class="ms-auto">
+#         {% if user.is_authenticated %}
+#         <a href="{% url 'logout' %}" class="btn btn-outline-light me-1" >Logout</a>
+#         <a href="{% url 'notes.list' %}" class="btn btn-outline-light me-1" >Home</a>
+#         <a href="{% url 'notes.new' %}" class="btn btn-outline-light me-1" >Create</a>
+#         {% else %}
+#         <a href="{% url 'login' %}" class="btn btn-outline-light me-1" >Login</a>
+#         <a href="{% url 'signup' %}" class="btn btn-outline-light me-1" >Signup</a>
+#         {% endif %}
+#       </div>
+#     </nav>
+#     <div class="my-5 text-center container">
+#       {% block content %}
+#       {% endblock %}
+#     </div>
+#   </body>
+# </html>
