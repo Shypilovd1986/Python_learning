@@ -194,4 +194,193 @@
 #     </footer>
 # </div>
 
+# xxxxxxxxxxxxx           Creating navigation links and route patterns          xxxxxxxxxxxxxxxxxxx
+
+#  And we'll do that by using something called a URL for function to resolve links. We'll also be exploring the route
+#  decorator to bind a function to one or more URL patterns on the website
+
+#  will also look at a few of the Jinja delimiters, the statements, expressions and the comments.
+#                   jinja delimiters
+# {% ... %}  statements
+# {{ ... }}  expressions
+# {# ... #}  comments
+
+
+#  add variable to route , and we use it in jinja statements
+# @app.route('/')
+# @app.route('/index')
+# def index():
+#     return render_template('index.html', login = True)
+
+# <div class="row">
+#         <div class="col-md-12 text-center">
+#             <h1>Welcome to Universal Tech Academy.</h1>
+#             {% if login %}
+#             <h3>Let's get started.</h3>
+#             {% else %}
+#             <p>Already registered? <a href="{{ url_for('login') }}">Login</a></p>
+#             {% endif %}
+#             </div>
+#     </div>
+
+# xxxxxxxxx          Creating the base template           xxxxxxxxxxxxx
+
+# Create what is called a base template. layout.html in folder templates
+# cut from the index.html common information for all files.html and paste into the file layout.html
+
+# <!DOCTYPE html>
+# <html>
+# <head>
+#     <title>UTA - Home Page</title>
+#     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+#           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+#     <link rel="stylesheet" href="static/css/main.css"/>
+# </head>
+# <body>
 #
+# <div class="container-fluid text-center top-container">
+#     <img src="static/images/uta-logo-200.png">
+# </div>
+# <div class="container">
+#
+#     {% include "includes/nav.html" %}
+#
+#     {% block content  %}
+#
+#     {% endblock content %}
+#      if we use method {{ self.content() }}  it will duplicate code of block content  !!!!!!
+#
+# </div>
+#
+#     {% include "includes/footer.html" %}
+# </body>
+# </html>
+
+#            in the file index.html paste
+
+# {% extends "layout.html" %}
+# {% block content %}
+# {% endblock content %}
+
+#                   index.ntml
+# {% extends "layout.html" %}
+#
+# {% block content %}
+#     <div class="row">
+#         <div class="col-md-12 text-center">
+#             <h1>Welcome to Universal Tech Academy.</h1>
+#             {% if login %}
+#             <h3>Let's get started.</h3>
+#             {% else %}
+#             <p>Already registered? <a href="{{ url_for('login') }}">Login</a></p>
+#             {% endif %}
+#         </div>
+#     </div>
+#
+# {% endblock %}
+
+# xxxxxxxxxx        Creating child templates         xxxxxxxxxxxxxxx
+
+# layout.html is a base template, and index.html is a child template
+
+# xxxxxxxxxxxxx     Passing data to the view          xxxxxxxxxxxxxx
+
+# @app.route('/courses/<term>')
+# def courses(term="2019"):
+#     courseData = [{"courseID":"1111","title":"PHP 101","description":"Intro to PHP","credits":3,"term":"Fall, Spring"}
+#     , {"courseID":"2222","title":"Java 1","description":"Intro to Java Programming","credits":4,"term":"Spring"},
+#     {"courseID":"3333","title":"Adv PHP 201","description":"Advanced PHP Programming","credits":3,"term":"Fall"},
+#     {"courseID":"4444","title":"Angular 1","description":"Intro to Angular","credits":3,"term":"Fall, Spring"},
+#     {"courseID":"5555","title":"Java 2","description":"Advanced Java Programming","credits":4,"term":"Fall"}]
+#     return render_template('courses.html', courseData = courseData, courses = True, term=term)
+
+# xxxxxxxxxxx      Working with the GET method          xxxxxxxxxxxx
+
+# @app.route('/enrollment')
+# def enrollment():
+#     id = request.args.get('courseID')
+#     title = request.args.get('title')
+#     term = request.args.get('term')
+#     return render_template('enrollment.html', enrollment=True, data={"id": id, "title": title, "term": term})
+
+#  <tr>
+#                <td scope='row'>{{ data['courseID'] }}</td>
+#                <td>{{ data['title'] }}</td>
+#                <td>{{ data['description'] }}</td>
+#                <td>{{ data['credits'] }}</td>
+#                <td>{{ data['term'] }}</td>
+#                <td>
+#                    <form action="{{url_for('enrollment')}}" method="GET" >
+#                        <input type="hidden" name="courseID" value="{{data['courseID']}}">
+#                        <input type="hidden" name="title" value="{{data['title']}}">
+#                        <input type="hidden" name="term" value="{{data['term']}}">
+#                        <button>Enroll</button>
+#                    </form>
+#
+#                </td>
+#            </tr>
+
+#                   create enrollment.html
+# {% extends "layout.html" %}
+#
+# {% block content %}
+#     <div class="row">
+#         <div class="col-md-12 text-center">
+#             <h1>You are enrolled in </h1>
+#             <p>Course ID: {{data.id}}</p>
+#             <p>Course Title: {{data.title}}</p>
+#             <p>Course Term: {{data.term}}</p>
+#         </div>
+#     </div>
+#
+# {% endblock %}
+
+
+# XXXXXXXXXXXXXXX     Working with the POST method     XXXXXXXXXXXXX
+
+# - Working with the POST method. In this video, we are going to take a look at updating the enrollment form using POST
+# method, adding the GET and POST methods to the route, and accessing form data using the form object, so let's go and
+# take a look.
+
+#
+# @app.route('/enrollment', methods=["GET", "POST"])
+# def enrollment():
+#     id = request.form.get('courseID')
+#     title = request.form.get('title')
+#     term = request.form.get('term')
+#     return render_template('enrollment.html', enrollment=True, data={"id": id, "title": title, "term": term})
+
+
+#  <form action="{{url_for('enrollment')}}" method="POST" >
+#                        <input type="hidden" name="courseID" value="{{data['courseID']}}">
+#                        <input type="hidden" name="title" value="{{data['title']}}">
+#                        <input type="hidden" name="term" value="{{data['term']}}">
+#                        <button>Enroll</button>
+#                    </form>
+
+#
+# xxxxxxxxxxxxx     Sending a JSON response        xxxxxxxxxxxxxxxx
+
+#  Okay so that is the case, then now we are going to just return the response, okay. And this one takes about six
+#  parameters, but we're just interested in maybe just one or two of those and the first parameter is going to be the
+#  response object. And this is typical because when you do an Ajax call you always get a response object back and that
+#  response is the one that contains the data itself. So here it will contain the jdata, okay. And we want to make sure
+#  that jdata has to be in JSON data. So you want to wrap that with the JSON dumps. We're going to dump it as JSON data.
+#  And then the other parameter here is the mimetype. And we'll use the application dash JSON, and we can just use those
+#  two, that should be fine. You can use another one called the content type and use that application JSON or whatever
+#  other type and be. But I think that should be enough.
+
+# from flask import render_template, url_for, request, Response, json
+
+# @app.route("/api/")
+# @app.route("/api/<idx>")
+# def api(idx=None):
+#     if idx==None:
+#         jdata = courseData
+#     else:
+#         jdata = courseData[int(idx)]
+#     return Response(json.dumps(jdata), mimetype="application/json")
+
+# xxxxxxxxx       working with database mongodb    xxxxxxxxxxxxxx
+
+# pip install flask-mongoengine       This is the Flask Mongo engine
