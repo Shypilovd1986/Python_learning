@@ -384,3 +384,292 @@
 # xxxxxxxxx       working with database mongodb    xxxxxxxxxxxxxx
 
 # pip install flask-mongoengine       This is the Flask Mongo engine
+
+#               Setting up the database
+
+# NONGODB_SETTINGS={'db' : 'UTA_Enrollment'}  setting up a Mongodb database
+# from flask_mongoengine import Mongoenging   importing Mongoengine
+# db=Mongoengine()              initializing the database object
+# db.init_app(app)
+
+#                   __init__
+# from flask import Flask
+# from config import Config
+# from flask_mongoengine import MongoEngine
+#
+# app = Flask(__name__)
+# app.config.from_object(Config)
+#
+# db=Mongoengine()
+# db.init_app(app)
+#
+# from application import routes
+
+#               config
+# import os
+#
+# class Config(object):
+#     SECRET_KEY = os.environ.get('SECRET_KEY') or "secret_string"
+#
+#     NONGODB_SETTINGS = {'db': 'UTA_Enrollment'}
+
+#  So, now, let's go to the very bottom and create our class. This is the class of users so I'm going to call it class
+#  User, again, by convention is always capitalized using the camel case right here. And then I'm going to pass into
+#  this function a db document. And this is a document because it's a document object, and, also, because you're using
+#  the flask MongoDB engine, it's going to allow us to use the WTF form directives to create those field like string
+#  fields and text fields and then Boolean fields, and so on, and so very helpful.
+
+# class User(db.Document):
+#     user_id = db.IntField(unique=True)
+#     first_name = db.StringField(max_lenght=50)
+#     last_name = db.StringField(max_lenght=50)
+#     email = db.StringField(unique=True, maxlenght=40)
+#     password = db.StringField(max_lenght=50)
+
+#  Okay, so now, we need to create a route for this user so that we can run and display on the browser.
+
+# . And every time we do this, just make sure you attach at the end with the .save. You need to save it to the database,
+# so I almost forgot that, just make sure. I mean you can forget that very easily. And then, now, we're going to get the
+# data back to a users variable. And it's going to be from the user.objects.all. That means it's going to return
+# everything from this collection called user, and pass it to this object called users. And then we're going to return
+# the render template.
+
+#
+# @app.route("/user")
+# def user():
+#      # User(user_id=3, first_name="Christian", last_name="Hur", email="christian@uta.com", password="abc1234").save()
+#      # User(user_id=4, first_name="Mary", last_name="Jane", email="mary.jane@uta.com", password="password123").save()
+#      users = User.objects.all()
+#      return render_template("user.html", users=users)
+
+#                           user.html
+# {% extends "layout.html" %}
+#
+# {% block content %}
+#     <div class="row">
+#         <div class="col-md-12 text-center">
+#
+#             {% for user in users %}
+#             <dl>
+#                 <dt>User ID: {{ user.user_id}}</dt>
+#                 <dd>Email: {{user.email}}</dd>
+#                 <dd>Password: {{user.password}}</dd>
+#             </dl>
+#             {% else %}
+#
+#                 <h3>No users yet!</h3>
+#             {% endfor %}
+#
+#         </div>
+#     </div>
+# {% endblock %}
+
+#                           Creating documents and data
+
+# mongoimport --jsonArray --db UTA_Enrollment --collection user --file users.json          import to db
+
+#                           Creating the data models
+
+#  We need to create a models module instead of creating inside the routes.
+# Create models.py in folder application
+
+# from application import db
+# import flask
+#
+# class User(db.Document):
+#     user_id     =   db.IntField(unique=True)
+#     first_name  =   db.StringField( max_length=50 )
+#     last_name   =   db.StringField( max_length=50 )
+#     email       =   db.StringField( max_length=30 )
+#     password    =   db.StringField( max_length=30 )
+#
+# class Course(db.Document):
+#     course_id   =   db.StringField(unique=True, max_length=20)
+#     title       =   db.StringField( max_length=50 )
+#     description =   db.StringField( max_length=200 )
+#     credits     =   db.IntField()
+#     term            =   db.StringField( max_length=30 )
+#
+# class Enrollment(db.Document):
+#     user_id     =   db.IntField()
+#     course_id   =   db.StringField(max_length=20)
+
+#                       in routes.py
+# from application.models import User, Course, Enrollment
+
+#
+#  So before we start, we want to look at these two extensions and see what they are. So the first one is the Flask-WTF
+#  extension. This is an extension to the WTForms library. This is a library of modules that allow us to create very
+#  clean HTML form fields. So, you don't have to do a lot of coding using this module. And another special feature about
+#  this extension of this form, is that it maintains a separation of code in presentation. This is similar to something
+# called the MVC, if you're not familiar with that, that's what it is, you separate the code from the view and also from
+# the controller, so this is a, example of that.
+
+#  This is in the Jinja's template system. So, you just basically, you know, issue a command using the dot notation to,
+#  this form template here, and then the WTForm extension will actually process these, apart these and then render this
+#  into the browser and you will see something like that in its finished state.
+
+# <form >
+#   {{ form.hidden_tag() }}
+# </form>
+
+# . This one here is a very special function that allows you to, generate something like this. On the right side, you
+# can see this one here, is what's called a CSRF token. This is a cross site request forging system that actually allows
+# you to make sure that the form that you're submitting to your site is very secure. It comes from your form and your
+# form only, right? If you are, a .net developer, this is also very common in many other frameworks. You'll see that
+# it's also included in those frameworks as well. Just to verify your site, making sure that it's coming from your form.
+# So you'll see that there is a value, it's a long string of hash key values.
+
+# pip install flask-security
+# The next one is the Flask-Security extension. This is a extension that provides a few other modules to comment on what
+# that. And, so things like, basic, session authentication, password hashing, and also the HTTP and token-based
+# authentications are also part of the security extension. And two very important ones are the user registration and
+# login tracking, which is another extension called the Flask-Login, that will come with this security extension
+
+# xxxxxxxxxxxx        Updating the login route and login template      xxxxxxxxxx
+
+#                                       login.html
+#     {% extends "layout.html" %}
+#
+#     {% block content %}
+#     <h1>{{ title }}</h1>
+#
+#     <div class="row">
+#         <div class="col-md-6 offset-md-3">
+#             <h3></h3>
+#             <form name="login" action="" method="post">
+#                 {{ form.hidden_tag() }}  <!-- this will create that CSRF token to secure our form -->
+#
+#                 <p>
+#                     {{ form.email.label }}<br>
+#                     {{ form.email(size=35) }}
+#                 </p>
+#
+#                 <p>
+#                     {{ form.password.label }}<br>
+#                     {{ form.password(size=15) }}
+#                 </p>
+#
+#                 <p>
+#                     {{ form.submit() }}
+#                 </p>
+#
+#             </form>
+#         </div>
+#     </div>
+#  {% endblock %}
+#
+#                           routes.py
+#
+# from application.forms import LoginForm, RegisterForm
+
+# @app.route("/login", methods=['GET', 'POST'])
+# def login():
+#     form = LoginForm()
+#     return render_template("login.html", title= "Login", form=form, login=True )
+
+
+# xxxxxxxxxxxxxx       Flashing messages      xxxxxxxxxxxxx
+
+# get the flashed_messages, okay special function that stores key facts of all the flashed messages that come to this
+# page basically.
+
+# n here, when we pass the flash message, we also have another option here is to pass the category. And the second field
+# is a category. We can say if you're using Bootstrap, there's the success, the danger, and the warning messages. If
+# it's success, then you put that the success class. If it's a failure, then we put here the danger. And this is the
+# category object.
+
+#                   layout.html
+
+# <!DOCTYPE html>
+# <html>
+# <head>
+#     <title>UTA - Home Page</title>
+#     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+#           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+#     <link rel="stylesheet" href="{{url_for('static', filename='/css/main.css')}}"/>
+# </head>
+# <body>
+#
+# <div class="container-fluid text-center top-container">
+#     <img src="{{url_for('static', filename='/images/uta-logo-200.png')}}">
+# </div>
+# <div class="container">
+#     {% include "includes/nav.html" %}
+#
+#     {% with messages = get_flashed_messages(with_categories=true) %}
+#         {% if messages %}
+#             {% for category, message in messages %}
+#                 <div class="alert alert-{{category}}">
+#                     <p>{{ message }}</p>
+#                 </div>
+#             {% endfor %}
+#         {% endif %}
+#     {% endwith %}
+#
+#     {% block content %}
+#     {% endblock %}
+#
+# </div>
+#     {% include "includes/footer.html" %}
+# </body>
+# </html>
+
+#               routes.py
+#
+# @app.route("/login", methods=['GET', 'POST'])
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         if request.form.get("email") == "test@uta.com":
+#             flash("You are successfully logged in", "success")
+#             return redirect("/index")
+#         else:
+#             flash("Sorry something went wrong.", "danger")
+#     return render_template("login.html", title= "Login", form=form, login=True )
+
+
+# xxxxxxxxxxx           Displaying form validation error messages     xxxxxxxxxxxxxx
+
+#      add to main.css
+# .error-message{
+#     color: red;
+# }
+
+#                           login.html
+#     {% extends "layout.html" %}
+#
+#     {% block content %}
+#     <h1>{{ title }}</h1>
+#
+#     <div class="row">
+#         <div class="col-md-6 offset-md-3">
+#             <h3></h3>
+#             <form name="login" action="" method="post" novalidate>
+#                 {{ form.hidden_tag() }}  <!-- this will create that CSRF token to secure our form -->
+#
+#                 <p>
+#                     {{ form.email.label }}<br>
+#                     {{ form.email(size=35) }}
+#                     {% for error in  form.email.errors %}
+#                         <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
+#                 </p>
+#
+#                 <p>
+#                     {{ form.password.label }}<br>
+#                 {% endfor %}
+#                 </p>
+#
+#                 <p>
+#                     {{ form.submit() }}
+#                 </p>
+#
+#             </form>
+#         </div>
+#     </div>
+#  {% endblock %}                 {{ form.password(size=15) }}
+#                     {% for error in form.password.errors %}
+#                         <span class="error-message">{{ error }}</span>
+#
+#
