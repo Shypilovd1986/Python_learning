@@ -658,7 +658,10 @@
 #
 #                 <p>
 #                     {{ form.password.label }}<br>
-#                 {% endfor %}
+#                     {{ form.password(size=15) }}
+#                     {% for error in form.password.errors %}
+#                         <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
 #                 </p>
 #
 #                 <p>
@@ -673,3 +676,143 @@
 #                         <span class="error-message">{{ error }}</span>
 #
 #
+# xxxxxxxxxxxx              Processing form data and updating the database              xxxxxxxxxxxxxxx
+
+# from werkzeug.security import generate_password_hash, check_password_hash
+# generate_password_hash    hash it
+# check_password_hash    un-hash it
+#
+#                               forms.py
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, PasswordField, BooleanField, SubmitField,
+# from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+# from application.models import User
+#
+# class LoginForm(FlaskForm):
+#     email = StringField("Email", validators=[DataRequired(), Email()])
+#     password = StringField("Password", validators=[DataRequired(), Length(min=5, max=15)])
+#     remember_me = BooleanField("Remember me")
+#     submit = SubmitField("Login")
+#
+# class RegisterForm(FlaskForm):
+#     email = StringField("Email", validators=[DataRequired(),  Email()])
+#     password = StringField("Password", validators=[DataRequired(), Length(min=5, max=15)])
+#     password_confirm = StringField("Confirm password", validators=[DataRequired(), Length(min=5, max=15),
+#                                                                    EqualTo('password')])
+#     first_name = StringField("First_name", validators=[DataRequired(), Length(min=2, max=55)])
+#     last_name = StringField("Last name", validators=[DataRequired(), Length(min=2, max=55)])
+#     submit = SubmitField("Register Now")
+#
+#     def validate_email(self, email):
+#         user = User.objects(email=email.data).first()
+#         if user:
+#             raise ValidationError('Email is already in use. Pick another one.')
+
+#                   models.py
+# from application import db
+# import flask
+# from werkzeug.security import generate_password_hash, check_password_hash
+#
+# class User(db.Document):
+#     user_id     =   db.IntField(unique=True)
+#     first_name  =   db.StringField( max_length=50 )
+#     last_name   =   db.StringField( max_length=50 )
+#     email       =   db.StringField( max_length=30, unique=True )
+#     password    =   db.StringField()
+#
+#     def set_password(self, password):
+#         self.password = generate_password_hash(password)
+#
+#     def get_password(self, password):
+#         return  check_password_hash(self.password, password)
+
+
+# xxxxxxxx    Updating registration route to interact with database    xxxxxxxxxx
+#
+
+# @app.route("/register", methods=['POST','GET'])
+# def register():
+#     if session.get('username'):
+#         return redirect(url_for('index'))
+#     form = RegisterForm()
+#     if form.validate_on_submit():
+#         user_id     = User.objects.count()
+#         user_id     += 1
+#
+#         email       = form.email.data
+#         password    = form.password.data
+#         first_name  = form.first_name.data
+#         last_name   = form.last_name.data
+#
+#         user = User(user_id=user_id, email=email, first_name=first_name, last_name=last_name)
+#         user.set_password(password)
+#         user.save()
+#         flash("You are successfully registered!","success")
+#         return redirect(url_for('index'))
+#     return render_template("register.html", title="Register", form=form, register=True)
+
+#                   register.html
+
+#     {% extends "layout.html" %}
+#
+#     {% block content %}
+#
+#     <div class="container">
+#          <form name="login" action="" method="post" novalidate>
+#         <fieldset class="form-group">
+#             <legend>{{title}}</legend>
+#             {{ form.hidden_tag() }}
+#                 <p> {{ form.email.label }}</br>
+#                     {{ form.email }}
+#                     {% for error in form.email.errors %}
+#                      <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
+#                 </p>
+#
+#                 <p> {{ form.password.label }}</br>
+#                     {{ form.password }}
+#                     {% for error in form.password.errors %}
+#                      <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
+#                 </p>
+#
+#                 <p> {{ form.password_confirm.label }}</br>
+#                     {{ form.password_confirm }}
+#                     {% for error in form.password_confirm.errors %}
+#                      <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
+#                 </p>
+#
+#                 <p> {{ form.first_name.label }}</br>
+#                     {{ form.first_name }}
+#                     {% for error in form.first_name.errors %}
+#                      <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
+#                 </p>
+#
+#                 <p> {{ form.last_name.label }}</br>
+#                     {{ form.last_name }}
+#                     {% for error in form.last_name.errors %}
+#                      <span class="error-message">{{ error }}</span>
+#                     {% endfor %}
+#                 </p>
+#
+#                 <p>
+#                     {{ form.submit() }}
+#                 </p>
+#
+#         </fieldset>
+#         </form>
+#     </div>
+#     {% endblock %}
+
+# xxxxxxxxxxx           Creating the courses page           xxxxxxxxx
+
+# @app.route("/courses/")
+# @app.route("/courses/<term>")
+# def courses(term=None):
+#     if term == None:
+#         term = 'Spring 2019'
+#     classes = Course.objects.order_by("courseID")
+#     return render_template("courses.html", courseData=courseData, courses = True, term=term )
+
