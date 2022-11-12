@@ -816,3 +816,40 @@
 #     classes = Course.objects.order_by("courseID")
 #     return render_template("courses.html", courseData=courseData, courses = True, term=term )
 
+# xxxxxxxxx       Installing Postman and the Flask-RESTPlus APIs extension       xxxxxxxxxxxxxxx
+
+#  the Postman is a API development environment for testing APIs.
+
+#  pip install flask-restplus
+
+# xxxxxxxxx       Fetching data using GET         xxxxxxxxxx
+
+#  I'm going to go into the application folder inside the init folder, remember we installed the flask rest plus already
+#  so we need to import that in here and then create an instance of that library.
+
+# from flask_restplus import Api
+# api = Api()
+
+# So I'm going to go in here and say it's going to be from the flask underscore rest plus and we need to import the API
+# class and then right down here which is like instantiate in API object of this API class.
+
+# Now go into the routes, and then we need to a do a few things here, just some minor changes. I'm going to hide this
+# one for now. Well, okay. This one here on the top here, we need to import the library again but we need to get the
+# resource, this a resources class so, I'm going here and do again, the flask underscore rest plus. I'm going to import
+# the resource. This isn't a class that actually allows or the handles all the API requests and and uh for us so, it
+# makes it really really easy for us to do, so that's all we need for that one.
+
+# from flask_restplus import Resource
+
+# @api.route('/api', '/api/')
+# class GetAndPost(Resource):
+#
+#     def get(self):
+#         return jsonify(User.objects.all())
+#
+#
+# @api.route('/api/<idx>')
+# class GetUpdateDelete(Resource):
+#
+#     def get(self, idx):
+#         return jsonify(User.objects(user_id=idx))

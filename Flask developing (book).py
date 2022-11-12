@@ -278,3 +278,218 @@
 
 # Note that abort() does not return control back to the function because it raises an exception.
 
+# xxxxxxxxxxxx  Templates   xxxxxxxxxx
+
+# Variables can be modified with filters, which are added after the variable name with a pipe character as separator.
+# For example, the following template shows the name vari‐ able capitalized:
+    # Hello, {{ name|capitalize }}
+
+# Table 3-1. Jinja2 variable filters
+# Filter name    description
+
+# safe           Renders the value without applying escaping
+# capitalize     Converts the first character of the value to uppercase and the rest to lowercase
+# lower          Converts the value to lowercase characters
+# upper          Converts the value to uppercase characters
+# title          Capitalizes each word in the value
+# trim           Removes leading and trailing whitespace from the value
+# striptags      Removes any HTML tags from the value before rendering
+
+#                                       Control Structures
+# Jinja2 offers several control structures that can be used to alter the flow of the tem‐ plate. This section introduces
+# some of the most useful ones with simple examples.
+# The following example shows how conditional statements can be entered in a template:
+#     {% if user %}
+#         Hello, {{ user }}!
+#     {% else %}
+#         Hello, Stranger!
+# {% endif %}
+# Another common need in templates is to render a list of elements. This example shows how this can be done with
+# a for loop:
+# <ul>
+#         {% for comment in comments %}
+# <li>{{ comment }}</li> {% endfor %}
+# </ul>
+# Jinja2 also supports macros, which are similar to functions in Python code. For example:
+# {% macro render_comment(comment) %} <li>{{ comment }}</li>
+#     {% endmacro %}
+# <ul>
+#         {% for comment in comments %}
+#             {{ render_comment(comment) }}
+# {% endfor %}
+# </ul>
+# To make macros more reusable, they can be stored in standalone files that are then imported from all the templates
+# that need them:
+#     {% import 'macros.html' as macros %}
+# <ul>
+#         {% for comment in comments %}
+#             {{ macros.render_comment(comment) }}
+# {% endfor %}
+# </ul>
+# Portions of template code that need to be repeated in several places can be stored in a separate file and included
+# from all the templates to avoid repetition:
+#     {% include 'common.html' %}
+# Yet another powerful way to reuse is through template inheritance, which is similar to class inheritance in Python
+# code. First, a base template is created with the name base.html:
+#     <html>
+#     <head>
+# {% block head %}
+# <title>{% block title %}{% endblock %} - My Application</title> {% endblock %}
+#     </head>
+#     <body>
+#         {% block body %}
+#         {% endblock %}
+#     </body>
+#     </html>
+# Base templates define blocks that can be overridden by derived templates. The Jinja2 block and endblock directives
+# define blocks of content that are added to the base template. In this example, there are blocks called head, title,
+# and body; note that title is contained by head. The following example is a derived template of the base template:
+
+#
+#   xxxxxxxxxxxx                flask_moment          xxxxxxxxxx
+#
+# Localization of Dates and Times with Flask-Moment
+# pip install flask-moment
+#
+# from flask_moment import Moment moment = Moment(app)
+
+#
+# @app.route('/')
+# def index():
+#   return render_template('index.html', current_time=datetime.utcnow())
+
+# {{ moment.include_moment() }}
+# <p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
+# <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
+
+# The format('LLL') function renders the date and time according to the time zone and locale settings in the client
+# computer. The argument determines the rendering style, from 'L' to 'LLLL' for four different levels of verbosity. The
+# format() function can also accept a long list of custom format specifiers.
+# The fromNow() render style shown in the second line renders a relative timestamp and automatically refreshes it as
+# time passes. Initially this timestamp will be shown as “a few seconds ago,” but the refresh=True option will keep it
+# updated as time passes, so if you leave the page open for a few minutes you will see the text changing to “a minute
+# ago,” then “2 minutes ago,” and so on.
+
+# Flask-Moment implements the format(), fromNow(), fromTime(), calendar(), valueOf(), and unix() methods from Moment.js.
+# Consult the Moment.js documen‐ tation to learn about all the formatting options offered by this library.
+
+# The timestamps rendered by Flask-Moment can be localized to many languages. A language can be selected in the template
+# by passing the two-letter language code to function locale(), right after the Moment.js library is included.
+# For example, here is how to configure Moment.js to use Spanish:
+#     {% block scripts %}
+#     {{ super() }}
+#     {{ moment.include_moment() }}
+#     {{ moment.locale('es') }}
+#     {% endblock %}
+
+#
+# xxxxxxxxxx      Static Files       xxxxxxxxxx
+
+# You may recall that when the hello.py application’s URL map was inspected in Chap‐ ter 2, a static entry appeared in
+# it. Flask automatically supports static files by adding a special route to the application defined a
+# s /static/<filename>. For example, a call to url_for('static', filename='css/styles.css', _external=True) would return
+# http://localhost:5000/static/css/styles.css.
+# In its default configuration, Flask looks for static files in a subdirectory called static located in the
+# application’s root folder.
+
+#
+# {% block head %}
+# {{ super() }}
+# <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+# <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+# {% endblock %}
+
+# The icon declaration is inserted at the end of the head block.
+
+# Note how super() is used to preserve the original contents of the block defined in the base templates.   !!!!!!!
+
+
+#                               Web Forms
+#                   xxxxxxxxx      flask-WTF     xxxxxxxxxx
+#                             Configuration
+# The Flask-WTF extension makes working with web forms a much more pleasant experience. This extension is a Flask
+# integration wrapper around the framework- agnostic WTForms package.
+# Flask-WTF and its dependencies can be installed with pip:
+# (venv) $ pip install flask-wtf
+
+# Unlike most other extensions, Flask-WTF does not need to be initialized at the appli‐ cation level, but it expects
+# the application to have a secret key configured. A secret key is a string with any random and unique content that is
+# used as an encryption or sign‐ ing key to improve the security of the application in several ways. Flask uses this key
+# to protect the contents of the user session against tampering. You should pick a dif‐ ferent secret key in each
+# application that you build and make sure that this string is not known by anyone.
+
+# The app.config dictionary is a general-purpose place to store configuration variables used by Flask, extensions, or
+# the application itself. Configuration values can be added to the app.config object using standard dictionary syntax.
+# The configuration object also has methods to import configuration values from files or the environment.
+
+# lask-WTF requires a secret key to be configured in the application because this key is part of the mechanism the
+# extension uses to protect all forms against cross-site request forgery (CSRF) attacks. A CSRF attack occurs when a
+# malicious website sends requests to the application server on which the user is currently logged in. Flask-WTF
+# generates security tokens for all forms and stores them in the user session, which is protected with a cryptographic
+# signature generated from the secret key.
+
+#                               Form Classes
+# When using Flask-WTF, each web form is represented in the server by a class that inherits from the class FlaskForm.
+# The class defines the list of fields in the form, each represented by an object. Each field object can have one or
+# more validators attached. A validator is a function that checks whether the data submitted by the user is valid.
+
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, SubmitField from wtforms.validators import DataRequired
+# class NameForm(FlaskForm):
+# name = StringField('What is your name?',
+# validators=[DataRequired()]) submit = SubmitField('Submit')
+
+# The fields in the form are defined as class variables, and each class variable is assigned an object associated with
+# the field type.
+
+# The optional validators argument included in the StringField constructor defines a list of checkers that will be
+# applied to the data submitted by the user before it is accepted. The DataRequired() validator ensures that the field
+# is not submitted empty.
+
+# The FlaskForm base class is defined by the Flask-WTF extension, so it is imported from flask_wtf. The fields and
+# validators, how‐ ever, are imported directly from the WTForms package.
+
+#                           The list of standard HTML fields supported by WTForms
+
+# Field type                Description
+
+# BooleanField              Checkbox with True and False values
+# DateField                 Text field that accepts a datetime. date value in a given format
+# DateTimeField             Text field that accepts a datetime. datetime value in a given format
+# DecimalField              Text field that accepts a decimal. Decimal value
+# FileField                 File upload field
+# HiddenField               Hidden text field
+# MultipleFileField         Multiple file upload field
+# FieldList                 List of fields of a given type
+# FloatField                Text field that accepts a floating-point value
+# FormField                 Form embedded as a field in a container form
+# IntegerField              Text field that accepts an integer value
+# PasswordField             Password text field
+# RadioField                List of radio buttons
+# SelectField               Drop-down list of choices
+# SelectMultipleField       Drop-down list of choices with multiple selection
+# SubmitField               Form submission button
+# StringField               Text field
+# TextAreaField             Multiple-line text field
+
+
+#               The list of WTForms built-in validators is shown in
+
+#   Validator                   Description
+
+# DataRequired          Validates that the field contains data after type conversion
+# Email                 Validates an email address
+# EqualTo               Compares the values of two fields; useful when requesting a password to be entered twice for
+#                       confirmation
+# InputRequired         Validates that the field contains data before type conversion
+# IPAddress             Validates an IPv4 network address
+# Length                Validates the length of the string entered
+# MacAddress            Validates a MAC address
+# NumberRange           Validates that the value entered is within a numeric range
+# Optional              Allows empty input in the field, skipping additional validators
+# Regexp                Validates the input against a regular expression
+# URL                   Validates a URL
+# UUID                  Validates a UUID
+# AnyOf                 Validates that the input is one of a list of possible values
+# NoneOf                Validates that the input is none of a list of possible values
+
