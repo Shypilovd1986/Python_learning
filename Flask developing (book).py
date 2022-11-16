@@ -493,3 +493,61 @@
 # AnyOf                 Validates that the input is one of a list of possible values
 # NoneOf                Validates that the input is none of a list of possible values
 
+#                       HTML Rendering of Forms
+
+# <form method="POST">
+# {{ form.hidden_tag() }}
+# {{ form.name.label }} {{ form.name() }} {{ form.submit() }}
+# </form>
+
+# Note that in addition to the name and submit fields, the form has a form.hidden_tag() element. This element defines an
+# extra form field that is hidden, used by Flask-WTF to implement CSRF protection.
+
+#                   Form Handling in View Functions
+
+# @app.route('/', methods=['GET', 'POST']) def index():
+# name = None
+# form = NameForm()
+# if form.validate_on_submit():
+#         name = form.name.data
+# form.name.data = ''
+# return render_template('index.html', form=form, name=name)
+
+# The validate_on_submit() method of the form returns True when the form was submitted and the data was accepted by all
+# the field validators. In all other cases, validate_on_submit() returns False. The return value of this method
+# effectively serves to determine whether the form needs to be rendered or processed.
+
+#                           Redirects and User Sessions
+
+# it is considered good practice for web applications to never leave a POST request as the last request sent by the
+# browser.
+# This is achieved by responding to POST requests with a redirect instead of a normal response. A redirect is a special
+# type of response that contains a URL instead of a string with HTML code. it issues a GET request for the redirect URL,
+# and that is the page that it displays.
+#
+# Applications can “remember” things from one request to the next by storing them in the user session, a private storage
+# that is available to each connected client.
+
+# from flask import Flask, render_template, session, redirect, url_for
+# @app.route('/', methods=['GET', 'POST']) def index():
+# form = NameForm()
+# if form.validate_on_submit():
+#         session['name'] = form.name.data
+# return redirect(url_for('index'))
+# return render_template('index.html', form=form, name=session.get('name'))
+
+# The redirect() function takes the URL to redirect to as an argument.
+# The first and only required argument to url_for() is the endpoint name, the internal name each route has.
+
+#                               Message Flashing
+
+# old_name = session.get('name')
+# if old_name is not None and old_name != form.name.data:
+#   flash('Looks like you have changed your name!')
+
+# {% for message in get_flashed_messages() %}
+# <div class="alert alert-warning">
+#   <button type="button" class="close" data-dismiss="alert">&times;</button>
+#   {{ message }}
+# </div>
+# {% endfor %}
