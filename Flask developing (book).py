@@ -551,3 +551,195 @@
 #   {{ message }}
 # </div>
 # {% endfor %}
+
+#                   Databases
+
+# called SQL databases in reference to the Structured Query Language they use. But in recent years document-oriented and
+# key-value databases, informally known together as NoSQL databases
+
+# Relational databases store data in tables,
+# A table has a fixed number of columns and a variable number of rows.
+# This graphical style of representing the structure of a database is called an entity- relationship diagram.
+
+# Databases that do not follow the relational model described in the previous section are collectively referred to as
+# NoSQL databases. One common organization for NoSQL databases uses collections instead of tables and documents instead
+# of records. NoSQL databases are designed in a way that makes joins difficult, so most of them do not support this
+# operation at all. A more appropriate design for a NoSQL database is shown in Figure 5-2. This is the result of
+# applying an operation called denormalization, which reduces the number of tables at the expense of data duplication.
+
+# ACID, which stands for Atomicity, Consis‐ tency, Isolation, and Durability. NoSQL databases relax some of the ACID
+# require‐ ments and as a result can sometimes get a performance edge.
+
+# there are also a number of database abstraction layer packages, such as SQLAlchemy or MongoEngine, that allow you to
+# work at a higher level with regular Python objects instead of database entities such as tables, documents, or query
+# languages.
+
+# When comparing straight database engines to database abstraction layers, the second group clearly wins. Abstraction
+# layers, also called object-relational map‐ pers (ORMs) or object-document mappers (ODMs), provide transparent
+# conver‐ sion of high-level object-oriented operations into low-level database instructions.
+
+# Flask-SQLAlchemy is a Flask extension that simplifies the use of SQLAlchemy inside Flask applications. SQLAlchemy is
+# a powerful relational database framework that supports several database backends. It offers a high-level ORM and
+# low-level access to the database’s native SQL functionality.
+
+# Like most other extensions, Flask-SQLAlchemy is installed with pip:
+# (venv) $ pip install flask-sqlalchemy
+# In Flask-SQLAlchemy, a database is specified as a URL. Table 5-1 lists the format of the URLs for the three most
+# popular database engines.
+
+# Table 5-1. Flask-SQLAlchemy database URLs
+
+# Database                  engine
+# MySQL             mysql://username:password@hostname/database
+# Postgres          postgresql://username:password@hostname/database
+# SQLite (Linux, macOS)       sqlite:////absolute/path/to/database
+# SQLite (Windows)            sqlite:///c:/absolute/path/to/database
+
+# In these URLs, hostname refers to the server that hosts the database service, which could be localhost or a remote
+# server.
+
+# The URL of the application database must be configured as the key SQLALCHEMY_DATABASE_URI in the Flask configuration
+# object. The Flask-SQLAlchemy documentation also suggests setting key SQLALCHEMY_TRACK_MODIFICATIONS to False to use
+# less memory unless signals for object changes are needed.
+
+# import os
+# from flask_sqlalchemy import SQLAlchemy
+# basedir = os.path.abspath(os.path.dirname(__file__))
+
+# app = Flask(__name__) app.config['SQLALCHEMY_DATABASE_URI'] =\
+#     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(app)
+
+# The term model is used when referring to the persistent entities used by the applica‐ tion. In the context of an ORM,
+# a model is typically a Python class with attributes that match the columns of a corresponding database table.
+
+# The __tablename__ class variable defines the name of the table in the database.
+
+# class User(db.Model):
+#   __tablename__ = 'users'
+#   id = db.Column(db.Integer, primary_key=True)
+#   username = db.Column(db.String(64), unique=True, index=True)
+
+#   def __repr__(self):
+#       return '<User %r>' % self.username
+
+#           Most common SQLAlchemy column options
+# primary_key       If set to True, the column is the table’s primary key.
+# unique            If set to True, do not allow duplicate values for this column.
+# index             If set to True, create an index for this column, so that queries are more efficient.
+# nullable   If set to True, allow empty values for this column. If set to False, the column will not allow null values.
+# default           Define a default value for the column.
+
+# __repr__() method to give them a readable string representation that can be used for debugging and testing purposes.
+
+# Relational databases establish connections between rows in different tables through the use of relationships.
+# This is a one-to-many relationship from roles to users, because one role can belong to many users, but each user can
+# have only one role.
+
+# class Role(db.Model): # ...
+#     users = db.relationship('User', backref='role')
+# class User(db.Model): # ...
+#     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+# The 'roles.id' argument to db.ForeignKey() specifies that the column should be interpreted as having id values from
+# rows in the roles table.
+
+# The users attribute added to the model Role represents the object-oriented view of the relationship, as seen from the
+# “one” side. Given an instance of class Role, the users attribute will return the list of users associated with that
+# role
+
+# The backref argument to db.relationship() defines the reverse direction of the relationship, by adding a role
+# attribute to the User model. This attribute can be used on any instance of User instead of the role_id foreign key
+# to access the Role model as an object.
+
+# The very first thing to do is to instruct Flask-SQLAlchemy to create a database based on the model classes.
+# The db.create_all() function locates all the subclasses of db.Model and creates corresponding tables in the database
+# for them:
+# (venv) $ flask shell
+# >>> from hello import db
+# >>> db.create_all()
+#
+# !!!!!!  Will remove old tables
+# db.drop_all()
+
+# Inserting Rows
+# The following example creates a few roles and users:
+
+# >>> from hello import Role, User
+# >>> admin_role = Role(name='Admin')
+# >>> mod_role = Role(name='Moderator')
+# >>> user_role = Role(name='User')
+# >>> user_john = User(username='john', role=admin_role)
+# >>> user_susan = User(username='susan', role=user_role)
+# >>> user_david = User(username='david', role=user_role)
+
+# The constructors for models accept initial values for the model attributes as keyword arguments. Note that the role
+# attribute can be used, even though it is not a real data‐ base column but a high-level representation of the
+# one-to-many relationship. The id attribute of these new objects is not set explicitly: the primary keys in many
+# databases are managed by the database itself. The objects exist only on the Python side so far; they have not been
+# written to the database yet. Because of that, their id values have not yet been assigned:
+# >>> print(admin_role.id) None
+
+# Changes to the database are managed through a database session, which Flask- SQLAlchemy provides as db.session.
+# To prepare objects to be written to the data‐ base, they must be added to the session:
+# >>> db.session.add(admin_role)
+
+# Or, more concisely:
+# >>> db.session.add_all([admin_role, mod_role, user_role, ... user_john, user_susan, user_david])
+
+# To write the objects to the database, the session needs to be committed by calling its commit() method:
+# >>> db.session.commit()
+
+# The db.session database session is not related to the Flask session object discussed in Chapter 4. Database sessions
+# are also called transactions.
+
+# Database sessions are extremely useful in keeping the database consistent. The com‐ mit operation writes all the
+# objects that were added to the session atomically. if an error occurs while the session is being written, the whole
+# session is discarded.
+
+# A database session can also be rolled back. If db.session.rollback() is called, any objects that were added to the
+# database session are restored to the state they have in the data‐ base.
+
+#                    Modifying Rows
+# The add() method of the database session can also be used to update models. Con‐ tinuing in the same shell session,
+# the following example renames the "Admin" role to "Administrator":
+# >>> admin_role.name = 'Administrator' >>> db.session.add(admin_role)
+# >>> db.session.commit()
+#                   Deleting Rows
+# The database session also has a delete() method. The following example deletes the "Moderator" role from the database:
+# >>> db.session.delete(mod_role) >>> db.session.commit()
+# Note that deletions, like insertions and updates, are executed only when the database session is committed. !!!!!!
+
+#               Querying Rows
+
+# Flask-SQLAlchemy makes a query object available in each model class. The most basic query for a model is triggered
+# with the all() method, which returns the entire contents of the corresponding table:
+# >>> Role.query.all()
+# [<Role 'Administrator'>, <Role 'User'>]
+
+# The following example finds all the users that were assigned the "User" role:
+# >>> User.query.filter_by(role=user_role).all() [<User 'susan'>, <User 'david'>]
+
+# >>> user_role = Role.query.filter_by(name='User').first()
+# Note how in this case, the query was issued with the first() method instead of all().
+
+#                           Table 5-5. Common SQLAlchemy query filters
+# filter()          Returns a new query that adds an additional filter to the original query
+# filter_by()       Returns a new query that adds an additional equality filter to the original query
+# limit()           Returns a new query that limits the number of results of the original query to the given number
+# offset()          Returns a new query that applies an offset into the list of results of the original query
+# order_by()        Returns a new query that sorts the results of the original query according to the given criteria
+# group_by()        Returns a new query that groups the results of the original query according to the given criteria
+
+#                           Table 5-6. Most common SQLAlchemy query executors
+
+# all()                 Returns all the results of a query as a list
+# first()               Returns the first result of a query, or None if there are no results
+# first_or_404()        Returns the first result of a query, or aborts the request and sends a 404 error as the response
+#                       if there are no results
+# get()                 Returns the row that matches the given primary key, or None if no matching row is found
+# get_or_404()          Returns the row that matches the given primary key or, if the key is not found, aborts the
+#                       request and sends a 404 error as the response
+# count()               Returns the result count of the query
+# paginate()            Returns a Pagination object that contains the specified range of results
