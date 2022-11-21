@@ -493,6 +493,8 @@
 # AnyOf                 Validates that the input is one of a list of possible values
 # NoneOf                Validates that the input is none of a list of possible values
 
+# we need install extension : pip install email-validator   for working with Email validator
+#
 #                       HTML Rendering of Forms
 
 # <form method="POST">
@@ -551,6 +553,8 @@
 #   {{ message }}
 # </div>
 # {% endfor %}
+
+# form.<name_field>.errors   handle collection of errors  !!
 
 #                   Databases
 
@@ -743,3 +747,107 @@
 #                       request and sends a 404 error as the response
 # count()               Returns the result count of the query
 # paginate()            Returns a Pagination object that contains the specified range of results
+
+#                   Integration with the Python Shell
+
+# To add objects to the import list, a shell context processor must be created and registered with the
+# app.shell_context_processor decorator.
+
+# @app.shell_context_processor
+# def make_shell_context():
+#   return dict(db=db, User=User, Role=Role)
+
+# The shell context processor function returns a dictionary that includes the database instance and the models. The
+# flask shell command will import these items auto‐ matically into the shell, in addition to app, which is imported by
+# default:
+# $ flask shell
+# >>> app
+# <Flask 'hello'>
+# >>> db
+# <SQLAlchemy engine='sqlite:////home/flask/flasky/data.sqlite'>
+
+#                   Database Migrations with Flask-Migrate
+
+# only way to make it update tables is by destroying the old tables
+# A better solution is to use a database migration framework.
+# Flask applications can use the Flask-Migrate extension
+# pip install flask-migrate
+
+# from flask_migrate import Migrate # ...
+# migrate = Migrate(app, db)
+# To expose the database migration commands, Flask-Migrate adds a flask db com‐ mand with several subcommands. When you
+# work on a new project, you can add support for database migrations with the init subcommand:
+
+# Alembic migrations can be created manually or automatically using the revision and migrate commands, respectively.
+# A manual migration creates a migration skeleton script with empty upgrade() and downgrade() functions that need to be
+# implemented by the developer using directives exposed by Alembic’s Operations object. An automatic migration attempts
+# to generate the code for the upgrade() and downgrade() functions by looking for differences between the model
+# definitions and the current state of the database.
+
+# about db migration
+# https://flask-migrate.readthedocs.io/en/latest/
+
+# With the above application you can create a migration repository with the following command:
+# $ flask db init
+
+# You can then generate an initial migration:
+# $ flask db migrate -m "Initial migration."
+
+# Then you can apply the changes described by the migration script to your database:
+# $ flask db upgrade
+
+# To see all the commands that are available run this command:
+# $ flask db --help
+
+#                       Email Support with Flask-Mail
+
+# pip install flask-mail
+# The extension connects to a Simple Mail Transfer Protocol (SMTP) server and passes emails to it for delivery. If no
+# configuration is given, Flask-Mail connects to localhost at port 25 and sends email without authentication.
+
+# Flask-Mail SMTP server configuration keys
+# Key                Default         Description
+#
+# MAIL_SERVER       localhost       Hostname or IP address of the email server
+# MAIL_PORT         25              Port of the email server
+# MAIL_USE_TLS      False           Enable Transport Layer Security (TLS) security
+# MAIL_USE_SSL      False           Enable Secure Sockets Layer (SSL) security
+# MAIL_USERNAME     None            Mail account username
+# MAIL_PASSWORD     None            Mail account password
+
+# During development it may be more convenient to connect to an external SMTP server.
+# import os
+# # ...
+# app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+# app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+
+# from flask_mail import Mail
+# mail = Mail(app)
+
+# The two environment variables that hold the email server username and password need to be defined in the environment.
+# If you are on Linux or macOS, you can set these variables as follows:
+# (venv) $ export MAIL_USERNAME=<Gmail username>
+# (venv) $ export MAIL_PASSWORD=<Gmail password>
+
+# For Microsoft Windows users, the environment variables are set as follows:
+# (venv) $ set MAIL_USERNAME=<Gmail username>
+# (venv) $ set MAIL_PASSWORD=<Gmail password>
+
+# Sending Email from the Python Shell
+# To test the configuration, you can start a shell session and send a test email (replace you@example.com with your own email address):
+# (venv) $ flask shell
+# >>> from flask_mail import Message
+# >>> from hello import mail
+# >>> msg = Message('test email', sender='you@example.com', ... recipients=['you@example.com'])
+# >>> msg.body = 'This is the plain text body'
+# >>> msg.html = 'This is the <b>HTML</b> body'
+# >>> with app.app_context():
+# ... mail.send(msg)
+# ...
+# Note that Flask-Mail’s send() function uses current_app, so it needs to be executed with an activated application
+# context.
+
+#
