@@ -26,3 +26,4 @@ methods_of_strings =['a.upper()', 'a.lower()', 'a.count(sub,start,end)', 'a.find
                      'a.isalnum()', 'a.isidentifier()', 'a.endswith(prefix)', 'a.islower()', 'a.isupper()','a.zfill(width)',
                      'a.title()', 'a.isnumeric()']
 #find return -1, index call exclusion
+# class.__mro__    show inheritance of class

@@ -8,6 +8,8 @@
 # zsh:     Z shell(1990)
 # fish:    Friendly interactive shell(2005)
 
+# make -v  show version GNU
+# banner -w 50 'Hello world' make banner
 # echo $SHELL    show where is located  -> /bin/zsh
 # echo $0   show current shell
 # sh     change to sh shell
