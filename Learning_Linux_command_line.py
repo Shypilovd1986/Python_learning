@@ -797,3 +797,28 @@
 #  logs for other software. Some directories defined by the Filesystem Hierarchy Standard aren't real directories at
 #  all. The dev, proc, and sys directories are created by the kernel to represent hardware available on the system,
 #  including all the systems hardware, processes that run programs, settings in the kernel, and so on.
+
+# sudo apt install mysql-server    to install server mysql on Linux, nce the installation is complete, the MySQL server
+# should be started automatically. You can quickly check its current status via systemd:
+
+# sudo service mysql status
+# The network status of the MySQL service can also be checked by running the ss command at the terminal prompt:
+# sudo ss -tap | grep mysql
+
+# If the server is not running correctly, you can type the following command to start it:
+#
+# sudo service mysql restart
+
+# A good starting point for troubleshooting problems is the systemd journal, which can be accessed at the terminal
+# prompt with this command:
+#
+# sudo journalctl -u mysql
+
+# Database Engines
+# Whilst the default configuration of MySQL provided by the Ubuntu packages is perfectly functional and performs well
+# there are things you may wish to consider before you proceed.
+#
+# MySQL is designed to allow data to be stored in different ways. These methods are referred to as either database or
+# storage engines. There are two main engines that you’ll be interested in: InnoDB and MyISAM. Storage engines are
+# transparent to the end user. MySQL will handle things differently under the surface, but regardless of which storage
+# engine is in use, you will interact with the database in the same way.
