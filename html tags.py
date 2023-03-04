@@ -51,7 +51,7 @@
 #         <li>apple</li>
 #         <li>pineapple</li>
 #     </ol>
-#     <table bgcolor="red" border="1" width="200px">
+#     <table border="1" width="200px">
 #         <thead>
 #             <tr>
 #                 <th>Apple</th>
