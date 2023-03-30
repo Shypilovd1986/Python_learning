@@ -1,10 +1,97 @@
-# # Что такое Docker
+
+# Apart from having one of the coolest logos out there, you can think of Docker as a platform to develop, deploy and run
+# applications with containers. This means that your application works in exactly the same environment whether that's on
+# your computer or someone else's. This is especially important for machine learning and data science
+
+#  An image is an executable package that includes everything needed to run an application, so that's the code, runtime,
+#  libraries, environment variables, and the configuration files.
+
+#  So, what we do is define these portable images in something called a Docker file. Now a Docker file is just a couple
+#  of lines of text that has instructions that defines what goes on in the environment inside your container, so things
+#  like how do you access network resources or what ports do you need to map to reach the outside world
+
+#  The place we push that to is a Docker registry, so a collection of images is called a repository, a bit like what you
+#  have in a GitHub repository and a collection of repositories is a registry. We'll use Docker Hub in this course.
+
+# docker pull ubuntu:18.10  will pull ubuntu version 18.10
+#  What's really helpful is that all of the Docker image commands start with the keyword docker image. So we can type
+#  a docker image ls -a and this will display all of the images that we have in Docker, so docker image ls -a. Now the
+# docker image ls -a will give you a list containing all of the intermediate images used in builds, and the docker image
+# ls command will give you a list of all of the images in the local repository. So let's type docker image ls, and you
+# can see that in this instance there's no difference between the two. You can also delete an image by typing docker
+# image rm and providing the image name. Now you don't have to specify the entire image name, you can just use the first
+# few characters. So if I want to delete hello world, I type docker image rm, and I'm going to use the first two
+# characters of the image Id, which is fc. If I then do a docker image ls, you can see that that image doesn't exist in
+# the local repository.
+
+# A Container is a running Docker image. So in this section on containers, let's create our own Docker file that we'll
+# run in a container.
+
+# docker images      or docker image ls -a    show all images in local repository
+
+# docker image rm <image name>   will remove image
+
+
+# docker container ls    show all running container
+# docker container ls -a  show all container
+
+# docker container stop <container_id>    gracefully stop container
+# docker container kill <hash>   force shutdown container
+
+# *************************       example dockerfile        ****************************
+# from ubuntu:18.10
+# RUN apt update && apt install -y python3
+
+# docker build -t <name_new_image> .    create image from a dockerfile in our project
+
+# So I do a Docker Build. I'll give it a tag -t ts for troubleshooting and dot to specify the docker file's in this
+# directory.
+
+# docker container run first     run container with name first and shutdown
+# docker container run -it first     run container in interactive mode
+
+#  we can then run this image So, docker container run, and we give our image the name First. Now what this does is it
+#  brings up the image, and then shuts it down again. What you probably want to do is to be able to interact with the
+#  image. In this case, let's use the -it flag, so that's docker container run -it, and then the image name. And this
+#  allows us to interact with the image
+# now we can access to ubuntu
+# cat /etc/*release   information about running ubuntu
+
+# exit     command to exit from container
 #
-# ![Docker-Docker Containers.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9f21a14f-ae83-4c7e-a43d-5df99263175b/Docker-Docker_Containers.png)
+# docker container ls -aq   will show hash of containers
+# docker  container rm <hash container>  remove container
+
+# The WORKDIR command sets the working directory for any run, command, entry point, copy and add instructions that fall
+# in the Dockerfile.
+
+# COPY instruction copies new files or directories from the source and adds them to the file system of the container
+# at the path destination. So in line 10 we're copying all of the files in the current directory and adding them to the
+# data directory in the container.
+
+# The RUN instruction will execute any commands in a new layer on top of the current image and commits the results.
 #
+# The EXPOSE instruction is really a message from the creator of the container to whoever uses it. You're telling them
+# which ports will need to be used. However, you will only publish the port when you use the dash P flag when running
+# a container.
+# EXPOSE 8888
+
+#  the CMD instruction. There can only be one CMD instruction in a Dockerfile and if you have more than one then only
+#  the last CMD will take effect. The main purpose of a CMD is to provide defaults so you're telling the container what
+#  it should do after launching.
+# CMD ["--port=8888", "--ip=0.0.0.0", "--no-browser", "--allow-root", "notebook"]    example!!
+#
+# ************************        Uploading images to Docker Hub     *************************
+# docker login       command to login to docker hub
+# docker tag feb5d9fea6a5 shypilovd1986/myhello-world:latest    will create image based on hash image feb5d9fea6a5
+# docker push shypilovd1986/myhello-world:latest    will push on docker hub
+# go to docker.io check our rep and press button public view
+
 # **Docker** — технология для создания и управления контейнерами.
 #
-# Мы оборачиваем какой то код или приложение в контейнеры для того, чтобы он нам гарантировал одинаковое поведение в разных окружениях. Мы можем просто брать докер контейнеры и запускать их где угодно, где есть докер. Нам не важно, что это будет за ОС, его версия. Все поведение будет зафиксировано в контейнере.
+# Мы оборачиваем какой то код или приложение в контейнеры для того, чтобы он нам гарантировал одинаковое поведение в
+# разных окружениях. Мы можем просто брать докер контейнеры и запускать их где угодно, где есть докер. Нам не важно,
+# что это будет за ОС, его версия. Все поведение будет зафиксировано в контейнере.
 #
 # # Базовая информация
 #
@@ -33,9 +120,7 @@
 # 3. `docker run IMAGE_ID`
 #
 # # Образы и контейнеры (Images & Containers)
-#
-# ![Docker-Containers & Images.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f832d845-c378-48c8-b0f2-72fdea7a31a6/Docker-Containers__Images.png)
-#
+
 # **Containers** - запускаются на основе образов
 #
 # **Images** - шаблоны, только для чтения для создания контейнеров
