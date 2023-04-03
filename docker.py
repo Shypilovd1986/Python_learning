@@ -1,3 +1,27 @@
+# Docker ia a service for launching application in container!
+
+# single purpose - one purpose ia a one container
+# Docker components:
+# - client
+# - demon (service)
+# - host
+# - container
+# - image
+# - repository
+# - registry
+
+# if container doesn't have active process docker will close this container  !!!!!!!!!
+#
+# image consists of layers, basic layer and others.
+# Images are read-only
+# Images are saved in repository
+# in one repository saved only one image with different versions
+
+# docker ps -a   show list of all containers
+# docker version   show info about docker client and docker server
+# docker run <image>  create container based on current image
+# hostname -i   show ip
+# docker container prune      will stop all stopped containers  !!!!!!!!
 
 # Apart from having one of the coolest logos out there, you can think of Docker as a platform to develop, deploy and run
 # applications with containers. This means that your application works in exactly the same environment whether that's on
