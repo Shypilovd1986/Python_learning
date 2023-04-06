@@ -17,11 +17,23 @@
 # Images are saved in repository
 # in one repository saved only one image with different versions
 
+
+# ---------------------------         main commands    ------------------
 # docker ps -a   show list of all containers
 # docker version   show info about docker client and docker server
 # docker run <image>  create container based on current image
 # hostname -i   show ip
-# docker container prune      will stop all stopped containers  !!!!!!!!
+# ping <site name or ip> v check available connection to internet
+# docker container prune      will delete all stopped containers  !!!!!!!!
+# docker run -d <image name>    flag -d detached , background mode!!
+# docker container inspect <id or name of container>
+# docker stop <id or name of container>   or    docker kill  <id or name of container>          stop container
+# docker exec -it <id or name of container> <name of process for ex bash>    execute process in container
+# docker run -d --name <myContainerName> <name of image>     will create container with our name
+# docker run -p 8080:80 nginx       mapping of ports  where -p  publishing port, 8080 outer port, 80 port of container,
+# nginx - name of image,  0.0.0.0:8080->80/tcp tell me that I can use any free port including localhost
+#
+
 
 # Apart from having one of the coolest logos out there, you can think of Docker as a platform to develop, deploy and run
 # applications with containers. This means that your application works in exactly the same environment whether that's on
