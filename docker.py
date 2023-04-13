@@ -20,6 +20,9 @@
 
 # ---------------------------         main commands    ------------------
 # docker ps -a   show list of all containers
+# docker ps -l   show the latest created container (includes all states)
+# docker ps -q   show only ids of containers
+# docker ps --format=$FORMAT     show containers by format
 # docker version   show info about docker client and docker server
 # docker run <image>  create container based on current image
 # hostname -i   show ip
@@ -37,6 +40,12 @@
 
 # docker run -d --name <myContainerName> <name of image>     will create container with our name
 
+# docker attach <container name>    will attach to detached container
+
+# ctrl+p or ctrl+q    will jump out from attached container
+
+# ctrl+d   will stop container
+
 # docker run -p 8080:80 nginx       mapping of ports  where -p  publishing port, 8080 outer port, 80 port of container,
 # nginx - name of image,  0.0.0.0:8080->80/tcp tell me that I can use any free port including localhost
 
@@ -45,12 +54,20 @@
 
 # docker run -it --rm busybox    --rm automatically remove container after container will be stopped
 
+# docker run --rm -ti  ubuntu bash -c 'sleep 5; echo all done' will remove container after it will be stopped , flag -c
+# will execute command in quotes
 
 # docker run -it /
 # --rm busybox    carry command on the new line
 
 # docker build . -f <name docker file> -t imageName:version tag   . use in current directory, -f use docker file name,
 # if standard  name Dockerfile we don't use flag -f, -t use when we want give name of our image :2.3  version of image
+
+# docker commit <id container>    will create image based on container with id including all files and changes in it!!!
+
+# docker tag <id image>  new_name     will give name to image with pointed id
+
+# docker commit <name of containers>  <name of new image>   will create a new image based on container and give it name
 
 #  -------------            docker-compose.yml    ---------------------------
 
@@ -76,8 +93,10 @@
 #   mongo:
 #     image: mongo            will create service mongo based on official image mongo
 
-# docker-compose up
-# docker-compose down
+# docker-compose up     create containers and net between containers
+# docker-compose down     close containers and remove containers and net
+# docker-compose up -d --build   rebuild  containers and images
+# docker logs <id containers>
 
 # -------------------------------------------------------------------------------------------------------------
 
