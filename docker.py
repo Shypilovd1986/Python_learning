@@ -69,6 +69,46 @@
 
 # docker commit <name of containers>  <name of new image>   will create a new image based on container and give it name
 
+# docker run -p outside port: inside port / protocol type (tcp or udp), docker dynamically determines port
+# docker run -ti -p 45111/udp ubuntu:14.04 bash
+# nc -ulp 45111      udp listen port 45111
+# nc -u localhost <name of port >   on local machine outside of container
+
+# docker run --rm -ti -p 45111:45111 -p 45112:45112 --name testing-port ubuntu:14.04
+# nc -lp 45678 | nc -lp 45679      -lp listen port ,  So that means that data will get passed into our system on one
+# port and then spit out on another port.
+# nc localhost 45678      will expose port 45678 on computer
+#  The Netcat utility is a great network debugging program for just moving bits from one place to another. It's super
+#  simple and a good way to show off networking without having to get concerned with anything else like starting a web
+#  server.
+# docker run -pi -p 45111 --name test-container-name ubuntu:14.04 bash    I'm specifying only the port as seen from
+# inside the container.
+
+# docker port <test-container-name or id>    to get assigned to the available port
+
+# -------------------- docker network ----------------
+# docker network ls    will show all existing network of docker by default
+#  - Bridge is the network used by containers that don't specify a preference to be put into any other network.
+#  - Host is when you want a container to not have any network isolation at all. This does have some security concerns.
+#  - And none is for when a container should have no networking.
+#
+#                   example 1
+# docker network create <learning >   will create new network with name learning
+# docker run --rm -ti --net learning --name catserver ubuntu:14.04 bash      will create container with name catserver
+# and connect to network that we have created
+# nc -lp 1111
+# docker run --rm -ti --net learning --name dogserver ubuntu:14.04 bash
+# nc catserver 1111     will communicate with both containers
+
+# docker network connect <name of network> <name of container>
+
+#  ---------------        legacy linking     -------------------
+# docker run --rm -ti -e SECRET=secret_word --name catserver ubuntu:14.04 bash      flag -e will add env variable SECRET
+
+# docker run --rm -ti --link catserver --name dogserver  ubuntu:14.04 bash     flag --link  will link container with
+# catserver container.   !!!!!!! link working only in one direction, dogserver will see env variable of catserver,
+# catserver will not see env of dogserver
+
 #  -------------            docker-compose.yml    ---------------------------
 
 #                       example lists in yml format
