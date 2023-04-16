@@ -28,6 +28,10 @@
 # hostname -i   show ip
 # ping <site name or ip> v check available connection to internet
 
+# docker search <name of image>       search image in registry with different version
+
+# docker rmi <name or id of image>    will remove image
+
 # docker container prune      will delete all stopped containers  !!!!!!!!
 
 # docker run -d <image name>    flag -d detached , background mode!!
@@ -51,6 +55,13 @@
 
 # docker run -v ${PWD}:/usr/share/nginx/html nginx      -v means volume, ${PWD} -  path to local folder,
 # /usr.... - path to folder inside of container    nginx name of image    , mapping of volumes
+
+# docker run --rm -ti --name test1 -v /Users/dmitriyshypilov/docker_test:/inside_container ubuntu:14.04 bash    where
+# /inside_container directory inside container which bundled with directory outside container, files shared between two
+# directories. !!!!!! files must exists before sharing between containers
+
+# docker run -ti -v /dir_inside_container --name test1_container ubuntu bash        create volume inside container
+# docker run -ti --volumes-from test1_container ubuntu bash           share volumes from container test1_container
 
 # docker run -it --rm busybox    --rm automatically remove container after container will be stopped
 
@@ -81,10 +92,12 @@
 #  The Netcat utility is a great network debugging program for just moving bits from one place to another. It's super
 #  simple and a good way to show off networking without having to get concerned with anything else like starting a web
 #  server.
-# docker run -pi -p 45111 --name test-container-name ubuntu:14.04 bash    I'm specifying only the port as seen from
+# docker run -ti -p 45111 --name test-container-name ubuntu:14.04 bash    I'm specifying only the port as seen from
 # inside the container.
 
 # docker port <test-container-name or id>    to get assigned to the available port
+
+# docker build -t <name of image> .     -t will give name
 
 # -------------------- docker network ----------------
 # docker network ls    will show all existing network of docker by default
@@ -102,6 +115,51 @@
 
 # docker network connect <name of network> <name of container>
 
+# ----------------    Dockerfile  statements----------------
+# FROM  ubuntu as builder    from what image we should start
+# ......
+# FROM alpine
+# COPY --from=builder /google-size  /google-size     Then down here, I'm going to add another from, from alpine. I'm
+# going to call copy --from=builder, which is just the name I assigned above, /google-size, and I want to copy it to
+# the same path in this new image, google-size, okay? Save, now let's run that again. I'm going to rebuild it. This time
+# I'll call it google-size.
+
+# MAINTAINER Firstname Lastname <email@example.com> defines author of this Dockerfile
+
+# RUN apt-get -y update   ,run command and safe result
+# RUN apt-get -y install curl   can be few commands RUN
+# RUN curl https://google.com | wc -c > google-size     Now we're going to run an example project that just calls curl
+# https://google.com and pipe the output to word count, wc. It just counts words. - C to count the number of characters
+# and we're going to save that into a build artifact called google-size. So this just pre-calculates at build time how
+# big is the Google homepage in characters.
+
+#
+
+# ADD run.sh  /run.sh     adds local file
+# ADD project.tar.gz   /install/       adds the contents of tar archive and uncompress
+# ADD http://project.exaple.com/download/1.0/project.rpm   /project/   work with URL as well, download in
+
+# ENV DB_HOST=db.production.example.com      The Environment statement sets environment variable both for the duration
+# ENV DB_PORT=5432                           of the Dockerfile
+
+# ENTRYPOINT    specifies the start of the command to run, The `ENTRYPOINT` statement is for making your containers look
+# like normal programs.
+
+# CMD           specifies the whole command to run
+# Shell form looks like this     nano notes.txt
+# Exec form looks like this      ["/bin/nano", "notes.txt"]
+#
+# EXPOSE 8080     maps port into the container
+
+# VOLUME  ["/shared-data", "/host/path/"] defines shared volumes or ephemeral volumes, depending on whether you have one or two arguments.
+
+# WORKDIR /install/         The WORKDIR statement sets the directory both for the remainder of the
+# Dockerfile and for the resulting container when you run it. It's like typing CD at the beginning of every run
+# expression after that, so it's a useful expression to know about. You say WORKDIR /install, then all the rest of your
+# run statements will happen in the install directory.
+
+# USER Dmitriy or 100    sets which user the container will run as
+
 #  ---------------        legacy linking     -------------------
 # docker run --rm -ti -e SECRET=secret_word --name catserver ubuntu:14.04 bash      flag -e will add env variable SECRET
 
@@ -110,7 +168,8 @@
 # catserver will not see env of dogserver
 
 #  -------------            docker-compose.yml    ---------------------------
-
+#  Environment variables do persist across lines if you use the ENV command to set them. Just remember that each line
+#  in a Dockerfile is its own call to docker run, and then its own call to docker command.
 #                       example lists in yml format
 # fruits:
 #   - apple
@@ -179,9 +238,10 @@
 # docker container stop <container_id>    gracefully stop container
 # docker container kill <hash>   force shutdown container
 
-# *************************       example dockerfile        ****************************
-# from ubuntu:18.10
+# *************************       example Dockerfile        ****************************
+# from ubuntu:18.10      Where do we begin? That's FROM, and I'm gonna start from an image called ubuntu
 # RUN apt update && apt install -y python3
+# CMD           to run when this image is started.
 
 # docker build -t <name_new_image> .    create image from a dockerfile in our project
 
@@ -209,6 +269,8 @@
 # COPY instruction copies new files or directories from the source and adds them to the file system of the container
 # at the path destination. So in line 10 we're copying all of the files in the current directory and adding them to the
 # data directory in the container.
+
+# ADD notes.txt /notes.txt      add file notes.txt from directory to container in /notes.txt
 
 # The RUN instruction will execute any commands in a new layer on top of the current image and commits the results.
 #
