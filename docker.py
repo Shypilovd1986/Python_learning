@@ -1,5 +1,14 @@
 # Docker ia a service for launching application in container!
 
+#                                   Docker the program
+#  So Docker is divided into two programs. It's the client and the server. These two programs communicate over a socket.
+#  That can be a network socket where the client is running on one computer and the server is running on a computer
+#  somewhere on a Cloud provider across the world, or they can be running directly on the same hardware, or they can be
+#  running on the same hardware with the server in a virtual machine, which is a common case for people doing this
+#  course. In that case the client communicates over a network and sends message to the Docker server to say make a
+#  container, start a container, stop a container, that kind of stuff. When the client and server are running on the
+#  same computer, they can connect through a special file called a socket
+
 # single purpose - one purpose ia a one container
 # Docker components:
 # - client
@@ -16,6 +25,14 @@
 # Images are read-only
 # Images are saved in repository
 # in one repository saved only one image with different versions
+
+# --privileged=true --pid=host     for most safety
+# Привилегированные контейнеры Docker – это такие контейнеры, которые запускаются с флагом --privileged. В отличие от
+# обычных контейнеров, эти контейнеры имеют root-доступ к машине-хосту.
+#
+# Привилегированные контейнеры часто используются, когда для выполнения задач нужен прямой доступ к аппаратной
+# составляющей. Однако привилегированные Docker-контейнеры могут позволить злоумышленникам захватить хост-систему.
+# Сегодня мы посмотрим, как можно выйти из привилегированного контейнера.
 
 
 # ---------------------------         main commands    ------------------
@@ -79,6 +96,10 @@
 # docker tag <id image>  new_name     will give name to image with pointed id
 
 # docker commit <name of containers>  <name of new image>   will create a new image based on container and give it name
+
+# docker save -o my-image.tar.gz   debian:sid    busybox   ubuntu:14.04      save images locally on computer, -o output
+
+# docker load -i my-images.tar.gz     -i input
 
 # docker run -p outside port: inside port / protocol type (tcp or udp), docker dynamically determines port
 # docker run -ti -p 45111/udp ubuntu:14.04 bash
