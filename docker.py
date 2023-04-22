@@ -29,6 +29,9 @@
 # --privileged=true --pid=host     for most safety
 # Привилегированные контейнеры Docker – это такие контейнеры, которые запускаются с флагом --privileged. В отличие от
 # обычных контейнеров, эти контейнеры имеют root-доступ к машине-хосту.
+
+# docker run -d -p 5000:5000 --restart=always --name registry registry:2
+# The `--restart=always` command says that if this container dies, just restart it immediately.
 #
 # Привилегированные контейнеры часто используются, когда для выполнения задач нужен прямой доступ к аппаратной
 # составляющей. Однако привилегированные Docker-контейнеры могут позволить злоумышленникам захватить хост-систему.
