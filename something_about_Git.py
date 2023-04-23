@@ -14,5 +14,23 @@
 # git rebase --interactive <branch>/<commit>
 
 #
+# git stash     add uncommitted information to stash
+# git stash list     take a look at what's been stored
+# git stash apply        allows you to apply a stash set of changes
+# git stash pop          remove stash
 
+# git clean -n    dry run
+# git clean -d    directories
+# git clean -f    force
+
+# git remote add NAME URL
+# git remote remove NAME
+# git rename OLDNAME   NEWNAME
+# git remote -v
+
+# git push --all     push all branches remote to Github
+
+# git branch -a    show all branches with remote
+
+#
 
