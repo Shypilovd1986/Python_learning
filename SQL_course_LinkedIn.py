@@ -49,3 +49,27 @@
 
 # CURDATE()   function show current day
 # YEAR('some date')  extract year from date
+
+# Python uses a standard interface called DB-API to communicate with the database.
+#  The purpose of the DB-API is to promote commonality among interfaces so that each database management system uses
+#  more or less the same code to access data from Python. The DB-API is feature complete, including support for all
+#  common relational database operations.
+
+#                               connect parameters !!!!!!! :
+# sqlite3.connect("db_name")      for SQLite3
+#
+# mysql.connector.connect(        for MySQL
+#   user = "Dmitriy",
+#   password = "11111111",
+#   host = "127.0.0.1",
+#   database = "db_name"
+# )
+
+# psycopg2.connect("dbname=db_name user=Dmitriy password=1111111")    for PostgreSQL
+
+# pyodbc.connect(                       MS SQL Server
+#   "DRIVER={ODBC Driver 17 for SQL Server}" + ";SERVER=" + server + ";DATABASE=" + database + ";UID=" + username
+#   + ";PWD=" + password
+# )
+
+#
