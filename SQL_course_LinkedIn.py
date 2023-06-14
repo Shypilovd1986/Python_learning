@@ -103,3 +103,43 @@
 # SELECT IF(sb_is_active='Y', 'Not returned', 'Returnd' ) AS status, COUNT(sb_id) FROM subscriptions GROUP BY status ORDER BY status;
 
 #
+# SELECT b_name, a_name, g_name
+# FROM books
+# 	JOIN m2m_books_authors USING (b_id)
+#     JOIN authors USING (a_id)
+#     JOIN m2m_books_genres USING(b_id)
+#     JOIN genres USING(g_id);
+
+#
+# SELECT b_name,
+# 	   s_id,
+#        s_name,
+#        sb_start,
+#        sb_finish
+# FROM books
+# 	JOIN subscriptions ON b_id=sb_book
+#     JOIN subscribers ON sb_subscriber=s_id;
+
+# SELECT b_id, b_name, a_id, quantity_writen_book, a_name FROM books
+#   JOIN m2m_books_authors USING(b_id)
+#   JOIN authors USING(a_id)
+#   JOIN (SELECT a_id, COUNT(a_id) AS quantity_writen_book FROM m2m_books_authors  GROUP BY a_id) AS d_table USING(a_id)
+# WHERE quantity_writen_book >1;
+
+#
+# SELECT b_id, b_name FROM books
+# 	JOIN m2m_books_genres USING(b_id)
+#     JOIN genres USING(g_id)
+#     JOIN (SELECT g_id,COUNT(g_id) AS quantity_genres FROM m2m_books_genres GROUP BY g_id) AS g_table USING(g_id)
+# WHERE quantity_genres = 1;
+
+# SELECT  b_name AS book
+#     GROUP CONCAT (DISTINCT a_name ORDER BY a_name SEPARATOR ',') AS authors ,
+#     GROUP CONCAT (DISTINCT g_name ORDER BY g_name SEPARATOR ',') AS genres
+# FROM books
+#   JOIN m2m_books_authors USING(b_id)
+#   JOIN authors USING(a_id)
+#   JOIN m2m_books_genres USING(b_id)
+#   JOIN genres USING(g_id)
+# GROUP BY b_id
+# ORDER BY b_name
