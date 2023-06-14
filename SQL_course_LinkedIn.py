@@ -72,4 +72,34 @@
 #   + ";PWD=" + password
 # )
 
+# a cursor object for maintaining context in a sequence of query responses,
+# c = con.cursor
+# c.execute("SELECT * FROM books")
+
+# !!!!   Cursors in the DB-API serve two purposes. They act as iterators keeping track of a position in the database.
+# This allows your code to step through a query result without the need to hold more than one row at a time in active
+# memory. In the DB-API implementation, cursors also act as prepared statements. This allows you to use placeholders in
+# a query, provides automatic sanitation of parameters and significant performance improvements.
+# for row in c.execute("SELECT * FROM books"):
+#     print(row)
+
+# common hooks for committing and rolling back transactions,
+# con.commit()
+# con.rollback()
+#
+# and a common set of exceptions for catching errors from the DBMS.
+# try:
+#     con.execute("INSERT INTO books (book_name) VALUES ("Konan Doil")")
+# except sqlite3.Error:
+#     print("cannot add duplicate book")
+#
+# Each DBMS has its own implementation, which may include different connection details.
+
+# SELECT VERSION();    show version of your mysql server
+
+#                       Grouping Data
+# SELECT YEAR(sb_start) as year, COUNT(sb_book) AS quantity_book FROM subscriptions GROUP BY year ORDER BY year;
+#
+# SELECT IF(sb_is_active='Y', 'Not returned', 'Returnd' ) AS status, COUNT(sb_id) FROM subscriptions GROUP BY status ORDER BY status;
+
 #
