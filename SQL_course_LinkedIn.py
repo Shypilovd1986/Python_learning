@@ -1,7 +1,16 @@
-# DML 
-# DDL
+# DML data manipulation language (INSERT, SELECT, UPDATE, DELETE)
+# DDL data definition language   (CREATE, DROP, TRUNCATE, ALTER, RENAME) DDL statements are autocommit !!!!!!!
 # DCL
-# TCL
+# TCL transaction control language (COMMIT, ROLLBACK, SAVEPOINT)
+
+# A transaction begins when the first DML statement is executed, and it ends in three different scenarios. When COMMIT
+# or ROLLBACK is issued, or when a DDL or DCL statement is executed, autocommit will occur. And the third scenario is if
+# the user exits the system or the system crashes.
+
+#  Rollback discard all pending data changes and ends the current transaction. Savepoint creates a marker point within
+#  a transaction. By using commit and rollback we can preview the data changes before making them permanent.
+
+#
 
 # SELECT * FROM 'table_name';    all data selection
 
@@ -143,3 +152,73 @@
 #   JOIN genres USING(g_id)
 # GROUP BY b_id
 # ORDER BY b_name
+
+# DESCRIBE table_name;   or DESC table_name;    describe table !!!!!! type of value, quantity of column, primary key ...
+
+# types of constraint
+# PRIMARY KEY
+# FOREIGN KEY
+# NOT NULL
+#                                DDL statements!!!!!!!!
+
+#                               Синтаксис оператора ALTER TABLE
+#
+# ALTER [IGNORE] TABLE tbl_name alter_spec [, alter_spec ...]
+# alter_specification:
+#         ADD [COLUMN] create_definition [FIRST | AFTER column_name ]
+#   или   ADD [COLUMN] (create_definition, create_definition,...)
+#   или   ADD INDEX [index_name] (index_col_name,...)
+#   или   ADD PRIMARY KEY (index_col_name,...)
+#   или   ADD UNIQUE [index_name] (index_col_name,...)
+#   или   ADD FULLTEXT [index_name] (index_col_name,...)
+#   или   ADD [CONSTRAINT symbol] FOREIGN KEY [index_name] (index_col_name,...)
+#             [reference_definition]
+#   или   ALTER [COLUMN] col_name {SET DEFAULT literal | DROP DEFAULT}
+#   или   CHANGE [COLUMN] old_col_name create_definition
+#                [FIRST | AFTER column_name]
+#   или   MODIFY [COLUMN] create_definition [FIRST | AFTER column_name]
+#   или   DROP [COLUMN] col_name
+#   или   DROP PRIMARY KEY
+#   или   DROP INDEX index_name
+#   или   DISABLE KEYS
+#   или   ENABLE KEYS
+#   или   RENAME [TO] new_tbl_name
+#   или   ORDER BY col
+#   или   table_options
+
+# CREATE TABLE IF NOT EXISTS user (u_id INT AUTO_INCREMENT PRIMARY KEY,
+# user_name VARCHAR(20) NOT NULL,
+# card_name INT UNIQUE NOT NULL
+# )
+#
+# SELECT * FROM user;
+#
+# INSERT INTO user (user_name, card_name) VALUES ('Dmitriy', 2322332);
+#
+# DESC user;
+#
+# CREATE TABLE IF NOT EXISTS bank_info (bank_id INT AUTO_INCREMENT PRIMARY KEY,
+# 									 account_info VARCHAR(100),
+#                                      user_id INT NOT NULL,
+#                                      FOREIGN KEY(user_id) REFERENCES user(u_id)
+# );
+#
+# CREATE TABLE subscriber_info AS (SELECT sb_id, sb_book, sb_subscriber FROM subscriptions );
+#
+# DESC subscriber_info;
+#
+# SELECT * FROM subscriber_info;
+#
+# ALTER TABLE subscriber_info ADD (age INT NOT NULL);
+#
+# ALTER TABLE subscriber_info MODIFY age SMALLINT NOT NULL;
+#
+# ALTER TABLE subscriber_info DROP COLUMN age;
+
+# DROP TABLE table_name;
+
+# TRUNCATE TABLE table_name;    delete table and release all storage space used by the table
+
+# RENAME old_name_table TO new_name;
+
+#
