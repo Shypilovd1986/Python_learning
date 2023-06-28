@@ -9,11 +9,22 @@
 # - os.mkdir('C:\\m1')    -   create file m1
 # - print(os.path.exists('C:\\m1'))   return True if file exists or False if not
 # - print(os.getcwd())   switch to the terminal
+# - os.path.splitext('name file'), split extension from file, return tuple with name and extension
+# - os.path.abspath('file name')   return absolute path of file
+# - os.walk('search directory')     shows all files and directories in search directory
+# - os.path.join('root', 'file')    concatenate two values and return path tp the file
+# - os.path.isdir('dir name ')     return True if dir name is directory
+# - os.path.isfile('file name ')     return True if file name is file
+# - os.mkdir('dir name')     create directory
+# - os.path.split('htttp://google.com')    return tuple with  ('htttp:', 'google.com'), uses the path.split function
+# to break apart the input URL into the head and tail.
+# -
+# --    learn urllib  library !!!
+
 
 
 # *************      json       *****************
 # import json
-# from random import randint
 
 # JSON  -JavaScript Object Notation, A common use of JSON is to read data from a web server, and display the data in a
 # web page. Применяется в веб-приложениях как для обмена данными между браузером и сервером (AJAX), так и между

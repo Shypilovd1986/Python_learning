@@ -64,4 +64,19 @@
 # implements key names based on vocabularies that are references. Together, these two JSON-LD features enable an
 # application to parse data and make decisions about what it contains and how it should be used.
 
-#
+# To specify a vocabulary for a JSON object, you use the special @context key name. Each vocabulary has its own
+# namespace identifier, which is a URI. This is a string that looks like a URL but may not correspond to an actual live
+# resource on the web. However, the identifier is unique, and can be used programmatically to correlate multiple pieces
+# of JSON-LD data that use a common vocabulary.
+
+#  to convert my content to use JSON-LD standards. So I know that the first thing I need to do at the top, I want to add
+#  an @context keyword, (keyboard clicks) but instead of simply providing a URL, this is where I specify the object that
+#  maps my keys to the vocabulary keys.
+
+# https://json-ld.org/playground/
+# Play around with JSON-LD markup by typing out some JSON below and seeing what gets generated from it at the bottom of
+# the page. Pick any of the examples below to get started.
+
+# https://schema.org/docs/schemas.html   The schemas are a set of 'types', each associated with a set of properties.
+# The types are arranged in a hierarchy.
+# The vocabulary currently consists of 803 Types, 1464 Properties 14 Datatypes,
