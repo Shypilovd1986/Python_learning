@@ -1,3 +1,30 @@
+#                       MYSQL
+# if not find mysql in terminal !!!!
+# virtualenv mysql-workspace    create virtual env in terminal
+# cd mysql-workspace
+# source  bin/activate
+# pip3 install mysql-connector-python
+
+    # sudo nano /etc/paths
+    # /usr/local/mysql/bin
+    # /usr/local/mysql/support-files
+
+# CREATE DATABASE project;
+# use project;    switch to project database
+# CREATE TABLE users(user_id INT AUTO_INCREMENT NOT NULL, name VARCHAR(20),surname VARCHAR(20),PRIMARY KEY(user_id));
+
+# CREATE TABLE IF NOT EXISTS tasks(task_id INT NOT NULL AUTO_INCREMENT, user_id INT NOT NULL, task_name VARCHAR(20),
+#  description VARCHAR(255), PRIMARY KEY(task_id), FOREIGN KEY(user_id) REFERENCES users(user_id));
+
+# cursor.lastrowid    takes last id in row
+
+# show tables;    show existing tables
+
+# describe users;   show information about table users, it's columns
+#
+#  \q   exit from the MySQL server
+#
+
 # DML data manipulation language (INSERT, SELECT, UPDATE, DELETE)
 # DDL data definition language   (CREATE, DROP, TRUNCATE, ALTER, RENAME) DDL statements are autocommit !!!!!!!
 # DCL
@@ -220,5 +247,11 @@
 # TRUNCATE TABLE table_name;    delete table and release all storage space used by the table
 
 # RENAME old_name_table TO new_name;
+
+#  CGI is, in this context, the common gateway interface. It's one of the original web protocols dating back to the
+#  early 1990s. CGI is how we pass information back and forth between a web browser and a web server.
+
+# Keep in mind that the web is inherently stateless. This means that each time a web browser submits information back
+# to the web server, it does not know what just happened unless your script keeps track. T
 
 #
