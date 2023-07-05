@@ -5,6 +5,19 @@
 # source  bin/activate
 # pip3 install mysql-connector-python
 
+# my_db = mysql.connect(
+#             host='localhost',
+#             user='root',
+#             password='19865421',
+#             database=db_name,
+#             allow_local_infile=True   !!!!!  add data from file
+#         )
+
+# q = '''LOAD DATA LOCAL INFILE '/Users/author/desctop/mysql-csv/sales.scv'
+# INTO TABLE salesperson FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+# (first_name, email, city);'''
+# cursor.execute(q)
+
     # sudo nano /etc/paths
     # /usr/local/mysql/bin
     # /usr/local/mysql/support-files
@@ -23,7 +36,11 @@
 # describe users;   show information about table users, it's columns
 #
 #  \q   exit from the MySQL server
-#
+
+# cursor.executemany('''INSERT INTO tasks(user_id, task_name, description) VALUES(%s, %s, %s)''', task_list)
+# execute many commands
+
+
 
 # DML data manipulation language (INSERT, SELECT, UPDATE, DELETE)
 # DDL data definition language   (CREATE, DROP, TRUNCATE, ALTER, RENAME) DDL statements are autocommit !!!!!!!
