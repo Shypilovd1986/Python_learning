@@ -114,3 +114,38 @@
 #     # Delete
 #     session.delete(session.query(House).filter(House.room_id == 14).first())
 #     session.commit()
+
+
+# A stored procedure is prepared SQL code that usually consists of several SQL statements that are saved and reused
+# over and over again.
+
+# We are using the SQLAlchemy name or our Python name inside of this relationship because relationship is for SQLAlchemy
+# . It's not for Postgres. For Postgres, we provide these ForeignKeys, and so we have the authors.author_id. Authors is
+# the name of the table, as we set here, and books is also the name of the table. That sets us up for the Postgres side.
+
+# session.add(author)
+# session.flush()
+#  we'll add that author that we created up here, then we'll do session.flush. This will send a series of operations to
+#  the database, think insert, update, delete, whatever we're doing, in this case, it's an add, but they're going to
+#  still be pending operations until a commit is received. What this really does is update our author with an author id
+#  so that when we add the pairing, we can pass in that author id. It's already generated for us with this flush.
+
+# CREATE ROLE myuser WITH LOGIN PASSWORD 'password';
+# create a new user in the postgres shell that requires a password
+
+# retrieve a table reference from a database using SQLAlchemy Core in Python
+# Create an engine and create a metadata object with the engine. Then, retrieve the table with
+# Table('myTable', metadataObject, autoload=True, autoload_with=engine)
+
+#   task = db.relationship('Task', cascade='all, delete-orphan')    will also delete the task objects if they become
+#   disassociated with the project object.
+
+
+#                           PROCEDURE
+# \h CREATE PROCEDURE   will show help about creating procedure in PostgreSQL
+# CREATE OR REPLACE PROCEDURE return_nondiscounted_item(INT, INT)
+# So this will overwrite the procedure if we already have a procedure of this type. In this case, the name of the
+# procedure is going to be return non-discounted item. And it's going to have two parameters. The first will be an order
+# ID, which is an int, and the second will also be an int, it'll be the number of items to be returned.
+
+#
