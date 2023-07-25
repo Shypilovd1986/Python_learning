@@ -271,4 +271,24 @@
 # Keep in mind that the web is inherently stateless. This means that each time a web browser submits information back
 # to the web server, it does not know what just happened unless your script keeps track. T
 
+# show table status;     in MYSQL  you can get a different set of details
+
+# show create table table_name     show information about consist of table in MYSQL
+
+# show variables;   show all variables of mysql server
+
+# show variables like 'time%';    show all variables which start with 'time'
+
+# SET time_zone = '+00:00';   we can set our time zone   , if 'system' time zone , will show time, where computer stands
+
+# select now();   show present time and date
+
+# select utc_timestamp();   show time and date in ' 00:00 ' zone
+
+# type TIMESTAMP    The timestamp is supposed to automatically update. !!!
+# stamp DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+# select 10 mod 7 ;  result 3 is the same as 10%7
+# select 10 // 7 ; result 1 is the same as 10 // 7
+
 #

@@ -32,4 +32,4 @@
 
 # df['ProdCategory'].value_counts().plot(kind='barh')   will plot graphic
 
-#
+# ENUM type is type which can store list of other types
