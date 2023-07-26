@@ -291,4 +291,27 @@
 # select 10 mod 7 ;  result 3 is the same as 10%7
 # select 10 // 7 ; result 1 is the same as 10 // 7
 
-#
+# SELECT
+#     CASE  WHEN a < 5 THEN 'true' ELSE 'false' END AS boola,
+#     CASE  WHEN b < 5 THEN 'true' ELSE 'false' END AS boolb,
+#     FROM table_name
+# ;
+
+# SELECT IF (age < 20, 'true', 'false') FROM table_name;
+
+# XOR   For an output of true, either the left side or the right side must be true, but not both.
+
+# SELECT name FROM teacher WHERE name RLIKE 'regular expression' ORDER BY name;
+# use regular expression
+
+# SELECT CONCAT('hello', 'world', '!')    will concatenate string
+
+# SELECT OCT(343);  show octal equivalent of number 343
+# SELECT HEX(343);  same for hex decimal number 343
+# SELECT BIN(343);
+# SELECT CONV(343, 10, 16)  convert number 343 from decimal to hex decimal
+# SELECT CONV('157 ', 16, 10)  convert number 343 from decimal to hex decimal
+# SELECT LOWER(name) from teacher;
+# SELECT UPPER(name) from teacher;
+
+# SELECT SUBSTRING('hello world', 4)    return 'lo world'  from 4 symbol,  -4 will return from the end 4 symbol
