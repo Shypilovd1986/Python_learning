@@ -343,3 +343,7 @@
 # -- text   comment in mysql
 # # text    comment in mysql
 
+# example how create table with constraint foreign key
+
+# mysql> create table studying(id serial, teacher_id int , pupil_id int, foreign key(teacher_id) references teacher(id),
+# foreign key(pupil_id) references pupil(id));
