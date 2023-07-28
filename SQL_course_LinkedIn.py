@@ -315,3 +315,31 @@
 # SELECT UPPER(name) from teacher;
 
 # SELECT SUBSTRING('hello world', 4)    return 'lo world'  from 4 symbol,  -4 will return from the end 4 symbol
+
+# SELECT CEILING(AVG(age)) AS 'average age' from teacher;
+# SELECT ROUND(age) from teacher;
+# SELECT FLOOR(age) from teacher;
+# SELECT TRUNCATE(3,23) ;    ----->    takes only integer part
+
+# SELECT SIN(2):
+# SELECT TAN(PI());
+# SELECT COS(2);
+# SELECT ACOS(2);
+
+# SELECT LOG(10, 100)
+# SELECT LOG(2, 654)
+
+# SELECT EXP(4);
+# SELECT RADIANS(180);
+# SELECT DEGREES(PI());
+
+# SELECT 20 DIV 3; --> 6, 20//3 integer division
+# SELECT MOD(20, 3) -->2   same 20%3
+
+#   /*
+#       comments in mysql
+#   */
+
+# -- text   comment in mysql
+# # text    comment in mysql
+
