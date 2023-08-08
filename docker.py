@@ -42,6 +42,7 @@
 # docker ps -a   show list of all containers
 # docker ps -l   show the latest created container (includes all states)
 # docker ps -q   show only ids of containers
+# docker ps -s   show with total size
 # docker ps --format=$FORMAT     show containers by format
 # docker version   show info about docker client and docker server
 # docker run <image>  create container based on current image
@@ -106,7 +107,7 @@
 
 # docker run -p outside port: inside port / protocol type (tcp or udp), docker dynamically determines port
 # docker run -ti -p 45111/udp ubuntu:14.04 bash
-# nc -ulp 45111      udp listen port 45111
+# nc -udp 45111      udp listen port 45111
 # nc -u localhost <name of port >   on local machine outside of container
 
 # docker run --rm -ti -p 45111:45111 -p 45112:45112 --name testing-port ubuntu:14.04
@@ -588,4 +589,23 @@
 #
 # Открываем в браузере IP
 #
-# #
+#
+
+# docker run <container name> sleep 5sec      container will work just 5 sec
+# docker pause <contaier name> or id
+# docker unpause <contaier name> or id
+# docker kill <process>  will stop process
+
+
+#                               How to install vim/nano in the docker container
+# Step 1: Identify the Linux Distribution
+# cat /etc/os-release
+
+# Step 2: Install the Appropriate Package Manager
+# apt-get update    for dDebian and Ubuntu,   yum update    for Centos and Fedora
+
+# Step 3: Install Vim or Nano
+# apt-get install vim -y           or yum install vim -y
+
+# Step 4: Verify Installation
+# vim --version

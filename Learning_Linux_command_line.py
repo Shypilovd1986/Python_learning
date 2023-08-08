@@ -822,3 +822,6 @@
 # storage engines. There are two main engines that you’ll be interested in: InnoDB and MyISAM. Storage engines are
 # transparent to the end user. MySQL will handle things differently under the surface, but regardless of which storage
 # engine is in use, you will interact with the database in the same way.
+
+# service --status-all      show all services runs
+# service service_name status    show status of chosen service
