@@ -609,3 +609,56 @@
 
 # Step 4: Verify Installation
 # vim --version
+
+# docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag     run mysql container
+# docker exec -it mysql_container_name mysql -u root -p    connect to container
+# EXPORT TEST_VARIABLE=some_text      can add variable on Linux
+
+# /var/lib/mysql      store data in mysql server
+# Persisting data        Saving data from our server to docker container
+
+# Host Volumes
+# docker run -v /opt/mysql_data:/var/lib/mysql mysql      data from /var/lib/mysql copy to /opt/mysql_data on server
+
+# Anonymous Volumes
+# docker run -v /var/lib/mysql mysql   data from /var/lib/mysql on container will copy
+# to /var/lib/docker/volumes/HASH/_data
+
+# Named Volumes
+# docker run -v mysql_data:/var/lib/mysql mysql
+# create directory mysql_data in /var/lib/docker/volumes/
+# data from /var/lib/mysql on container will copy to /var/lib/docker/volumes/mysql_data/_data
+#
+# docker volume ls      will show all curent volumes
+
+# docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d nginx
+# :ro    read only   !!!!!! tell that directory on container can not change data on server
+
+#                                   type of network
+# bridge network     172.17.0.0/16
+# host network
+# none
+# docker run nginx --network=none      we cannot connect to container because it doesn't have ip
+# macvlan    in this net each container has its own mac and ip address
+# ipvlan     in this net each container uses mac of net, has its own ip
+
+# ip a   will show текущей сетевой информации для интерфейсов (карты LAN)
+
+# container with network host doesn't get its own ip address , it takes host's ip
+
+# docker network create --driver bridge net_name     will create network type bridge , its default network
+
+# docker network create -d bridge --subnet 192.168.1.0/24  --gateway 192.168.1.1 my_net   will create new network with
+# ip what we want
+# --ip-range 192.168.100.99   will range pool of ip address
+# -o parent=ens18
+
+# netshoot   and   net-tools   containers for working with nets
+
+# docker network connect net_name container_name    will connect container to net
+# docker network disconnect <net_name >  <container name>  disconnect container from chosen net
+# docker run --ip 192.168.1.100 ubuntu   will give ip address to container
+
+# FROM nginx
+# COPY static-html-directory /usr/share/nginx/html
+# for Dockerfile
