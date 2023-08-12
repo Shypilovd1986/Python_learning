@@ -825,3 +825,17 @@
 
 # service --status-all      show all services runs
 # service service_name status    show status of chosen service
+# ps        show current   process stat
+# ps -xa      show process stat all processes
+
+# netstat     show Active Internet connections
+# netstat -tulpen      show opened ports on server
+
+# netstat  утилита командной строки, выводящая на дисплей состояние TCP-соединений (как входящих, так и исходящих),
+# таблицы маршрутизации, число сетевых интерфейсов и сетевую статистику по протоколам. Доступна в операционных системах
+# семейства UNIX и Windows. Основное назначение утилиты — поиск сетевых проблем и определение производительности сети.
+
+# cURL — (распространяемая по лицензии MIT)[4] кроссплатформенная служебная программа командной строки, позволяющая
+# взаимодействовать с множеством различных серверов по множеству различных протоколов с синтаксисом URL. Название
+# расшифровывается как "client for URL".
+# curl -Li http://localhost:80    returns headers
