@@ -1,3 +1,22 @@
+#                   Dockerfile
+# FROM ubuntu:22.04
+# LABEL author=Dmitriy_Shypilov
+# RUN apt-get update
+# RUN apt-get install nginx -y      -y   installation without confirmation
+# WORKDIR /var/www/html/
+# COPY files2/index.html
+# COPY my_folder/script.sh
+# RUN chmod +x my_folder/script.sh
+# ENV TYPE=demo
+# ENV PASSWORD=1234
+# EXPOSE 80
+# EXPOSE 434/tcp
+# ENTRYPOINT ["echo"]
+# CMD ["Hello my container"]
+
+# docker run -d -P nginx     -P    automatically mapping ports between random port in server and 80 port in container
+
+
 # Docker ia a service for launching application in container!
 
 #                                   Docker the program
