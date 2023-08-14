@@ -839,3 +839,24 @@
 # взаимодействовать с множеством различных серверов по множеству различных протоколов с синтаксисом URL. Название
 # расшифровывается как "client for URL".
 # curl -Li http://localhost:80    returns headers
+
+# ifconfig       to see ip addresses of mac
+# sudo service apache2 stop          , stop server apache
+# sudo service apache2 start          , start server apache
+# sudo service --status-all          to see all running services
+#
+# whereis <name>       shows path of name
+
+# /usr/sbin/apache2ctl               — bash-скрипт консольного управления сервером Apache
+
+#   example Dockerfile for apache
+
+# FROM ubuntu
+# RUN apt-get update
+# Run apt-get install apache2 -y
+# EXPOSE 80
+# CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+# docker run -d --name my-apache -p 80:80 -v /root/docker/files:/var/www/html my_image_apache2
+
+# apt-get clean      , clean cash
