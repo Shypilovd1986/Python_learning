@@ -14,6 +14,39 @@
 # ENTRYPOINT ["echo"]
 # CMD ["Hello my container"]
 
+#                   Docker Compose.
+
+# use for running one or more containers
+# consist instructions for running containers
+#
+#                   docker-compose.yml
+# version: "3,5"
+# services:
+#     container_1_name:
+#       image: nginx:latest
+#       container_name: my_nginx
+#       volumes:
+#           - /opt/web/html:/var/www/html
+#           - /opt/web/pics:/var/www/pictures
+#       environment:
+#           - NGINX_HOST=web.some-host
+#           - NGINX_PORT=80
+#       ports:
+#           - "80:80"
+#           - "443:443"
+#       restart: unless_stopped                       always/no/on-failure      will always restart our server
+#       network:
+#           default:
+#                 driver: bridge
+#                 name: my_net
+#       depends_on:
+#           - container_2_name
+#           - container_3_name
+#
+
+# docker-compose up (-d)         detached mode
+# docker compose up (-d)         detached mode
+
 # docker run -d -P nginx     -P    automatically mapping ports between random port in server and 80 port in container
 
 
