@@ -26,22 +26,24 @@
 #       image: nginx:latest
 #       container_name: my_nginx
 #       volumes:
-#           - /opt/web/html:/var/www/html
-#           - /opt/web/pics:/var/www/pictures
+#           - '/opt/web/html:/var/www/html'
+#           - '/opt/web/pics:/var/www/pictures'
 #       environment:
-#           - NGINX_HOST=web.some-host
-#           - NGINX_PORT=80
+#           - 'NGINX_HOST=web.some-host'
+#           - 'NGINX_PORT=80'
 #       ports:
-#           - "80:80"
-#           - "443:443"
+#           - '80:80'
+#           - '443:443'
 #       restart: unless_stopped                       always/no/on-failure      will always restart our server
 #       network:
 #           default:
-#                 driver: bridge
-#                 name: my_net
-#       depends_on:
+#              driver: bridge
+#           name: my_net
+#       depends_on:           first run container 2 and 3 then 1 container
 #           - container_2_name
 #           - container_3_name
+#
+#
 #
 
 # docker-compose up (-d)         detached mode

@@ -148,4 +148,51 @@
 # procedure is going to be return non-discounted item. And it's going to have two parameters. The first will be an order
 # ID, which is an int, and the second will also be an int, it'll be the number of items to be returned.
 
+
+#                               example sqlalchemy with relations one to many . postgresql db
 #
+# """module for describing user class which inhered from class Base"""
+# from datetime import datetime
+# import sqlalchemy as db
+# from sqlalchemy.orm import sessionmaker, scoped_session, relationship
+# from sqlalchemy.ext.declarative import declarative_base
+#
+#
+# engine = db.create_engine('postgresql://postgres:19865421@localhost:5432/english_learning', echo=True)
+# session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+# Base = declarative_base()
+# Base.query = session.query_property()
+#
+#
+# class User(Base):
+#     __tablename__ = 'user'
+#     # __table_args__ = {'schema': 'english_learning'}
+#
+#     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     user_name = db.Column(db.String(20), nullable=False)
+#     user_surname = db.Column(db.String(20), nullable=False)
+#     email = db.Column(db.String(30), nullable=False)
+#     password = db.Column(db.String(50), nullable=False)
+#     date_of_registration = db.Column(db.DateTime, default=datetime.utcnow)
+#     confirmed = db.Column(db.Boolean, default=False)
+#     words = relationship("EnglishWord", back_populates='user')
+#
+#
+# class EnglishWord(Base):
+#     __tablename__ = 'english_words'
+#     # __table_args__ = {'schema': 'english_learning'}
+#
+#     word_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     word = db.Column(db.String(20), nullable=False)
+#     transcription = db.Column(db.String(20), nullable=False)
+#     notes = db.Column(db.String(50))
+#     date_of_adding = db.Column(db.DateTime, default=datetime.utcnow())
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+#     user = relationship('User', back_populates='words')
+#
+#     def __repr__(self):
+#         return "<Word: {0}, translation{1} >".format(self.word, self.transcription)
+#
+#
+# def create_tables():
+#     Base.metadata.create_all(engine)
