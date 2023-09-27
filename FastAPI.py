@@ -83,7 +83,7 @@
 # docker-compose exec web alembic revision --autogenerate -m "init"
 # docker-compose exec web alembic upgrade head
 
-#                     xxxxxxxxxxxxxxxxxxxx
+#                     Email validation
 # for email validation
 # from pydantic import EmailStr, Body
 #
@@ -93,3 +93,20 @@
 #     pass
 
 # if we use Basemodel we write without Body
+
+#                     poetry
+# pip install poetry    will install poetry  to environment
+# poetry new <project name>    will create project in current folder
+# poetry init    will initialize poetry for project
+# poetry install    will install all packages from poetry list
+# poetry add <library>      will add library to poetry list     -> poetry install
+# poetry lock --no-update      will not update version only freezing it
+# poetry show --tree    show all packages and dependencies
+# poetry install --sync    synchronize env with install package and remove extra packages
+# which poetry   show is it global poetry or local
+
+# poetry.lock and pyproject.toml     like requirements and always must be added to git
+
+# option + enter   import im pycharm
+#
+
