@@ -20,3 +20,76 @@
 
 # https://fastapi.tiangolo.com/tutorial/cors/
 #https://fastapi.tiangolo.com/advanced/middleware/      about advanced middleware
+
+#                     connect database
+# from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+# from sqlalchemy.orm import DeclarativeBase
+# from dotenv import load_dotenv
+# import os
+#
+# load_dotenv()
+# postgres_password = os.environ.get('POSTGRES_PASSWORD')
+# database_url = f"postgresql+asyncpg://postgres:{postgres_password}@localhost:5432/asyncalchemy"
+#
+# engine = create_async_engine(database_url, echo=True)
+# # echo=True , during initialization lets us see SQL generated queries in console
+#
+# Base = DeclarativeBase()
+# async_session = async_sessionmaker(
+#     engine, class_=AsyncSession, expire_on_commit=False
+# )
+# Указание echo=True при инициализации движка позволит нам увидеть сгенерированные SQL-запросы в консоли. Мы должны
+# отключить поведение "expire on commit (завершить при фиксации)" для сессий с expire_on_commit=False. Это связано с
+# тем, что в настройках async мы не хотим, чтобы SQLAlchemy выдавал новые SQL-запросы к базе данных при обращении к уже
+# закоммиченным объектам.
+
+# docker exec -it 2bd  psql -U postgres
+#  http://localhost:8000/openapi.json     return response in json format
+
+#
+# @pytest.mark.parametrize(
+#     "x, y, res",
+#     [
+#         (1, 2, 3),
+#         (2, 3, 5)
+#     ]
+# )
+# def test_simple(x, y, res):
+#     assert x + y == res
+#
+# pytest tests/test_main.py::test_simple
+
+# pytest --env .test.env        use pytest using .test.env   file
+
+#                   example of parametrize test
+# @pytest.mark.parametrize(
+#     "x, y, res",
+#     [
+#         (1, 2, 3),
+#         (2, 3, 5)
+#     ]
+# )
+# def test_simple(x, y, res):
+#     assert x + y == res
+
+# alembic init -t async <script_directory_here>
+# docker rmi $(docker images -a -q)   for deleting all images
+
+# https://habr.com/ru/articles/580866/   about fastapi alembic docker compose
+
+
+# docker-compose up -d --build
+# docker-compose exec web alembic init -t async migrations
+# docker-compose exec web alembic revision --autogenerate -m "init"
+# docker-compose exec web alembic upgrade head
+
+#                     xxxxxxxxxxxxxxxxxxxx
+# for email validation
+# from pydantic import EmailStr, Body
+#
+# pip install "pydantic[email]"
+
+# def send_email(email: EmailStr = Body())    body says that we should type email in body of request
+#     pass
+
+# if we use Basemodel we write without Body
